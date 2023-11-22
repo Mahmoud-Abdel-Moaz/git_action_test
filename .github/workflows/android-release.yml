@@ -1,39 +1,39 @@
 name: Android Release
 
-# 1
+# 1 Controls when the workflow will run
 on:
-  # 2
-  push:
-    branches: [ "master" ]
+  # 2 Triggers the workflow on push or pull request events for the "master" branch; you can change it according to your requirement
+#  push:
+#    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
-  # 3
+  # 3 Allows you to run this workflow manually from the Actions tab from your GitHub repo (a workflow run is made up of one or more jobs that can run sequentially or in parallel)
   workflow_dispatch:
 
-# 4
+# 4 Contains a single job called build
 jobs:
-  # 5
+  # 5  Contains a single job called build
   build:
-    # 6
+    # 6 Contains the type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # 7
+    # 7 Uses steps to represent a sequence of tasks that will be executed as part of job
     steps:
-      # 8
+      # 8 Readies your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      # 9
+      # 9 Sets up Java so your job can use it for the Flutter app build
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: "12.x"
-      # 10
+      # 10 Sets up Flutter using the subosito Flutter workflow
       - uses: subosito/flutter-action@v2
         with:
-          # 11
+          # 11 Adjusts to the Flutter version you are working with
           flutter-version: "3.13.6"
           channel: 'stable'
-      # 12
+      # 12 Runs a single command using the runner’s shell
       - name: Get dependencies
         run: flutter pub get
 
