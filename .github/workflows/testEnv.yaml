@@ -50,6 +50,7 @@ jobs:
         id: app_env
         uses: timheuer/base64-to-file@v1.0.3
         with:
+          fileDir: './assets/'
           fileName: client.env
           encodedString: $DOTENV
       - name: test env
