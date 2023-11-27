@@ -46,17 +46,20 @@ jobs:
 #          fileDir: './assets/images/'
 #          encodedString: $LOGO
       # 7 Download .env file
+      #echo $DOTENV | base64 --decode > client.env
+#      - name: Download env file
+#        id: app_env
+#        uses: timheuer/base64-to-file@v1.0.3
+#        with:
+#          fileDir: './assets/'
+#          fileName: ./assets/client.env
+#          encodedString: $DOTENV
+#      - name: test env
+#        run: |
+#          echo "${{ steps.app_env.outputs.filePath }}"
+#          print "${{ steps.app_env.outputs.filePath }}"
       - name: Download env file
-        id: app_env
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileDir: './assets/'
-          fileName: ./assets/client.env
-          encodedString: $DOTENV
-      - name: test env
-        run: |
-          echo "${{ steps.app_env.outputs.filePath }}"
-          print "${{ steps.app_env.outputs.filePath }}"
+        run: echo "$DOTENV" | base64 -d > client.env
       - run: flutter pub get
       - name: Generate App Assets
         run: flutter pub run flutter_launcher_icons
