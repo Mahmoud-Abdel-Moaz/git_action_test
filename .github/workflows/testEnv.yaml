@@ -38,13 +38,13 @@ jobs:
           echo "android {  defaultConfig { applicationId '${PACKAGE_NAME}' }  }" > android/changePackage.gradle
           echo "apply from: rootProject.file('changePackage.gradle')" >> android/app/build.gradle
       # 6 Download logo
-      - name: Download Logo Image
-        id: app_logo
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: logo.png
-          fileDir: './assets/images/'
-          encodedString: $LOGO
+#      - name: Download Logo Image
+#        id: app_logo
+#        uses: timheuer/base64-to-file@v1.0.3
+#        with:
+#          fileName: logo.png
+#          fileDir: './assets/images/'
+#          encodedString: $LOGO
       # 7 Download .env file
       - name: Download env file
         id: app_env
@@ -52,6 +52,8 @@ jobs:
         with:
           fileName: client.env
           encodedString: $DOTENV
+      - name: test env
+        run: echo steps.app_env.outputs.filePath
       - run: flutter pub get
       - name: Generate App Assets
         run: flutter pub run flutter_launcher_icons
