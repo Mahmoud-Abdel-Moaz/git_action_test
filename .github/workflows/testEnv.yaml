@@ -51,7 +51,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.0.3
         with:
           fileDir: './assets/'
-          fileName: client.env
+          fileName: ./assets/client.env
           encodedString: $DOTENV
       - name: test env
         run: |
