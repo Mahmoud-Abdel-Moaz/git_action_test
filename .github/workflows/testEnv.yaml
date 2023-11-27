@@ -51,7 +51,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.0.3
         with:
           fileName: client.env
-          encodedString: DOTENV
+          encodedString: $DOTENV
       - run: flutter pub get
       - name: Generate App Assets
         run: flutter pub run flutter_launcher_icons
