@@ -38,6 +38,8 @@ jobs:
           echo "android {  defaultConfig { applicationId '${PACKAGE_NAME}' }  }" > android/changePackage.gradle
           echo "apply from: rootProject.file('changePackage.gradle')" >> android/app/build.gradle
       # 6 Download logo
+      - name: Download Logo Image
+        run: echo "LOGO" | base64 -d > assets/images/logo.png
 #      - name: Download Logo Image
 #        id: app_logo
 #        uses: timheuer/base64-to-file@v1.0.3
