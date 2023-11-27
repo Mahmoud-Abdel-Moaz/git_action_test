@@ -7,37 +7,36 @@ on:
     branches:
       - main
       - master
-      - develop
 name: "Signed Build & Release"
 jobs:
   build:
     name: Create Android Build
     # 1 Added dependency on the version job to run this one sequentially
-#    needs: version
+    needs: version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
       # 2  Downloaded the version file uploaded in the first job using the name gitversion
-#      - name: Get version.txt
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: gitversion
+      - name: Get version.txt
+        uses: actions/download-artifact@v2
+        with:
+          name: gitversion
 
       # 3 Created a new file without newline char from version.txt
-#      - name: Create new file without newline char from version.txt
-#        run: tr -d '\n' < version.txt > version1.txt
+      - name: Create new file without newline char from version.txt
+        run: tr -d '\n' < version.txt > version1.txt
 
-      # 4 Read the updated version from version1.txt file
-#      - name: Read version
-#        id: version
-#        uses: juliangruber/read-file-action@v1
-#        with:
-#          path: version1.txt
+     #  4 Read the updated version from version1.txt file
+      - name: Read version
+        id: version
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: version1.txt
 
-      # 5 Updated the pubspec.yml file with the version ID having the version in it
-#      - name: Update version in YAML
-#        run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
+     #  5 Updated the pubspec.yml file with the version ID having the version in it
+      - name: Update version in YAML
+        run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
 
       # 6 Decoded the base64 encoded keystore value saved as a secret to ID android_keystore
       - name: Download Android keystore
@@ -75,3 +74,29 @@ jobs:
         with:
           name: android-release
           path: build/app/outputs/bundle/release/app-release.aab
+
+  # 1  Created a new job version that will be executed before the build job
+  version:
+    name: Create version number
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v3
+      # 2 Installed the GitVersion, a tool used for versioning by looking at your Git history
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: "5.x"
+      - name: Use GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      # 3 Posted using GitVersion, placing the version in a version.text file
+      - name: Create version.txt with nuGetVersion
+        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
+      # 4 Uploaded the version.text file as an artifact for the actions system with a name gitversion to be used later in the build job
+      - name: Upload version.txt
+        uses: actions/upload-artifact@v2
+        with:
+          name: gitversion
+          path: version.txt
