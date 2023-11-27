@@ -53,7 +53,9 @@ jobs:
           fileName: client.env
           encodedString: $DOTENV
       - name: test env
-        run: echo steps.app_env.outputs.filePath
+        run: |
+          echo "${{ steps.app_env.outputs.filePath }}"
+          print "${{ steps.app_env.outputs.filePath }}"
       - run: flutter pub get
       - name: Generate App Assets
         run: flutter pub run flutter_launcher_icons
