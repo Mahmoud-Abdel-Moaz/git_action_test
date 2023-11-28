@@ -11,7 +11,7 @@ on:
       - develop
 name: "Create version number"
 # 1  Created a new job version that will be executed before the build job
-job:
+jobs:
   name: Create version number
   # The type of runner that the job will run on
   runs-on: ubuntu-latest
