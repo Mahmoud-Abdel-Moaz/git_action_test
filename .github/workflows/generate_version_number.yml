@@ -4,11 +4,11 @@ on:
     branches:
       - main
       - master
-  push:
-    branches:
-      - main
-      - master
-      - develop
+#  push:
+#    branches:
+#      - main
+#      - master
+#      - develop
 name: "Create version number"
 # 1  Created a new job version that will be executed before the build job
 jobs:
