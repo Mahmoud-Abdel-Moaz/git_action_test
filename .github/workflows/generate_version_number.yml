@@ -1,3 +1,15 @@
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+      - develop
+name: "Create version number"
 # 1  Created a new job version that will be executed before the build job
 job:
   name: Create version number
