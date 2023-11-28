@@ -12,7 +12,7 @@ name: "Build & Release (Change APP Name)"
 jobs:
   build:
     name: Build & Release
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     environment: hallo
     env:
       APP_NAME: ${{vars.APP_NAME}}
