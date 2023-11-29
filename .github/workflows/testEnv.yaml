@@ -24,6 +24,20 @@ jobs:
           cache: gradle
 #      - name: build release
 #        run: ./gradlew assembleRelease
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.16.1"
+          channel: 'stable'
+          cache: true
+      - name: Get dependencies
+        run: flutter pub get
+      - name: Start Android Release Build
+        run: flutter build apk
+      - name: Upload Android Release
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-release
+          path: build/app/outputs/flutter-apk/app-release.apk
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
