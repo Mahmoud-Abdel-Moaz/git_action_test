@@ -48,6 +48,8 @@ jobs:
         run: echo "$FIREBASE" | base64 -d > android/app/google-services.json
       - name: Get dependencies
         run: flutter pub get
+      - name: Generate App Assets
+        run: flutter pub run flutter_launcher_icons
       - name: Start Android Release Build
         run: flutter build apk
       - name: Upload Android Release
