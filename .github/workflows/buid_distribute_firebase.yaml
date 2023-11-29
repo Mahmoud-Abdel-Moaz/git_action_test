@@ -8,10 +8,10 @@ on:
       - main
       - master
       - develop
-name: "Build & Release (Change APP Name)"
+name: "Build & Distribute (Firebase Distribution)"
 jobs:
   build:
-    name: Build & Release
+    name: Build & Distribute
     runs-on: ubuntu-latest
     environment: hallo
     env:
