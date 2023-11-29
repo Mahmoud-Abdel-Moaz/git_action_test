@@ -8,10 +8,10 @@ on:
       - main
       - master
       - develop
-name: "Build & Distribute (Firebase Distribution)"
+name: "Build IOS"
 jobs:
   build:
-    name: Build & white labeling  & Distribute
+    name: Build IOS
     runs-on: macos-latest
     environment: hallo
     env:
@@ -32,8 +32,6 @@ jobs:
         run: flutter pub get
       - name: Generate App Assets
         run: flutter pub run flutter_launcher_icons
-#      - name: Start Android Release Build
-#        run: flutter build apk
       - name: build Ios ipa
       - run: |
           flutter build ios --no-codesign
@@ -48,18 +46,6 @@ jobs:
         with:
           name: ios-release
           path: build/ios/iphoneos/app.ipa
-#      - name: push to Release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          artifacts: "build/app/outputs/flutter-apk/*,build/ios/iphoneos/app.ipa"
-#          tag: v1.0.${{github.run_number}}
-#          token: ${{secrets.TOKEN}}
-#      - name: Firebase App Distribution
-#        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-#        with:
-#          appId: ${{secrets.FIREBASE_APP_ID}}
-#          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-#          groups: testers
-#          file: build/app/outputs/flutter-apk/app-release.apk
+
 
 
