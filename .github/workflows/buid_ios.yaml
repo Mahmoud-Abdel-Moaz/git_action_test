@@ -31,7 +31,7 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
       - name: build Ios ipa
-      - run: |
+        run: |
           flutter build ios --no-codesign
           cd build/ios/iphoneos
           mkdir Payload
@@ -44,6 +44,3 @@ jobs:
         with:
           name: ios-release
           path: build/ios/iphoneos/app.ipa
-
-
-
