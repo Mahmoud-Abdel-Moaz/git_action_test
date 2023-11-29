@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "458136513782",
+    "project_id": "hallo-ef09c",
+    "storage_bucket": "hallo-ef09c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458136513782:android:e0a2a1d2f87051c5db50d7",
+        "android_client_info": {
+          "package_name": "com.getaction.hello"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1UsnQixFbvmKH4WEPa9D9bScK9i-8iRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458136513782:android:01fac8dd9278df29db50d7",
+        "android_client_info": {
+          "package_name": "com.hallo.code_magic_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1UsnQixFbvmKH4WEPa9D9bScK9i-8iRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

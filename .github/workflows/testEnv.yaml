@@ -56,10 +56,10 @@ jobs:
       # 6 Download logo
 #      - name: Download Logo Image
 #        run: echo "$LOGO" | base64 -d > assets/images/logo.png
-      - name: Download env file
-        run: echo "$DOTENV" | base64 -d > client.env
-      - name: Download firebase google services
-        run: echo "$FIREBASE" | base64 -d > android/app/google-services.json
+#      - name: Download env file
+#        run: echo "$DOTENV" | base64 -d > client.env
+#      - name: Download firebase google services
+#        run: echo "$FIREBASE" | base64 -d > android/app/google-services.json
       - name: Get dependencies
         run: flutter pub get
       - name: Generate App Assets
