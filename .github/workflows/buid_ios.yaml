@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build & Distribute (Firebase Distribution)"
 jobs:
   build:
@@ -15,10 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: hallo
     env:
-#      APP_NAME: ${{vars.APP_NAME}}
-#      PACKAGE_NAME: ${{vars.PACKAGE_NAME}}
-#      LOGO: ${{vars.LOGO}}
-#      DOTENV: ${{vars.DOTENV}}
       FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES}}
     steps:
       - uses: actions/checkout@v1
@@ -44,38 +40,38 @@ jobs:
           flutter-version: "3.16.1"
           channel: 'stable'
           cache: true
-#      - name: Change App Name
-#        run: sed -i.bak "s/android:label=.*/android:label=\"$APP_NAME\"/g" android/app/src/main/AndroidManifest.xml
-#      - name: Change App Package Id
-#        run: |
-#          echo "android {  defaultConfig { applicationId '${PACKAGE_NAME}' }  }" > android/changePackage.gradle
-#          echo "apply from: rootProject.file('changePackage.gradle')" >> android/app/build.gradle
-      - name: Download firebase google services
-        run: echo "$FIREBASE" | base64 -d > android/app/google-services.json
       - name: Get dependencies
         run: flutter pub get
-#      - name: Generate App Assets
-#        run: flutter pub run flutter_launcher_icons
-      - name: Start Android Release Build
-        run: flutter build apk
+      - name: Generate App Assets
+        run: flutter pub run flutter_launcher_icons
+#      - name: Start Android Release Build
+#        run: flutter build apk
+      - name: build Ios ipa
+      - run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          In -s ../Runner-app
+          cd ..
+          zip -r app.ipa Payload
       - name: Upload Android Release
         uses: actions/upload-artifact@v2
         with:
-          name: android-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: ios-release
+          path: build/ios/iphoneos/app.ipa
 #      - name: push to Release
 #        uses: ncipollo/release-action@v1
 #        with:
-#          artifacts: "build/app/outputs/flutter-apk/*"
+#          artifacts: "build/app/outputs/flutter-apk/*,build/ios/iphoneos/app.ipa"
 #          tag: v1.0.${{github.run_number}}
 #          token: ${{secrets.TOKEN}}
-      - name: Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-        with:
-          appId: ${{secrets.FIREBASE_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: testers
-          file: build/app/outputs/flutter-apk/app-release.apk
-
+#      - name: Firebase App Distribution
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+#        with:
+#          appId: ${{secrets.FIREBASE_APP_ID}}
+#          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+#          groups: testers
+#          file: build/app/outputs/flutter-apk/app-release.apk
 
 
