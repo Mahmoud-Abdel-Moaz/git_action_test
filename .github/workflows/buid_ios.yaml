@@ -35,12 +35,12 @@ jobs:
       - name: build Ios ipa
       - run: |
           flutter build ios --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          In -s ../Runner-app
-          cd ..
-          zip -r app.ipa Payload
+#          cd build/ios/iphoneos
+#          mkdir Payload
+#          cd Payload
+#          In -s ../Runner-app
+#          cd ..
+#          zip -r app.ipa Payload
       - name: Upload Android Release
         uses: actions/upload-artifact@v2
         with:
