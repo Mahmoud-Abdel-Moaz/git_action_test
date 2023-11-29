@@ -3,16 +3,34 @@ on:
     branches:
       - main
       - master
-  push:
-    branches:
-      - main
-      - master
-      - develop
-name: "Build & Distribute (Firebase Distribution)"
+#  push:
+#    branches:
+#      - main
+#      - master
+#      - develop
+name: "Build & white labeling & Distribute (Firebase Distribution)"
 jobs:
+  firebase-distribution:
+    name: Firebase App Distribution
+    runs-on: ubuntu-latest
+    needs: build
+    environment: hallo
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/download-artifact@v2
+        with:
+          name: android-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-release.apk
   build:
     name: Build & white labeling  & Distribute
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     environment: hallo
     env:
       APP_NAME: ${{vars.APP_NAME}}
@@ -50,6 +68,11 @@ jobs:
         run: |
           echo "android {  defaultConfig { applicationId '${PACKAGE_NAME}' }  }" > android/changePackage.gradle
           echo "apply from: rootProject.file('changePackage.gradle')" >> android/app/build.gradle
+      # 6 Download logo
+      - name: Download Logo Image
+        run: echo "$LOGO" | base64 -d > assets/images/logo.png
+      - name: Download env file
+        run: echo "$DOTENV" | base64 -d > client.env
       - name: Download firebase google services
         run: echo "$FIREBASE" | base64 -d > android/app/google-services.json
       - name: Get dependencies
@@ -61,21 +84,23 @@ jobs:
       - name: Upload Android Release
         uses: actions/upload-artifact@v2
         with:
-          name: android-release
+          name: android-release.apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
+
 #      - name: push to Release
 #        uses: ncipollo/release-action@v1
 #        with:
 #          artifacts: "build/app/outputs/flutter-apk/*"
 #          tag: v1.0.${{github.run_number}}
 #          token: ${{secrets.TOKEN}}
-      - name: Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-        with:
-          appId: ${{secrets.FIREBASE_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: testers
-          file: build/app/outputs/flutter-apk/app-release.apk
+#      - name: Firebase App Distribution
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+#        with:
+#          appId: ${{secrets.FIREBASE_APP_ID}}
+#          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+#          groups: testers
+#          file: build/app/outputs/flutter-apk/app-release.apk
 
 
 
