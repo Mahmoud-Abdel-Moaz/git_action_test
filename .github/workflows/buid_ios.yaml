@@ -30,16 +30,15 @@ jobs:
           cache: true
       - name: Get dependencies
         run: flutter pub get
-      - name: Generate App Assets
-        run: flutter pub run flutter_launcher_icons
       - name: build Ios ipa
-      - run: flutter build ios --no-codesign
-#          cd build/ios/iphoneos
-#          mkdir Payload
-#          cd Payload
-#          In -s ../Runner-app
-#          cd ..
-#          zip -r app.ipa Payload
+      - run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          In -s ../Runner-app
+          cd ..
+          zip -r app.ipa Payload
       - name: Upload Android Release
         uses: actions/upload-artifact@v2
         with:
