@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 //import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
 
 import 'User_data.dart';
 import 'colors.dart';
@@ -197,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<void> getData() async {
+/*  Future<void> getData() async {
     try {
       String url = dotenv.env['BASE_URL']!;
       var response = await http.get(Uri.parse(url));
@@ -211,5 +208,5 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       rethrow;
     }
-  }
+  }*/
 }
