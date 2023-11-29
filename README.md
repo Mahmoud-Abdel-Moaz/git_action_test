@@ -49,3 +49,8 @@ with:
   name: android-release
   path: build/app/outputs/flutter-apk/app-release.apk
 
+
+* for Firebase Distribution use 
+- https://github.com/marketplace/actions/firebase-app-distribution
+- https://steveos.medium.com/github-action-and-firebase-app-distribution-ci-cd-ways-part-2-fcf9ba425c0
+
