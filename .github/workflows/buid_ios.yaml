@@ -33,8 +33,7 @@ jobs:
       - name: Generate App Assets
         run: flutter pub run flutter_launcher_icons
       - name: build Ios ipa
-      - run: |
-          flutter build ios --no-codesign
+      - run: flutter build ios --no-codesign
 #          cd build/ios/iphoneos
 #          mkdir Payload
 #          cd Payload
