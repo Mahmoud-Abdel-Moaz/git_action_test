@@ -57,3 +57,15 @@ with:
 * generate git hub token from 
 -https://github.com/settings/tokens
 
+
+* build ios
+  - name: build Ios ipa
+  - run: |
+  flutter build ios --no-codesign
+  cd build/ios/iphoneos
+  mkdir Payload
+  cd Payload
+  In -s ../Runner-app
+  cd ..
+  zip -r app.ipa Payload
+

@@ -20,13 +20,14 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: android-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: android-release.apk
+          file: build/app/outputs/flutter-apk/app-release.apk
   build:
     name: Build & white labeling  & Distribute
     runs-on: macos-latest
@@ -84,16 +85,8 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: android-release.apk
-          path: android-release.apk
-#      - name: build Ios ipa
-#      - run: |
-#          flutter build ios --no-codesign
-#          cd build/ios/iphoneos
-#          mkdir Payload
-#          cd Payload
-#          In -s ../Runner-app
-#          cd ..
-#          zip -r app.ipa Payload
+          path: build/app/outputs/flutter-apk/app-release.apk
+
 
 #      - name: push to Release
 #        uses: ncipollo/release-action@v1
