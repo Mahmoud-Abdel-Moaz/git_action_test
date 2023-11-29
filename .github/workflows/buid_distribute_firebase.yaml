@@ -64,9 +64,11 @@ jobs:
           tag: v1.0.${{github.run_number}}
           token: ${{secrets.TOKEN}}
       - name: Firebase App Distribution
-        uses: hasretsariyer/firebase-app-distribution-github-action@v1
+        uses: hasretsariyer/firebase-app-distribution-github-action@v1.0.0
         with:
           app_id: ${{secrets.FIREBASE_APP_ID}}
           firebase_token: ${{secrets.FIREBASE_CI_TOKEN}}
           tester_groups: testers
           app_file: build/app/outputs/flutter-apk/app-release.apk
+
+
