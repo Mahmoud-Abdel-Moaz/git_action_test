@@ -84,7 +84,17 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: android-release.apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: android-release.apk
+#      - name: build Ios ipa
+#      - run: |
+#          flutter build ios --no-codesign
+#          cd build/ios/iphoneos
+#          mkdir Payload
+#          cd Payload
+#          In -s ../Runner-app
+#          cd ..
+#          zip -r app.ipa Payload
+
 #      - name: push to Release
 #        uses: ncipollo/release-action@v1
 #        with:
