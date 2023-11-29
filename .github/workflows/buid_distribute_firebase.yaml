@@ -57,12 +57,12 @@ jobs:
         with:
           name: android-release
           path: build/app/outputs/flutter-apk/app-release.apk
-      - name: push to Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/flutter-apk/*"
-          tag: v1.0.${{github.run_number}}
-          token: ${{secrets.TOKEN}}
+#      - name: push to Release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          artifacts: "build/app/outputs/flutter-apk/*"
+#          tag: v1.0.${{github.run_number}}
+#          token: ${{secrets.TOKEN}}
       - name: Firebase App Distribution
         uses: hasretsariyer/firebase-app-distribution-github-action@v1.0.0
         with:
