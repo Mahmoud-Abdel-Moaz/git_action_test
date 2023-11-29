@@ -13,6 +13,7 @@ jobs:
   build:
     name: Build & Release
     runs-on: ubuntu-latest
+    #runs-on: macos-latest
     environment: hallo
     env:
       APP_NAME: ${{vars.APP_NAME}}
@@ -53,8 +54,8 @@ jobs:
           echo "android {  defaultConfig { applicationId '${PACKAGE_NAME}' }  }" > android/changePackage.gradle
           echo "apply from: rootProject.file('changePackage.gradle')" >> android/app/build.gradle
       # 6 Download logo
-      - name: Download Logo Image
-        run: echo "$LOGO" | base64 -d > assets/images/logo.png
+#      - name: Download Logo Image
+#        run: echo "$LOGO" | base64 -d > assets/images/logo.png
       - name: Download env file
         run: echo "$DOTENV" | base64 -d > client.env
       - name: Download firebase google services
@@ -77,7 +78,8 @@ jobs:
           tag: v1.0.${{github.run_number}}
           token: ${{secrets.TOKEN}}
       - name: Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+       # uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+        uses: hasretsariyer/firebase-app-distribution-github-action@v1.0.0
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
