@@ -12,24 +12,12 @@ name: "Build & Distribute (Firebase Distribution)"
 jobs:
   build:
     name: Build & white labeling  & Distribute
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     environment: hallo
     env:
       FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES}}
     steps:
       - uses: actions/checkout@v1
-      - name: Download Android keystore
-        id: android_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: hello-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD }}" >> android/key.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
       - uses: actions/setup-java@v1
         with:
           distribution: 'zulu'
