@@ -14,7 +14,7 @@ late MainColors colorsTheme;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: 'client.env');
-   await Firebase.initializeApp();
+  await Firebase.initializeApp();
   _setColorTheme();
   runApp(const MyApp());
 }
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    getData();
+    // getData();
     super.initState();
   }
 
