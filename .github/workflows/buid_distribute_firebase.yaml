@@ -68,5 +68,5 @@ jobs:
         with:
           app_id: ${{secrets.FIREBASE_APP_ID}}
           firebase_token: ${{secrets.FIREBASE_CI_TOKEN}}
-          groups: testers
-          file: build/app/outputs/flutter-apk/app-release.apk
+          tester_groups: testers
+          app_file: build/app/outputs/flutter-apk/app-release.apk
