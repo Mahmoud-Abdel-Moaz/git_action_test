@@ -54,3 +54,6 @@ with:
 - https://github.com/marketplace/actions/firebase-app-distribution
 - https://steveos.medium.com/github-action-and-firebase-app-distribution-ci-cd-ways-part-2-fcf9ba425c0
 
+* generate git hub token from 
+-https://github.com/settings/tokens
+
