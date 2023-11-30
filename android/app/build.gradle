@@ -58,7 +58,55 @@ android {
         versionName flutterVersionName
     }
 
+
+
+
+
     signingConfigs {
+        releaseProject1 {
+            storePassword keystoreProperties['storePassword1']
+            keyPassword keystoreProperties['keyPassword1']
+            keyAlias keystoreProperties['keyAlias1']
+            storeFile file(keystoreProperties['storeFile1'])
+        }
+        releaseProject2 {
+            storePassword keystoreProperties['storePassword2']
+            keyPassword keystoreProperties['keyPassword2']
+            keyAlias keystoreProperties['keyAlias2']
+            storeFile file(keystoreProperties['storeFile2'])
+        }
+    }
+
+    flavorDimensions "app"
+    productFlavors {
+        blink1 {
+            dimension "app"
+            applicationId "com.getaction.hello"
+            versionCode 315
+            versionName "2.1.35"
+            signingConfig signingConfigs.releaseProject1
+        }
+        blink2 {
+            dimension "app"
+            applicationId "com.hallo.code_magic_test"
+            versionCode 103
+            versionName "1.0.21"
+            signingConfig signingConfigs.releaseProject2
+        }
+    }
+
+    buildTypes {
+        releaseProject1 {
+            shrinkResources false
+            minifyEnabled false
+        }
+        releaseProject2 {
+            shrinkResources false
+            minifyEnabled false
+        }
+    }
+
+   /* signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
@@ -70,7 +118,7 @@ android {
         release {
             signingConfig signingConfigs.release
         }
-    }
+    }*/
 
     /*buildTypes {
         release {
@@ -89,3 +137,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-analytics")
 }
+
+
+//   flutter build apk --flavor blink2 -t lib/main.dart
+//   build/app/outputs/flutter-apk/app-blink2-release.apk

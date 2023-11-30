@@ -53,6 +53,11 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 
+#  git_action_data:
+#    git:
+#      url: git@github.com:Mahmoud-Abdel-Moaz/git_action_data.git
+
+
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true

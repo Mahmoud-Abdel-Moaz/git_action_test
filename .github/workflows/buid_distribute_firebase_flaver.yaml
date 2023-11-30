@@ -1,0 +1,100 @@
+on:
+#  pull_request:
+#    branches:
+#      - main
+#      - master
+  push:
+    branches:
+      - main
+      - master
+      - develop
+name: "Build & Distribute (Firebase Distribution)"
+jobs:
+  build:
+    name: Build & white labeling  & Distribute
+    runs-on: ubuntu-latest
+    environment: hallo
+    env:
+#      APP_NAME: ${{vars.APP_NAME}}
+#      PACKAGE_NAME: ${{vars.PACKAGE_NAME}}
+#      LOGO: ${{vars.LOGO}}
+#      DOTENV: ${{vars.DOTENV}}
+      FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES}}
+      FIREBASE2: ${{secrets.FIREBASE_GOOGLE_SERVICES2}}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Download Android keystore
+        id: android_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: hello-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Create key.properties
+        run: |
+          echo "storeFile1=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+          echo "storePassword1=${{ secrets.STORE_PASSWORD }}" >> android/key.properties
+          echo "keyPassword1=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias1=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile2=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+          echo "storePassword2=${{ secrets.STORE_PASSWORD }}" >> android/key.properties
+          echo "keyPassword2=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias2=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+      - uses: actions/setup-java@v1
+        with:
+          distribution: 'zulu'
+          java-version: "12.x"
+          cache: gradle
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.16.1"
+          channel: 'stable'
+          cache: true
+#      - name: Change App Name
+#        run: sed -i.bak "s/android:label=.*/android:label=\"$APP_NAME\"/g" android/app/src/main/AndroidManifest.xml
+#      - name: Change App Package Id
+#        run: |
+#          echo "android {  defaultConfig { applicationId '${PACKAGE_NAME}' }  }" > android/changePackage.gradle
+#          echo "apply from: rootProject.file('changePackage.gradle')" >> android/app/build.gradle
+      - name: Download firebase google services for app1
+        run: echo "$FIREBASE" | base64 -d > android/app/src/blink1/google-services.json
+      - name: Download firebase google services for app2
+        run: echo "$FIREBAS2" | base64 -d > android/app/src/blink2/google-services.json
+      - name: Get dependencies
+        run: flutter pub get
+        # Build Apk blink1
+      - name: Start Android Release Build Blink1
+        run: flutter build apk --flavor blink1 -t lib/main.dart
+        # Build Apk blink2
+      - name: Start Android Release Build Blink2
+        run: flutter build apk --flavor blink2 -t lib/main.dart
+        # Upload Android Blink1
+      - name: Upload Android Blink1 Release
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-blink1-release
+          path: build/app/outputs/flutter-apk/app-blink1-release.apk
+        # Upload Android Blink2
+      - name: Upload Android Blink2 Release
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-blink2-release
+          path: build/app/outputs/flutter-apk/app-blink2-release.apk
+          # Distribution blink 1
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-blink1-release.apk
+          # Distribution blink 2
+      - name: Firebase App Distribution 2
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+        with:
+          appId: ${{secrets.FIREBASE_APP2_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-blink2-release.apk
+
+
+
