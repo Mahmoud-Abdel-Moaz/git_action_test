@@ -31,7 +31,7 @@ jobs:
           encodedString: ${{ secrets.KEYSTORE_BLINK1_BASE64 }}
       - uses: actions/checkout@v1
         with:
-          token: ${{ secrets.TOKEN }}
+          token: ${{ secrets.PRIVATE_TOKEN }}
       - name: Download blink2 Android keystore
         id: android_blink2_keystore
         uses: timheuer/base64-to-file@v1.0.3
