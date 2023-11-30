@@ -23,10 +23,16 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def keystoreProperties1 = new Properties()
+def keystoreProperties2 = new Properties()
+def keystorePropertiesFileBlink1 = rootProject.file('key1.properties')
+if (keystorePropertiesFileBlink1.exists()) {
+    keystoreProperties1.load(new FileInputStream(keystorePropertiesFileBlink1))
+}
+
+def keystorePropertiesFileBlink2 = rootProject.file('key2.properties')
+if (keystorePropertiesFileBlink2.exists()) {
+    keystoreProperties2.load(new FileInputStream(keystorePropertiesFileBlink2))
 }
 
 android {
@@ -64,16 +70,16 @@ android {
 
     signingConfigs {
         releaseProject1 {
-            storePassword keystoreProperties['storePassword1']
-            keyPassword keystoreProperties['keyPassword1']
-            keyAlias keystoreProperties['keyAlias1']
-            storeFile file(keystoreProperties['firstAppStoreFile'])
+            storePassword keystoreProperties1['storePassword']
+            keyPassword keystoreProperties1['keyPassword']
+            keyAlias keystoreProperties1['keyAlias']
+            storeFile file(keystoreProperties1['storeFile'])
         }
         releaseProject2 {
-            storePassword keystoreProperties['storePassword2']
-            keyPassword keystoreProperties['keyPassword2']
-            keyAlias keystoreProperties['keyAlias2']
-            storeFile file(keystoreProperties['secondAppStoreFile'])
+            storePassword keystoreProperties2['storePassword']
+            keyPassword keystoreProperties2['keyPassword']
+            keyAlias keystoreProperties2['keyAlias']
+            storeFile file(keystoreProperties2['storeFile'])
         }
     }
 
