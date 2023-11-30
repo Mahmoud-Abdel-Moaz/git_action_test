@@ -23,19 +23,26 @@ jobs:
       FIREBASE2: ${{secrets.FIREBASE_GOOGLE_SERVICES2}}
     steps:
       - uses: actions/checkout@v1
-      - name: Download Android keystore
-        id: android_keystore
+      - name: Download blink1 Android keystore
+        id: android_blink1_keystore
         uses: timheuer/base64-to-file@v1.0.3
         with:
           fileName: hello-keystore.jks
           encodedString: ${{ secrets.KEYSTORE_BASE64 }}
-          #  echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+      - uses: actions/checkout@v1
+      - name: Download blink2 Android keystore
+        id: android_blink2_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: hello2-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
       - name: Create key.properties
         run: |
-          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+          echo "storeFile1=${{ steps.android_blink1_keystore.outputs.filePath }}" > android/key.properties
           echo "storePassword1=${{ secrets.STORE_PASSWORD }}" >> android/key.properties
           echo "keyPassword1=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias1=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile2=${{ steps.android_blink2_keystore.outputs.filePath }}" > android/key.properties
           echo "storePassword2=${{ secrets.STORE_PASSWORD }}" >> android/key.properties
           echo "keyPassword2=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias2=${{ secrets.KEY_ALIAS }}" >> android/key.properties
@@ -58,7 +65,7 @@ jobs:
       - name: Download firebase google services for app1
         run: echo "$FIREBASE" | base64 -d > android/app/src/blink1/google-services.json
       - name: Download firebase google services for app2
-        run: echo "$FIREBAS2" | base64 -d > android/app/src/blink2/google-services.json
+        run: echo ${{secrets.FIREBASE_GOOGLE_SERVICES2}} | base64 -d > android/app/src/blink2/google-services.json
       - name: Get dependencies
         run: flutter pub get
         # Build Apk blink1
