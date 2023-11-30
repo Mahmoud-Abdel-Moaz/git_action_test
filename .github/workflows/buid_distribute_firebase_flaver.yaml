@@ -65,7 +65,7 @@ jobs:
       - name: Download firebase google services for app1
         run: echo "$FIREBASE" | base64 -d > android/app/src/blink1/google-services.json
       - name: Download firebase google services for app2
-        run: echo ${{secrets.FIREBASE_GOOGLE_SERVICES2}} | base64 -d > android/app/src/blink2/google-services.json
+        run: echo "${{secrets.FIREBASE_GOOGLE_SERVICES2}}" | base64 -d > android/app/src/blink2/google-services.json
       - name: Get dependencies
         run: flutter pub get
         # Build Apk blink1
