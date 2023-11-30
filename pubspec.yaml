@@ -53,9 +53,12 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 
-  test_package:
+#  test_package:
+#    git:
+#      url: https://github.com/Mahmoud-Abdel-Moez-Nxt/test_package.git
+  git_action_data:
     git:
-      url: https://github.com/Mahmoud-Abdel-Moez-Nxt/test_package.git
+      url: git@github.com:Mahmoud-Abdel-Moaz/git_action_data.git
 
 
 flutter_launcher_icons:
