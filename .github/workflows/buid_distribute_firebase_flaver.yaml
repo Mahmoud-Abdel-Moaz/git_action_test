@@ -36,13 +36,13 @@ jobs:
         with:
           fileName: hello2-keystore.jks
           encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+          #          echo "storeFile2=${{ steps.android_blink2_keystore.outputs.filePath }}" > android/key.properties
       - name: Create key.properties
         run: |
           echo "storeFile=${{ steps.android_blink1_keystore.outputs.filePath }}" > android/key.properties
           echo "storePassword1=${{ secrets.STORE_PASSWORD }}" >> android/key.properties
           echo "keyPassword1=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias1=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile2=${{ steps.android_blink2_keystore.outputs.filePath }}" > android/key.properties
           echo "storePassword2=${{ secrets.STORE_PASSWORD }}" >> android/key.properties
           echo "keyPassword2=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias2=${{ secrets.KEY_ALIAS }}" >> android/key.properties
