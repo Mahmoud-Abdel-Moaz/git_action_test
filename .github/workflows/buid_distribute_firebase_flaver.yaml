@@ -8,10 +8,10 @@ on:
       - main
       - master
       - develop
-name: "Build & Distribute (Firebase Distribution)"
+name: "Build & Distribute & Flavor (Firebase Distribution)"
 jobs:
   build:
-    name: Build & white labeling  & Distribute
+    name: Build & Flavor  & Distribute
     runs-on: ubuntu-latest
     environment: hallo
     env:
