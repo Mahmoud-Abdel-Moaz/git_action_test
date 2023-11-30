@@ -30,6 +30,8 @@ jobs:
           fileName: hello-keystore.jks
           encodedString: ${{ secrets.KEYSTORE_BLINK1_BASE64 }}
       - uses: actions/checkout@v1
+        with:
+          token: ${{ secrets.PRIVATE_PACKAGE_GITHUB_TOKEN }}
       - name: Download blink2 Android keystore
         id: android_blink2_keystore
         uses: timheuer/base64-to-file@v1.0.3
