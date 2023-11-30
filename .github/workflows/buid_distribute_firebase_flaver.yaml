@@ -1,8 +1,8 @@
 on:
-#  pull_request:
-#    branches:
-#      - main
-#      - master
+  pull_request:
+    branches:
+      - main
+      - master
   push:
     branches:
       - main
@@ -11,7 +11,7 @@ on:
 name: "Build & Distribute & Flavor (Firebase Distribution)"
 jobs:
   build:
-    name: Build & Flavor  & Distribute
+    name: Build & Flavor   & Distribute
     runs-on: ubuntu-latest
     environment: hallo
     env:
