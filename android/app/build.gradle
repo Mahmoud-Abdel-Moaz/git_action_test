@@ -25,9 +25,14 @@ if (flutterVersionName == null) {
 
 def keystoreProperties1 = new Properties()
 def keystoreProperties2 = new Properties()
+def keystoreProperties = new Properties()
 def keystorePropertiesFileBlink1 = rootProject.file('key1.properties')
 if (keystorePropertiesFileBlink1.exists()) {
     keystoreProperties1.load(new FileInputStream(keystorePropertiesFileBlink1))
+}
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 def keystorePropertiesFileBlink2 = rootProject.file('key2.properties')
@@ -82,6 +87,21 @@ android {
             storeFile file(keystoreProperties2['storeFile'])
         }
     }
+
+    /*signingConfigs {
+        releaseProject1 {
+            storePassword keystoreProperties['storePassword1']
+            keyPassword keystoreProperties['keyPassword1']
+            keyAlias keystoreProperties['keyAlias1']
+            storeFile file(keystoreProperties['storeFile1'])
+        }
+        releaseProject2 {
+            storePassword keystoreProperties['storePassword2']
+            keyPassword keystoreProperties['keyPassword2']
+            keyAlias keystoreProperties['keyAlias2']
+            storeFile file(keystoreProperties['storeFile2'])
+        }
+    }*/
 
     flavorDimensions "app"
     productFlavors {
@@ -146,4 +166,5 @@ dependencies {
 
 
 //   flutter build apk --flavor blink2 -t lib/main.dart
+//flutter run --flavor blink1
 //   build/app/outputs/flutter-apk/app-blink2-release.apk
