@@ -69,8 +69,8 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
         # Build Apk blink1
-      - name: Start Android Release Build Blink1
-        run: flutter build apk --flavor blink1 -t lib/main.dart
+#      - name: Start Android Release Build Blink1
+#        run: flutter build apk --flavor blink1 -t lib/main.dart
         # Build Apk blink2
       - name: Start Android Release Build Blink2
         run: flutter build apk --flavor blink2 -t lib/main.dart
