@@ -38,7 +38,6 @@ jobs:
         with:
           fileName: hello2-keystore.jks
           encodedString: ${{ secrets.KEYSTORE_BLINK2_BASE64 }}
-          #          echo "storeFile2=${{ steps.android_blink2_keystore.outputs.filePath }}" > android/key.properties
       - name: Create key.properties
         run: |
           echo "storeFile=${{ steps.android_blink1_keystore.outputs.filePath }}" > android/key1.properties

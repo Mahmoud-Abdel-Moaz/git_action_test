@@ -55,7 +55,7 @@ dev_dependencies:
 
 #  test_package:
 #    git:
-#      url: https://github.com/Mahmoud-Abdel-Moez-Nxt/test_package.git
+#      url: git@github.com:Mahmoud-Abdel-Moez-Nxt/test_package.git
   git_action_data:
     git:
       url: git@github.com:Mahmoud-Abdel-Moaz/git_action_data.git
