@@ -26,6 +26,7 @@ if (flutterVersionName == null) {
 def keystoreProperties1 = new Properties()
 def keystoreProperties2 = new Properties()
 def keystoreProperties = new Properties()
+
 def keystorePropertiesFileBlink1 = rootProject.file('key1.properties')
 if (keystorePropertiesFileBlink1.exists()) {
     keystoreProperties1.load(new FileInputStream(keystorePropertiesFileBlink1))

@@ -33,9 +33,9 @@ jobs:
         with:
           fileName: hello-keystore.jks
           encodedString: ${{ secrets.KEYSTORE_BLINK1_BASE64 }}
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PRIVATE_TOKEN }}
+#      - uses: actions/checkout@v4
+#        with:
+#          token: ${{ secrets.PRIVATE_TOKEN }}
       - name: Download blink2 Android keystore
         id: android_blink2_keystore
         uses: timheuer/base64-to-file@v1.0.3
