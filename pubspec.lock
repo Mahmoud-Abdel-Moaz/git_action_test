@@ -333,13 +333,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.0"
-  test_package:
+  test_my_package_private:
     dependency: "direct dev"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3b3072319b9bfc8e683214283f0f3562f4d36a6b"
-      url: "https://github.com/Mahmoud-Abdel-Moez-Nxt/test_package.git"
+      resolved-ref: "2461273887708d15a06fc78c6aa1a7dfc1693fa7"
+      url: "git@github.com:Mahmoud-Abdel-Moaz/test_my_package_private.git"
     source: git
     version: "1.0.0+1"
   typed_data:
