@@ -24,9 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         # Make sure the @v0.8.0 matches the current version of the action
-      - uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#      - uses: webfactory/ssh-agent@v0.8.0
+#        with:
+#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Download blink1 Android keystore
         id: android_blink1_keystore
         uses: timheuer/base64-to-file@v1.0.3
@@ -62,12 +62,6 @@ jobs:
           flutter-version: "3.16.1"
           channel: 'stable'
           cache: true
-#      - name: Change App Name
-#        run: sed -i.bak "s/android:label=.*/android:label=\"$APP_NAME\"/g" android/app/src/main/AndroidManifest.xml
-#      - name: Change App Package Id
-#        run: |
-#          echo "android {  defaultConfig { applicationId '${PACKAGE_NAME}' }  }" > android/changePackage.gradle
-#          echo "apply from: rootProject.file('changePackage.gradle')" >> android/app/build.gradle
       - name: Download firebase google services for app1
         run: echo "$FIREBASE" | base64 -d > android/app/src/blink1/google-services.json
       - name: Download firebase google services for app2
