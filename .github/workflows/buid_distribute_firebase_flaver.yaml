@@ -24,18 +24,18 @@ jobs:
     steps:
       - uses: actions/checkout@v1
         # Make sure the @v0.8.0 matches the current version of the action
-#      - uses: webfactory/ssh-agent@v0.8.0
-#        with:
-#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Download blink1 Android keystore
         id: android_blink1_keystore
         uses: timheuer/base64-to-file@v1.0.3
         with:
           fileName: hello-keystore.jks
           encodedString: ${{ secrets.KEYSTORE_BLINK1_BASE64 }}
-#      - uses: actions/checkout@v4
-#        with:
-#          token: ${{ secrets.PRIVATE_TOKEN }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PRIVATE_TOKEN }}
       - name: Download blink2 Android keystore
         id: android_blink2_keystore
         uses: timheuer/base64-to-file@v1.0.3
@@ -68,12 +68,12 @@ jobs:
         run: echo "${{secrets.FIREBASE_GOOGLE_SERVICES2}}" | base64 -d > android/app/src/blink2/google-services.json
       - name: Get dependencies
         run: flutter pub get
-        # Build Apk blink1
-#      - name: Start Android Release Build Blink1
-#        run: flutter build apk --flavor blink1 -t lib/main.dart
         # Build Apk blink2
       - name: Start Android Release Build Blink2
         run: flutter build apk --flavor blink2 -t lib/main.dart
+        # Build Apk blink1
+      - name: Start Android Release Build Blink1
+        run: flutter build apk --flavor blink1 -t lib/main.dart
         # Upload Android Blink1
       - name: Upload Android Blink1 Release
         uses: actions/upload-artifact@v2
