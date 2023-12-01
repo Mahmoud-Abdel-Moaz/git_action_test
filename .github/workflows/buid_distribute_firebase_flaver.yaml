@@ -22,7 +22,7 @@ jobs:
       FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES}}
       FIREBASE2: ${{secrets.FIREBASE_GOOGLE_SERVICES2}}
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
         # Make sure the @v0.8.0 matches the current version of the action
       - uses: webfactory/ssh-agent@v0.8.0
         with:
