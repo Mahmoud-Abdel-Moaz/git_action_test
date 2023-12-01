@@ -23,15 +23,19 @@ jobs:
       FIREBASE2: ${{secrets.FIREBASE_GOOGLE_SERVICES2}}
     steps:
       - uses: actions/checkout@v1
+        # Make sure the @v0.8.0 matches the current version of the action
+      - uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Download blink1 Android keystore
         id: android_blink1_keystore
         uses: timheuer/base64-to-file@v1.0.3
         with:
           fileName: hello-keystore.jks
           encodedString: ${{ secrets.KEYSTORE_BLINK1_BASE64 }}
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PRIVATE_TOKEN }}
+#      - uses: actions/checkout@v4
+#        with:
+#          token: ${{ secrets.PRIVATE_TOKEN }}
       - name: Download blink2 Android keystore
         id: android_blink2_keystore
         uses: timheuer/base64-to-file@v1.0.3
