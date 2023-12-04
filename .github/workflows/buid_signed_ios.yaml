@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-  push:
-    branches:
-      - main
-      - master
-      - develop
+#  push:
+#    branches:
+#      - main
+#      - master
+#      - develop
 name: "Build IOS"
 jobs:
   build:
@@ -99,4 +99,4 @@ jobs:
           appId: ${{secrets.FIREBASE_IOS_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: ios-developers
-          file: {your_app_name}.ipa
+          file: your_app_name.ipa
