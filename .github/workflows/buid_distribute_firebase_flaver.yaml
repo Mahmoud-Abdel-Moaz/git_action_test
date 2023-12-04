@@ -19,36 +19,55 @@ jobs:
 #      PACKAGE_NAME: ${{vars.PACKAGE_NAME}}
 #      LOGO: ${{vars.LOGO}}
 #      DOTENV: ${{vars.DOTENV}}
-      FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES}}
-      FIREBASE2: ${{secrets.FIREBASE_GOOGLE_SERVICES2}}
+      BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
+      UNITY_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_UNITY}}
+      SPORTICO_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_SPORTICO}}
     steps:
       - uses: actions/checkout@v1
         # Make sure the @v0.8.0 matches the current version of the action
       - uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Download blink1 Android keystore
-        id: android_blink1_keystore
+
+      - name: Download blink Android keystore
+        id: android_blink_keystore
         uses: timheuer/base64-to-file@v1.0.3
         with:
-          fileName: hello-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BLINK1_BASE64 }}
-      - name: Download blink2 Android keystore
-        id: android_blink2_keystore
+          fileName: blink-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+
+      - name: Download unity Android keystore
+        id: android_unity_keystore
         uses: timheuer/base64-to-file@v1.0.3
         with:
-          fileName: hello2-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BLINK2_BASE64 }}
+          fileName: unity-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+
+      - name: Download sportico Android keystore
+        id: android_sportico_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: sportico-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+
+
       - name: Create key.properties
         run: |
-          echo "storeFile=${{ steps.android_blink1_keystore.outputs.filePath }}" > android/key1.properties
-          echo "storePassword=${{ secrets.STORE_BLINK1_PASSWORD }}" >> android/key1.properties
-          echo "keyPassword=${{ secrets.KEY_BLINK1_PASSWORD }}" >> android/key1.properties
-          echo "keyAlias=${{ secrets.KEY_BLINK1_ALIAS }}" >> android/key1.properties
-          echo "storeFile=${{ steps.android_blink2_keystore.outputs.filePath }}" > android/key2.properties
-          echo "storePassword=${{ secrets.STORE_BLINK2_PASSWORD }}" >> android/key2.properties
-          echo "keyPassword=${{ secrets.KEY_BLINK2_PASSWORD }}" >> android/key2.properties
-          echo "keyAlias=${{ secrets.KEY_BLINK2_ALIAS }}" >> android/key2.properties
+          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
+          
+          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
+          
+          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
+
       - uses: actions/setup-java@v1
         with:
           distribution: 'zulu'
@@ -59,46 +78,72 @@ jobs:
           flutter-version: "3.16.1"
           channel: 'stable'
           cache: true
-      - name: Download firebase google services for app1
-        run: echo "$FIREBASE" | base64 -d > android/app/src/blink1/google-services.json
-      - name: Download firebase google services for app2
-        run: echo "${{secrets.FIREBASE_GOOGLE_SERVICES2}}" | base64 -d > android/app/src/blink2/google-services.json
+
+      - name: Download firebase google services for blink
+        run: echo "$BLINK_FIREBASE" | base64 -d > android/app/src/blink/google-services.json
+      - name: Download firebase google services for unity
+        run: echo "$UNITY_FIREBASE" | base64 -d > android/app/src/unity/google-services.json
+      - name: Download firebase google services for sportico
+        run: echo "$SPORTICO_FIREBASE" | base64 -d > android/app/src/sportico/google-services.json
+
+
       - name: Get dependencies
         run: flutter pub get
-      # Build Apk blink1
-      - name: Start Android Release Build Blink1
-        run: flutter build apk --flavor blink1 -t lib/main.dart
-        # Build Apk blink2
-      - name: Start Android Release Build Blink2
-        run: flutter build apk --flavor blink2 -t lib/main.dart
-        # Upload Android Blink1
-      - name: Upload Android Blink1 Release
+      # Build Apk blink
+      - name: Start Android Release Build Blink
+        run: flutter build apk --flavor blink -t lib/main.dart
+        # Build Apk unity
+      - name: Start Android Release Build Unity
+        run: flutter build apk --flavor unity -t lib/main.dart
+        # Build Apk sportico
+      - name: Start Android Release Build Sportico
+        run: flutter build apk --flavor sportico -t lib/main.dart
+
+        # Upload Android Blink
+      - name: Upload Android Blink Release
         uses: actions/upload-artifact@v2
         with:
-          name: android-blink1-release
-          path: build/app/outputs/flutter-apk/app-blink1-release.apk
-        # Upload Android Blink2
-      - name: Upload Android Blink2 Release
+          name: android-blink-release
+          path: build/app/outputs/flutter-apk/app-blink-release.apk
+        # Upload Android Unity
+      - name: Upload Android Unity Release
         uses: actions/upload-artifact@v2
         with:
-          name: android-blink2-release
-          path: build/app/outputs/flutter-apk/app-blink2-release.apk
-          # Distribution blink 1
-      - name: Firebase App Distribution
+          name: android-unity-release
+          path: build/app/outputs/flutter-apk/app-unity-release.apk
+        # Upload Android Sportico
+      - name: Upload Android Sportico Release
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-sportico-release
+          path: build/app/outputs/flutter-apk/app-sportico-release.apk
+
+          # Distribution Blink
+      - name: Firebase Blink Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
-          appId: ${{secrets.FIREBASE_APP_ID}}
+          appId: ${{secrets.FIREBASE_BLINK_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: build/app/outputs/flutter-apk/app-blink1-release.apk
-          # Distribution blink 2
-      - name: Firebase App Distribution 2
+          file: build/app/outputs/flutter-apk/app-blink-release.apk
+
+          # Distribution Unity
+      - name: Firebase Unity Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
-          appId: ${{secrets.FIREBASE_APP2_ID}}
+          appId: ${{secrets.FIREBASE_UNITY_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: build/app/outputs/flutter-apk/app-blink2-release.apk
+          file: build/app/outputs/flutter-apk/app-unity-release.apk
+
+          # Distribution Sportico
+      - name: Firebase Sportico Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+        with:
+          appId: ${{secrets.FIREBASE_SPORTICO_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-sportico-release.apk
 
 
 

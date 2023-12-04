@@ -25,21 +25,22 @@ if (flutterVersionName == null) {
 
 def keystoreProperties1 = new Properties()
 def keystoreProperties2 = new Properties()
-def keystoreProperties = new Properties()
+def keystoreProperties3 = new Properties()
 
 def keystorePropertiesFileBlink1 = rootProject.file('key1.properties')
 if (keystorePropertiesFileBlink1.exists()) {
     keystoreProperties1.load(new FileInputStream(keystorePropertiesFileBlink1))
 }
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-}
-
 def keystorePropertiesFileBlink2 = rootProject.file('key2.properties')
 if (keystorePropertiesFileBlink2.exists()) {
     keystoreProperties2.load(new FileInputStream(keystorePropertiesFileBlink2))
 }
+
+def keystorePropertiesFile3 = rootProject.file('key3.properties')
+if (keystorePropertiesFile3.exists()) {
+    keystoreProperties3.load(new FileInputStream(keystorePropertiesFile3))
+}
+
 
 android {
     namespace "com.getaction.hello"
@@ -87,6 +88,12 @@ android {
             keyAlias keystoreProperties2['keyAlias']
             storeFile file(keystoreProperties2['storeFile'])
         }
+        releaseProject3 {
+            storePassword keystoreProperties3['storePassword']
+            keyPassword keystoreProperties3['keyPassword']
+            keyAlias keystoreProperties3['keyAlias']
+            storeFile file(keystoreProperties3['storeFile'])
+        }
     }
 
     /*signingConfigs {
@@ -106,19 +113,26 @@ android {
 
     flavorDimensions "app"
     productFlavors {
-        blink1 {
+        blink {
             dimension "app"
             applicationId "com.getaction.hello"
             versionCode 315
             versionName "2.1.35"
             signingConfig signingConfigs.releaseProject1
         }
-        blink2 {
+        unity {
             dimension "app"
             applicationId "com.hallo.code_magic_test"
             versionCode 103
             versionName "1.0.21"
             signingConfig signingConfigs.releaseProject2
+        }
+        sportico {
+            dimension "app"
+            applicationId "com.getaction.sportico"
+            versionCode 103
+            versionName "1.0.21"
+            signingConfig signingConfigs.releaseProject3
         }
     }
 
@@ -128,6 +142,10 @@ android {
             minifyEnabled false
         }
         releaseProject2 {
+            shrinkResources false
+            minifyEnabled false
+        }
+        releaseProject3 {
             shrinkResources false
             minifyEnabled false
         }
