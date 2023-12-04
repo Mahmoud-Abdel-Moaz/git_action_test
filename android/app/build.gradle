@@ -106,7 +106,7 @@ android {
 
     flavorDimensions "app"
     productFlavors {
-        blink3 {
+        blink1 {
             dimension "app"
             applicationId "com.getaction.hello"
             versionCode 315
