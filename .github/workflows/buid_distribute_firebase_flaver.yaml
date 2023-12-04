@@ -41,14 +41,14 @@ jobs:
           encodedString: ${{ secrets.KEYSTORE_BLINK2_BASE64 }}
       - name: Create key.properties
         run: |
-          echo "storeFile=${{ steps.android_blink2_keystore.outputs.filePath }}" > android/key2.properties
-          echo "storePassword=${{ secrets.STORE_BLINK2_PASSWORD }}" >> android/key2.properties
-          echo "keyPassword=${{ secrets.KEY_BLINK2_PASSWORD }}" >> android/key2.properties
-          echo "keyAlias=${{ secrets.KEY_BLINK2_ALIAS }}" >> android/key2.properties
           echo "storeFile=${{ steps.android_blink1_keystore.outputs.filePath }}" > android/key1.properties
           echo "storePassword=${{ secrets.STORE_BLINK1_PASSWORD }}" >> android/key1.properties
           echo "keyPassword=${{ secrets.KEY_BLINK1_PASSWORD }}" >> android/key1.properties
           echo "keyAlias=${{ secrets.KEY_BLINK1_ALIAS }}" >> android/key1.properties
+          echo "storeFile=${{ steps.android_blink2_keystore.outputs.filePath }}" > android/key2.properties
+          echo "storePassword=${{ secrets.STORE_BLINK2_PASSWORD }}" >> android/key2.properties
+          echo "keyPassword=${{ secrets.KEY_BLINK2_PASSWORD }}" >> android/key2.properties
+          echo "keyAlias=${{ secrets.KEY_BLINK2_ALIAS }}" >> android/key2.properties
       - uses: actions/setup-java@v1
         with:
           distribution: 'zulu'
@@ -67,7 +67,7 @@ jobs:
         run: flutter pub get
       # Build Apk blink1
       - name: Start Android Release Build Blink1
-        run: flutter build apk --flavor blink1 -t lib/main.dart
+        run: flutter build apk --flavor blink3 -t lib/main.dart
         # Build Apk blink2
       - name: Start Android Release Build Blink2
         run: flutter build apk --flavor blink2 -t lib/main.dart
@@ -76,7 +76,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: android-blink1-release
-          path: build/app/outputs/flutter-apk/app-blink1-release.apk
+          path: build/app/outputs/flutter-apk/app-blink3-release.apk
         # Upload Android Blink2
       - name: Upload Android Blink2 Release
         uses: actions/upload-artifact@v2
@@ -90,7 +90,7 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: build/app/outputs/flutter-apk/app-blink1-release.apk
+          file: build/app/outputs/flutter-apk/app-blink3-release.apk
           # Distribution blink 2
       - name: Firebase App Distribution 2
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
