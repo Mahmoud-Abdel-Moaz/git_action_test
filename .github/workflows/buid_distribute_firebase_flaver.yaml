@@ -41,7 +41,7 @@ jobs:
           encodedString: ${{ secrets.KEYSTORE_BLINK2_BASE64 }}
       - name: Create key.properties
         run: |
-          echo "storeFile=${{ steps.android_blink1_keystore.outputs.filePath }}" > android/key1.properties
+          echo "storeFile=${{ steps.android_blink2_keystore.outputs.filePath }}" > android/key1.properties
           echo "storePassword=${{ secrets.STORE_BLINK1_PASSWORD }}" >> android/key1.properties
           echo "keyPassword=${{ secrets.KEY_BLINK1_PASSWORD }}" >> android/key1.properties
           echo "keyAlias=${{ secrets.KEY_BLINK1_ALIAS }}" >> android/key1.properties
