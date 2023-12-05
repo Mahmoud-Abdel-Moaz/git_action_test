@@ -161,7 +161,7 @@ jobs:
       - name: Release Build to internal track
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_MY_KEY}}
+          serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
           packageName: com.getaction.hello
           releaseFiles: build/app/outputs/bundle/blinkRelease/app-blink-release.aab
           track: internal
