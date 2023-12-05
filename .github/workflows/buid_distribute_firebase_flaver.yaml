@@ -90,8 +90,8 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
       # Build Apk blink
-      - name: Start Android Release Build Blink
-        run: flutter build apk --flavor blink -t lib/main.dart
+#      - name: Start Android Release Build Blink
+#        run: flutter build apk --flavor blink -t lib/main.dart
         # Build Apk unity
 #      - name: Start Android Release Build Unity
 #        run: flutter build apk --flavor unity -t lib/main.dart
@@ -101,8 +101,8 @@ jobs:
 
 
       # Build bundle blink
-#      - name: Start Android Release Build Blink
-#        run: flutter build appbundle --flavor blink -t lib/main.dart
+      - name: Start Android Release Build Blink
+        run: flutter build appbundle --flavor blink -t lib/main.dart
         # Build bundle unity
 #      - name: Start Android Release Build Unity
 #        run: flutter build appbundle --flavor unity -t lib/main.dart
@@ -111,11 +111,11 @@ jobs:
 #        run: flutter build appbundle --flavor sportico -t lib/main.dart
 
         # Upload Android Blink
-      - name: Upload Android Blink Release
-        uses: actions/upload-artifact@v2
-        with:
-          name: android-blink-release
-          path: build/app/outputs/flutter-apk/app-blink-release.apk
+#      - name: Upload Android Blink Release
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: android-blink-release
+#          path: build/app/outputs/flutter-apk/app-blink-release.apk
         # Upload Android Unity
 #      - name: Upload Android Unity Release
 #        uses: actions/upload-artifact@v2
@@ -130,14 +130,14 @@ jobs:
 #          path: build/app/outputs/flutter-apk/app-sportico-release.apk
 
           # Distribution Blink
-      - name: Firebase Blink Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-        with:
-          appId: ${{secrets.FIREBASE_BLINK_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: testers
-          file: build/app/outputs/flutter-apk/app-blink-release.apk
-          releaseNotes: "test note"
+#      - name: Firebase Blink Distribution
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+#        with:
+#          appId: ${{secrets.FIREBASE_BLINK_APP_ID}}
+#          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+#          groups: testers
+#          file: build/app/outputs/flutter-apk/app-blink-release.apk
+#          releaseNotes: "test note"
 
           # Distribution Unity
 #      - name: Firebase Unity Distribution
@@ -156,6 +156,16 @@ jobs:
 #          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
 #          groups: testers
 #          file: build/app/outputs/flutter-apk/app-sportico-release.apk
+
+        #deploy to google play
+      - name: Release Build to internal track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
+          packageName: com.getaction.hello
+          releaseFiles: build/app/outputs/bundle/blinkRelease/app-blink-release.aab
+          track: alpha
+       #   status:  build/app/outputs/bundle/blinkRelease/app-blink-release.aab
 
 
 
