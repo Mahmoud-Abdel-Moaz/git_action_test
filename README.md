@@ -74,3 +74,9 @@ with:
   cd ..
   zip -r app.ipa Payload
 
+
+* Deploy on google play store 
+- create service account with role owner 
+- use json content file
+- enable Google Play Android Developer API service from  https://console.cloud.google.com/apis/api/androidpublisher.googleapis.com/overview
+
