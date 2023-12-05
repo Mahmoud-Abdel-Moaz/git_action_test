@@ -76,6 +76,7 @@ with:
 
 
 * Deploy on google play store 
+- use package https://github.com/r0adkll/upload-google-play
 - create service account with role owner 
 - use json content file
 - enable Google Play Android Developer API service from  https://console.cloud.google.com/apis/api/androidpublisher.googleapis.com/overview
