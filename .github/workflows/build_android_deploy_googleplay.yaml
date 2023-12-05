@@ -163,7 +163,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
           packageName: com.getaction.hello
-          releaseFiles: build/app/outputs/bundle/blinkRelease/app-blink-release.aab
+          releaseFiles: app-blink-release.aab
           track: internal
           status: completed
       #   status:  build/app/outputs/bundle/blinkRelease/app-blink-release.aab
