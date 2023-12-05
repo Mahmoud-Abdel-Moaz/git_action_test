@@ -162,7 +162,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
-          packageName: com.getaction.hello
+          packageName: com.getaction
           releaseFiles: build/app/outputs/bundle/blinkRelease/app-blink-release.aab
           track: internal
           status: completed
