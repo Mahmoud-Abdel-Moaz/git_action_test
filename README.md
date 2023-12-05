@@ -57,6 +57,11 @@ with:
 * generate git hub token from 
 -https://github.com/settings/tokens
 
+* Create SSH key to access private package in private repo 
+- ssh-keygen -t ed25519 -C "mabdelmoez@nxt.so" => to generate ssh key
+- pbcopy < ~/.ssh/id_ed25519.pub => to copy public key 
+- ssh -T git@github.com  => to test key
+
 
 * build ios
   - name: build Ios ipa
