@@ -51,11 +51,13 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  http_certificate_pinning: ^2.1.0
 
 
   test_package:
     git:
       url: git@github.com:Mahmoud-Abdel-Moez-Nxt/test_package.git
+
 #  test_my_package_private:
 #    git:
 #      url: git@github.com:Mahmoud-Abdel-Moaz/test_my_package_private.git
