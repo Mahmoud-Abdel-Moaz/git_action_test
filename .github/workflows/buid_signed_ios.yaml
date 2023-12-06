@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build IOS"
 jobs:
   build:
@@ -79,24 +79,24 @@ jobs:
           rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
 
   # Release job, upload the ipa to Firebase App Distribution
-  release:
-    name: Release ipa to Firebase
-    needs: [ build ]
-    runs-on: ubuntu-latest
-    steps:
-
-      # Retrieve ipa file from GitHub artifacts
-      - uses: actions/checkout@v2
-      - name: Get release-ipa from artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: release-ipa
-
-      # Upload ipa file to Fiebase
-      - name: Upload artifact to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-        with:
-          appId: ${{secrets.FIREBASE_IOS_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: ios-developers
-          file: your_app_name.ipa
+#  release:
+#    name: Release ipa to Firebase
+#    needs: [ build ]
+#    runs-on: ubuntu-latest
+#    steps:
+#
+#      # Retrieve ipa file from GitHub artifacts
+#      - uses: actions/checkout@v2
+#      - name: Get release-ipa from artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: release-ipa
+#
+#      # Upload ipa file to Fiebase
+#      - name: Upload artifact to Firebase App Distribution
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+#        with:
+#          appId: ${{secrets.FIREBASE_IOS_APP_ID}}
+#          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+#          groups: ios-developers
+#          file: your_app_name.ipa
