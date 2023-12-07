@@ -1,6 +1,8 @@
 //import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http_certificate_pinning/http_certificate_pinning.dart';
 
 import 'colors.dart';
 import 'user_data.dart';
@@ -10,7 +12,7 @@ late MainColors colorsTheme;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: 'client.env');
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   _setColorTheme();
   runApp(const MyApp());
 }
@@ -74,8 +76,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // getData();
+    myRepositoryMethod();
     super.initState();
+  }
+
+  static const sha256 =
+      '41:2E:B1:9A:63:A1:CD:CB:58:2C:AA:46:70:70:3E:24:6C:6E:A1:E7:61:E8:96:57:73:FB:25:9F:11:2F:87:C2';
+
+  SecureHttpClient getClient(List<String> allowedSHAFingerprints) {
+    final secureClient = SecureHttpClient.build(allowedSHAFingerprints);
+    return secureClient;
+  }
+
+  myRepositoryMethod() {
+    try {
+      SecureHttpClient secureClient = getClient([sha256]);
+      secureClient.get(Uri.parse("myurl.com"));
+    } catch (e) {
+      debugPrint('$e');
+    }
   }
 
   @override
