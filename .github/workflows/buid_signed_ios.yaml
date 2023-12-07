@@ -98,6 +98,13 @@ jobs:
           # Path to the release files
           path: build/ios/ipa/git_action_test.ipa
       # Collect the file and upload as artifact
+      - name: collect ipa artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-ipa
+          # Path to the release files
+          path: build/ios/ipa/git-action-test.ipa
+      # Collect the file and upload as artifact
       - name: collect ipa files artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -132,7 +139,7 @@ jobs:
       - name:  Deploy to App Store agin (Testflight)
         uses: apple-actions/upload-testflight-build@v1
         with:
-          app-path: build/ios/ipa/git_action_test.ipa
+          app-path: build/ios/ipa/git-action-test.ipa
           issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           api-key-id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           api-private-key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
