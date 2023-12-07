@@ -40,7 +40,7 @@ dependencies:
   change_app_package_name: ^1.1.0
   firebase_core: ^2.22.0
   http: ^1.1.0
-  http_certificate_pinning: ^2.1.2
+#  http_certificate_pinning: ^2.1.2
 
 
 dev_dependencies:
@@ -55,9 +55,9 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 
-  test_package:
-    git:
-      url: git@github.com:Mahmoud-Abdel-Moez-Nxt/test_package.git
+#  test_package:
+#    git:
+#      url: git@github.com:Mahmoud-Abdel-Moez-Nxt/test_package.git
 
 #  test_my_package_private:
 #    git:
