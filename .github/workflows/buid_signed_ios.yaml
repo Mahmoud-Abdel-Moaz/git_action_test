@@ -96,7 +96,40 @@ jobs:
         with:
           name: release-ipa
           # Path to the release files
-          path: build/ios/ipa/*.ipa
+          path: build/ios/ipa/git_action_test.ipa
+      # Collect the file and upload as artifact
+      - name: collect ipa files artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-ipa
+          # Path to the release files
+          path: build/ios/ipa/*
+      # Collect the file and upload as artifact
+      - name: collect ipa root artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-ipa
+          # Path to the release files
+          path: ${{ github.workspace }}/app/build/ios/ipa/git_action_test.ipa
+
+
+      - name:  Deploy to App Store (Testflight)
+        uses: apple-actions/upload-testflight-build@v1
+        with:
+          app-path: ${{ github.workspace }}/app/build/ios/ipa/git_action_test.ipa
+          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          api-key-id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
+
+
+      - name:  Deploy to App Store agin (Testflight)
+        uses: apple-actions/upload-testflight-build@v1
+        with:
+          app-path: build/ios/ipa/git_action_test.ipa
+          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          api-key-id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
+
 
       #Clean up keychain and provisioning profile
       - name: Clean up keychain and provisioning profile
