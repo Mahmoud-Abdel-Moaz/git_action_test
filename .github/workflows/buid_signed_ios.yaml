@@ -34,24 +34,53 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
         #Install the Apple certificate and provisioning profile
-      - name: Install the Apple certificate and provisioning profile
+      - name: Add Certificate File
         run: |
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          
           echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
+      - name: Add Profile File
+        run: |
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > $PP_PATH
 
+      - name: Create Keychain
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
+      - name: Install the Apple certificate
+        run: |
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
+      - name: Install Apple Profile
+        run: |
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+#      - name: Install the Apple certificate and provisioning profile
+#        run: |
+#          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+#          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+#          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+#
+#          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
+#          echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > $PP_PATH
+#
+#          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+#          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+#          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+#
+#          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+#          security list-keychain -d user -s $KEYCHAIN_PATH
+#
+#          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+#          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
 # echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
         #          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
