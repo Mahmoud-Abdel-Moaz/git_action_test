@@ -89,8 +89,8 @@ jobs:
         #Build
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
-        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist
-
+        run: flutter build ipa --release
+#        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist
       # Collect the file and upload as artifact
       - name: collect ipa artifacts
         uses: actions/upload-artifact@v2
