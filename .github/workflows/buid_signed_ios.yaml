@@ -61,7 +61,8 @@ jobs:
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           security import $RUNNER_TEMP/build_certificate.p12 -P "${{secrets.P12_PASSWORD}}" -A -t cert -f pkcs12 -k $RUNNER_TEMP/app-signing.keychain-db
-          security list-keychain -d user -s $KEYCHAIN_PATH
+
+        # security list-keychain -d user -s $KEYCHAIN_PATH
 
 #      - name: Install the Apple certificate and provisioning profile
 #        run: |
