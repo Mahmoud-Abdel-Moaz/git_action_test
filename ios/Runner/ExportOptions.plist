@@ -10,5 +10,12 @@
 	<string>QR29L6XWT3</string>
 	<key>teamName</key>
 	<string>Hussein Reda</string>
+	 <key>provisioningProfiles</key>
+        <dict>
+          <key>com.nxt.ci</key>
+          <string>ci</string>
+        </dict>
+       <key>signingStyle</key>
+       <string>manual</string>
 </dict>
 </plist>

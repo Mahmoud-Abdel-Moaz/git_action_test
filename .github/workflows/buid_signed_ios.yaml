@@ -40,7 +40,7 @@ jobs:
           echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
       - name: Add Profile File
         run: |
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          PP_PATH=$RUNNER_TEMP/ci.mobileprovision
           echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > $PP_PATH
 
       - name: Create Keychain
@@ -59,14 +59,14 @@ jobs:
 
       - name: Install Apple Profile
         run: |
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          PP_PATH=$RUNNER_TEMP/ci.mobileprovision
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
 #      - name: Install the Apple certificate and provisioning profile
 #        run: |
 #          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-#          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+#          PP_PATH=$RUNNER_TEMP/ci.mobileprovision
 #          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 #
 #          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
@@ -150,7 +150,7 @@ jobs:
         if: ${{ always() }}
         run: |
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-          rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+          rm ~/Library/MobileDevice/Provisioning\ Profiles/ci.mobileprovision
 
   # Release job, upload the ipa to Firebase App Distribution
 #  release:
