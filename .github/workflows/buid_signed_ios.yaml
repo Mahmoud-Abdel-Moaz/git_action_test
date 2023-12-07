@@ -40,8 +40,9 @@ jobs:
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           
-          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > client.env
-          echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > client.env
+
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
 
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
@@ -55,6 +56,8 @@ jobs:
 
 # echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
         #          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+        #          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > client.env
+        #          echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > client.env
         #Build
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
