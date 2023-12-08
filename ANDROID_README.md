@@ -1,7 +1,9 @@
 
-1- create keystore file for each flavor 
-2- encode keystore file for each flavor (cat ci.p12 | base64 | pbcopy)
-3- add data of keystore for each flavor (KEYSTORE_BASE64,STORE_PASSWORD,KEY_PASSWORD,KEY_ALIAS) to secrets 
+1- create keystore file for each flavor
+
+2- encode keystore file for each flavor (cat keystore.jks | base64 | pbcopy)
+
+3- add data of keystore for each flavor (KEYSTORE_BASE64,STORE_PASSWORD,KEY_PASSWORD,KEY_ALIAS) to Github Secrets 
 
 4- uses: actions/checkout@v1 : to checkout the code 
 
@@ -10,9 +12,32 @@
    with:
      ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-6- Download Android keystore For each flavor
+
+
+(Note) Create SSH key to access private package in private repo
+- ssh-keygen -t ed25519 -C "user@example.so" => to generate ssh key
+- pbcopy < ~/.ssh/id_ed25519.pub => to copy public key
+- add public key to ssh key from settings of account of private repo
+- ssh -T git@github.com  => to test key
+- and add private key to ssh key to secrets (SSH_PRIVATE_KEY) to access private package
+
+
+
+6- Download Android keystore For each flavor use
+- name: Download blink Android keystore
+  id: android_blink_keystore
+  uses: timheuer/base64-to-file@v1.0.3
+  with:
+    fileName: blink-keystore.jks
+    encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
 
 7- create key.properties file for each flavor
+- name: Create key.properties
+  run: |
+    echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
+    echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
+    echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
+    echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
 
 8- setup java and cash it So that we don't have to download it again every time
 uses: actions/setup-java@v1
@@ -33,21 +58,11 @@ with:
 flutter pub get
 
 
-
-11- Start Android Release Build
-flutter build apk
-
-12- Store App release
-uses: actions/upload-artifact@v2
-with:
-  name: android-release
-  path: build/app/outputs/flutter-apk/app-release.apk
-
-13-Start Android Release Build for blink flover
+11- Start Android Release Build for blink flover
 flutter build appbundle --flavor blink -t lib/main.dart
 
 
-14- deploy release bundle to google store
+12- deploy release bundle to google store
     uses: r0adkll/upload-google-play@v1
     with:
       serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
@@ -55,6 +70,25 @@ flutter build appbundle --flavor blink -t lib/main.dart
       releaseFiles: build/app/outputs/bundle/app-release.aab
       track: internal
       status: draft
+
+
+(Note) Deploy on google play store
+* use package https://github.com/r0adkll/upload-google-play
+* Configure service account in Google Cloud Platform
+  - Navigate to https://cloud.google.com/gcp
+  - Open IAM and admin > Service accounts > Create service account
+  - Pick a name and add appropriate permissions 'owner'
+  - Open the newly created service account, click on keys tab and add a new key, JSON type
+  - When successful, a JSON file will be automatically downloaded on your machine
+  - Store the content of this file to your GitHub secrets, e.g. (PLAYSTORE_ACCOUNT_KEY).
+* Add user to Google Play Console
+  - Open https://play.google.com/console and pick your developer account
+  - Open Users and permissions
+  - Click invite new user and add the email of the service account created in the previous step
+  - create service account from Google Cloud Console with role owner
+  - Grant permissions to the app that you want the service account to deploy in app permissions
+* enable Google Play Android Developer API service from  https://console.cloud.google.com/apis/api/androidpublisher.googleapis.com/overview
+
 
 
 
@@ -83,35 +117,6 @@ flutter build appbundle --flavor blink -t lib/main.dart
 
 
 
-(*) generate git hub token from 
--https://github.com/settings/tokens
 
 
-
-(*) Create SSH key to access private package in private repo 
-- ssh-keygen -t ed25519 -C "user@example.so" => to generate ssh key
-- pbcopy < ~/.ssh/id_ed25519.pub => to copy public key 
-- add public key to ssh key from settings of account of private repo
-- ssh -T git@github.com  => to test key
-- and add private key to ssh key to secrets (SSH_PRIVATE_KEY) to access private package
-
-
-
-
-(*) Deploy on google play store
-* use package https://github.com/r0adkll/upload-google-play
-* Configure service account in Google Cloud Platform
-  - Navigate to https://cloud.google.com/gcp
-  - Open IAM and admin > Service accounts > Create service account
-  - Pick a name and add appropriate permissions 'owner'
-  - Open the newly created service account, click on keys tab and add a new key, JSON type
-  - When successful, a JSON file will be automatically downloaded on your machine
-  - Store the content of this file to your GitHub secrets, e.g. (PLAYSTORE_ACCOUNT_KEY).
-* Add user to Google Play Console
-  - Open https://play.google.com/console and pick your developer account
-  - Open Users and permissions
-  - Click invite new user and add the email of the service account created in the previous step
-  - create service account from Google Cloud Console with role owner
-  - Grant permissions to the app that you want the service account to deploy in app permissions
-* enable Google Play Android Developer API service from  https://console.cloud.google.com/apis/api/androidpublisher.googleapis.com/overview
 
