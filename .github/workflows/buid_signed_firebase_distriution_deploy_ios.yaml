@@ -36,16 +36,10 @@ jobs:
         run: |
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
-
       - name: Add Profile File
         run: |
           PP_PATH=$RUNNER_TEMP/ci.mobileprovision
           echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > $PP_PATH
-
-      - name: Add ExportOptions File
-        run: |
-          EXPORT_OPTIONS_PATH="${{ github.workspace }}/app/ios/Runner/ExportOptions.plist"
-          echo -n "$EXPORT_OPTIONS_BASE64" | base64 -d > $EXPORT_OPTIONS_PATH
 
       - name: Create Keychain
         run: |
@@ -96,3 +90,27 @@ jobs:
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/ci.mobileprovision
           
+
+
+  # Release job, upload the ipa to Firebase App Distribution
+#  release:
+#    name: Release ipa to Firebase
+#    needs: [ build ]
+#    runs-on: ubuntu-latest
+#    steps:
+#
+#      # Retrieve ipa file from GitHub artifacts
+#      - uses: actions/checkout@v2
+#      - name: Get release-ipa from artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: release-ipa
+#
+#      # Upload ipa file to Fiebase
+#      - name: Upload artifact to Firebase App Distribution
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+#        with:
+#          appId: ${{secrets.FIREBASE_IOS_APP_ID}}
+#          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+#          groups: ios-developers
+#          file: your_app_name.ipa
