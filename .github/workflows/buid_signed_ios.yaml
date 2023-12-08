@@ -46,7 +46,7 @@ jobs:
 
       - name: Add ExportOptions File
         run: |
-          EXPORT_OPTIONS_PATH="${{ github.workspace }}/app/ios/Runner/ExportOptions.plist"
+          EXPORT_OPTIONS_PATH="ios/Runner/ExportOptions.plist"
           echo -n "$EXPORT_OPTIONS_BASE64" | base64 -d > $EXPORT_OPTIONS_PATH
 
       - name: Create Keychain
