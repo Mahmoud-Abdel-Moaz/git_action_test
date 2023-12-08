@@ -15,16 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: hallo
     env:
-      #      APP_NAME: ${{vars.APP_NAME}}
-      #      PACKAGE_NAME: ${{vars.PACKAGE_NAME}}
-      #      LOGO: ${{vars.LOGO}}
-      #      DOTENV: ${{vars.DOTENV}}
       BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
       UNITY_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_UNITY}}
       SPORTICO_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_SPORTICO}}
     steps:
       - uses: actions/checkout@v1
-        # Make sure the @v0.8.0 matches the current version of the action
       - uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}

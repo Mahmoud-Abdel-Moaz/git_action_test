@@ -47,6 +47,7 @@ with:
 * Create SSH key to access private package in private repo 
 - ssh-keygen -t ed25519 -C "user@example.so" => to generate ssh key
 - pbcopy < ~/.ssh/id_ed25519.pub => to copy public key 
+- add 
 - ssh -T git@github.com  => to test key
 
 
