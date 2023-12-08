@@ -29,9 +29,6 @@ jobs:
           flutter-version: "3.16.1"
           channel: 'stable'
           cache: true
-      - name: 📝 Edit pubspec version
-        run: |
-          sed -Ei "" "s/^version: (.*)/version: ${{ inputs.new-pubspec-version }}/" app/pubspec.yaml
       - name: Get dependencies
         run: flutter pub get
         #Install the Apple certificate and provisioning profile
