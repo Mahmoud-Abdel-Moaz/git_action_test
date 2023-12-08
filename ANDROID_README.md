@@ -1,20 +1,27 @@
 
-1- create .github Dir in root of project and put in it workflows
-
-2- set 'runs-on': macos-latest the machine that will run on
-
-3- set 'environment' :that hold variables and secrets of Client
+1- create keystore file for each flavor 
+2- encode keystore file for each flavor (cat ci.p12 | base64 | pbcopy)
+3- add data of keystore for each flavor (KEYSTORE_BASE64,STORE_PASSWORD,KEY_PASSWORD,KEY_ALIAS) to secrets 
 
 4- uses: actions/checkout@v1 : to checkout the code 
 
-5- setup java and cash it So that we don't have to download it again every time
+5- to use private package from private repo add
+  - uses: webfactory/ssh-agent@v0.8.0
+   with:
+     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+6- Download Android keystore For each flavor
+
+7- create key.properties file for each flavor
+
+8- setup java and cash it So that we don't have to download it again every time
 uses: actions/setup-java@v1
 with:
   distribution: 'zulu'
   java-version: "12.x"
   cache: gradle
 
-6- setup Flutter Sdk and cash it So that we don't have to download it again every time
+9- setup Flutter Sdk and cash it So that we don't have to download it again every time
 uses: subosito/flutter-action@v1
 with:
   flutter-version: "3.16.1"
@@ -22,41 +29,89 @@ with:
   cache: true
 
 
-7- Get dependencies
+10- Get dependencies
 flutter pub get
 
 
 
-13- Start Android Release Build
+11- Start Android Release Build
 flutter build apk
 
-14- Store App release
+12- Store App release
 uses: actions/upload-artifact@v2
 with:
   name: android-release
   path: build/app/outputs/flutter-apk/app-release.apk
 
+13-Start Android Release Build for blink flover
+flutter build appbundle --flavor blink -t lib/main.dart
 
-* for Firebase Distribution use 
+
+14- deploy release bundle to google store
+    uses: r0adkll/upload-google-play@v1
+    with:
+      serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
+      packageName: appPackageId
+      releaseFiles: build/app/outputs/bundle/app-release.aab
+      track: internal
+      status: draft
+
+
+
+
+
+(*) for Firebase Distribution use 
+- create project for app at firebase
+- get app id of project form firebase project settings and save it on secrets =>FIREBASE_APP_ID
+- Navigate to https://cloud.google.com/gcp
+- Open IAM and admin > Service accounts > Create service account
+- Pick a name and add appropriate permissions 'Firebase App Distribution Admin'
+- Open the newly created service account, click on keys tab and add a new key, JSON type
+- When successful, a JSON file will be automatically downloaded on your machine
+- Store the content of this file to your GitHub secrets, e.g. (CREDENTIAL_FILE_CONTENT).
+- use script
+        - name: Firebase Sportico Distribution
+          uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+          with:
+            appId: ${{secrets.FIREBASE_APP_ID}}
+            serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+            groups: testers
+            file: build/app/outputs/flutter-apk/app-sportico-release.apk
+* source
 - https://github.com/marketplace/actions/firebase-app-distribution
 - https://steveos.medium.com/github-action-and-firebase-app-distribution-ci-cd-ways-part-2-fcf9ba425c0
 
-* generate git hub token from 
+
+
+(*) generate git hub token from 
 -https://github.com/settings/tokens
 
-* Create SSH key to access private package in private repo 
+
+
+(*) Create SSH key to access private package in private repo 
 - ssh-keygen -t ed25519 -C "user@example.so" => to generate ssh key
 - pbcopy < ~/.ssh/id_ed25519.pub => to copy public key 
-- add 
+- add public key to ssh key from settings of account of private repo
 - ssh -T git@github.com  => to test key
+- and add private key to ssh key to secrets (SSH_PRIVATE_KEY) to access private package
 
 
 
 
-* Deploy on google play store 
-- use package https://github.com/r0adkll/upload-google-play
-- create service account with role owner 
-- use json content file
-- Invite user with email that created with service account from Users and Permissions from google play console with permissions to app you want access
-- enable Google Play Android Developer API service from  https://console.cloud.google.com/apis/api/androidpublisher.googleapis.com/overview
+(*) Deploy on google play store
+* use package https://github.com/r0adkll/upload-google-play
+* Configure service account in Google Cloud Platform
+  - Navigate to https://cloud.google.com/gcp
+  - Open IAM and admin > Service accounts > Create service account
+  - Pick a name and add appropriate permissions 'owner'
+  - Open the newly created service account, click on keys tab and add a new key, JSON type
+  - When successful, a JSON file will be automatically downloaded on your machine
+  - Store the content of this file to your GitHub secrets, e.g. (PLAYSTORE_ACCOUNT_KEY).
+* Add user to Google Play Console
+  - Open https://play.google.com/console and pick your developer account
+  - Open Users and permissions
+  - Click invite new user and add the email of the service account created in the previous step
+  - create service account from Google Cloud Console with role owner
+  - Grant permissions to the app that you want the service account to deploy in app permissions
+* enable Google Play Android Developer API service from  https://console.cloud.google.com/apis/api/androidpublisher.googleapis.com/overview
 
