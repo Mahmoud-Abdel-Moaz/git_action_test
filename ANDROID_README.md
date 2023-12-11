@@ -40,18 +40,18 @@
     echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
 
 8- setup java and cash it So that we don't have to download it again every time
-uses: actions/setup-java@v1
-with:
-  distribution: 'zulu'
-  java-version: "12.x"
-  cache: gradle
+- uses: actions/setup-java@v1
+  with:
+    distribution: 'zulu'
+    java-version: "12.x"
+    cache: gradle
 
 9- setup Flutter Sdk and cash it So that we don't have to download it again every time
-uses: subosito/flutter-action@v1
-with:
-  flutter-version: "3.16.1"
-  channel: 'stable'
-  cache: true
+- uses: subosito/flutter-action@v1
+  with:
+    flutter-version: "3.16.1"
+    channel: 'stable'
+    cache: true
 
 
 10- Get dependencies
@@ -63,13 +63,14 @@ flutter build appbundle --flavor blink -t lib/main.dart
 
 
 12- deploy release bundle to google store
-    uses: r0adkll/upload-google-play@v1
-    with:
-      serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
-      packageName: appPackageId
-      releaseFiles: build/app/outputs/bundle/app-release.aab
-      track: internal
-      status: draft
+- name: Release Build to internal track
+  uses: r0adkll/upload-google-play@v1
+  with:
+    serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
+    packageName: appPackageId
+    releaseFiles: build/app/outputs/bundle/app-release.aab
+    track: internal
+    status: draft
 
 
 (Note) Deploy on google play store

@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-  push:
-    branches:
-      - main
-      - master
-      - develop
+#  push:
+#    branches:
+#      - main
+#      - master
+#      - develop
 name: "Build IOS"
 jobs:
   build:
@@ -17,12 +17,20 @@ jobs:
     env:
       BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
       P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
-      BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+      BUILD_BLINK_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_BLINK_PROVISION_PROFILE_BASE64 }}
+      BUILD_UNITY_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_UNITY_PROVISION_PROFILE_BASE64 }}
+      BUILD_SPORTICO_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_SPORTICO_PROVISION_PROFILE_BASE64 }}
+      BLINK_PP_PATH: $RUNNER_TEMP/blink.mobileprovision
+      UNITY_PP_PATH: $RUNNER_TEMP/unity.mobileprovision
+      SPORTICO_PP_PATH: $RUNNER_TEMP/sportico.mobileprovision
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-      EXPORT_OPTIONS_BASE64: ${{ secrets.IOS_EXPORT_OPTIONS_BASE64 }}
+      BLINK_EXPORT_OPTIONS_BASE64: ${{ secrets.IOS_BLINK_EXPORT_OPTIONS_BASE64 }}
+      UNITY_EXPORT_OPTIONS_BASE64: ${{ secrets.IOS_UNITY_EXPORT_OPTIONS_BASE64 }}
+      SPORTICO_EXPORT_OPTIONS_BASE64: ${{ secrets.IOS_SPORTICO_EXPORT_OPTIONS_BASE64 }}
+      BLINK_EXPORT_OPTIONS_PATH: "ios/Runner/BlinkExportOptions.plist"
+      UNITY_EXPORT_OPTIONS_PATH: "ios/Runner/UnityExportOptions.plist"
+      SPORTICO_EXPORT_OPTIONS_PATH: "ios/Runner/SporticoExportOptions.plist"
       CERTIFICATE_PATH: $RUNNER_TEMP/build_certificate.p12
-      PP_PATH: $RUNNER_TEMP/ci.mobileprovision
-      EXPORT_OPTIONS_PATH: "ios/Runner/ExportOptions.plist"
       KEYCHAIN_PATH: $RUNNER_TEMP/app-signing.keychain-db
     steps:
       - uses: actions/checkout@v2
@@ -39,21 +47,46 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
         #Install the Apple certificate and provisioning profile
+
+        #Add Certificate
       - name: Add Certificate File
-        run: echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
+        run: |
+          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
 
-      - name: Add Profile File
-        run: echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > $PP_PATH
+      #Add Profile Files
+      - name: Add Blink Profile File
+        run: |
+          echo "$BUILD_BLINK_PROVISION_PROFILE_BASE64" | base64 -d > $BLINK_PP_PATH
 
-      - name: Add ExportOptions File
-        run: echo -n "$EXPORT_OPTIONS_BASE64" | base64 -d > $EXPORT_OPTIONS_PATH
+      - name: Add Unity Profile File
+        run: |
+          echo "$BUILD_UNITY_PROVISION_PROFILE_BASE64" | base64 -d > $UNITY_PP_PATH
 
+      - name: Add Unity Profile File
+        run: |
+          echo "$BUILD_SPORTICO_PROVISION_PROFILE_BASE64" | base64 -d > $SPORTICO_PP_PATH
+
+      #Add ExportOptions Files
+      - name: Add Blink ExportOptions File
+        run: |
+          echo -n "$BLINK_EXPORT_OPTIONS_BASE64" | base64 -d > $BLINK_EXPORT_OPTIONS_PATH
+
+      - name: Add Unity ExportOptions File
+        run: |
+          echo -n "$UNITY_EXPORT_OPTIONS_BASE64" | base64 -d > $UNITY_EXPORT_OPTIONS_PATH
+
+      - name: Add Sportico ExportOptions File
+        run: |
+          echo -n "$SPORTICO_EXPORT_OPTIONS_BASE64" | base64 -d > $SPORTICO_EXPORT_OPTIONS_PATH
+
+      # Create Keychain
       - name: Create Keychain
         run: |
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
+        # Install the Apple certificate
       - name: Install the Apple certificate
         run: |
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
@@ -62,7 +95,9 @@ jobs:
       - name: Install Apple Profile
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $BLINK_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $UNITY_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $SPORTICO_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
         #Build
       # Build and sign the ipa using a single flutter command
       - name: Building IPA

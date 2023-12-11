@@ -123,7 +123,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-blink-release.apk
-          releaseNotes: "test note \n version :50 \n new in version : sdfsdfsd"
+          releaseNotes: "test note \n version :50 \n new in version : test"
 
           # Distribution Unity
 #      - name: Firebase Unity Distribution
