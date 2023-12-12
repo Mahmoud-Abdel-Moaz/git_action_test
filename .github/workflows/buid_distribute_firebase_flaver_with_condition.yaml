@@ -78,7 +78,7 @@ jobs:
     environment: hallo
     env:
       BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
-      SECOND_ELEMENT: 'test read'
+   #   SECOND_ELEMENT: 'test read'
     steps:
       - uses: actions/checkout@v1
         # Make sure the @v0.8.0 matches the current version of the action
