@@ -78,7 +78,7 @@ jobs:
     environment: hallo
     env:
       BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
-   #   SECOND_ELEMENT: 'test read'
+    if: (contains(github.event.head_commit.message, 'blink') || contains(github.event.head_commit.message, 'all'))
     steps:
       - uses: actions/checkout@v1
         # Make sure the @v0.8.0 matches the current version of the action
@@ -86,11 +86,34 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+#      - name: Split Commit Message
+#        run: |
+#          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+#          IFS=',' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
+#          echo "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+
       - name: Split Commit Message
         run: |
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          IFS=',' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
-          echo "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+          IFS='####' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
+          echo "WORK_APPS=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
+          echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+          echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
+          echo "RELEASE_ON=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
+
+      # blink
+      - name: Get Release Note
+        run: |
+          IFS='----' read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
+          echo "RELEASE_NOTE=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
+
+#      # sportico
+#      - name: Get Release Note
+#        run: |
+#          IFS='----' read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
+#          echo "RELEASE_NOTE=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
+          
+      
 
       - name: Download blink Android keystore
         id: android_blink_keystore
@@ -162,15 +185,15 @@ jobs:
 
           # Distribution Blink
       - name: Firebase Blink Distribution
+        if: contains("${{ env.RELEASE_ON }}", 'firebase')
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
           appId: ${{secrets.FIREBASE_BLINK_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-blink-release.apk
-          releaseNotes: "${{ env.SECOND_ELEMENT }}"
+          releaseNotes: "Blink Apk \n ${{ env.SERVER_WORK_ON }} \n ${{ env.RELEASE_NOTE }}"
           #          releaseNotes: "${{ github.event.head_commit.message }}"
-    if: (contains(github.event.head_commit.message, 'blink') || contains(github.event.head_commit.message, 'all'))
 
 
 
@@ -178,6 +201,7 @@ jobs:
     name: Build Unity
     runs-on: ubuntu-latest
     environment: hallo
+    if: (contains(github.event.head_commit.message, 'unity')|| contains(github.event.head_commit.message, 'all'))
     env:
       UNITY_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_UNITY}}
     steps:
@@ -189,10 +213,17 @@ jobs:
       - name: Split Commit Message
         run: |
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          IFS=',' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
-          
-          # Set the second element as an environment variable
-          echo "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+          IFS='####' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
+          echo "WORK_APPS=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
+          echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+          echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
+          echo "RELEASE_ON=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
+
+      # unity
+      - name: Get Release Note
+        run: |
+          IFS='----' read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
+          echo "RELEASE_NOTE=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
 
       - name: Download blink Android keystore
         id: android_blink_keystore
@@ -262,14 +293,14 @@ jobs:
 
           # Distribution Unity
       - name: Firebase Unity Distribution
+        if: contains("${{ env.RELEASE_ON }}", 'firebase')
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
           appId: ${{secrets.FIREBASE_UNITY_APP_ID}}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-unity-release.apk
-          releaseNotes: "${{ github.event.head_commit.message }}"
-    if: (contains(github.event.head_commit.message, 'unity')|| contains(github.event.head_commit.message, 'all'))
+          releaseNotes: "Unity Apk \n ${{ env.SERVER_WORK_ON }} \n ${{ env.RELEASE_NOTE }}"
 
 
 
