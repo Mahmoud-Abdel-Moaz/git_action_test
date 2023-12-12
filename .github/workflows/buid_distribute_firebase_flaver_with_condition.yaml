@@ -12,7 +12,7 @@ name: "Build With Condition"
 jobs:
   build_blink:
     name: Build Blink
-    if: ${ { contains($(git log -1 --pretty=%B), 'blink') } }
+    if: contains($(git log -1 --pretty=%B), 'blink')
     runs-on: ubuntu-latest
     environment: hallo
     env:
@@ -98,7 +98,7 @@ jobs:
     name: Build Unity
     runs-on: ubuntu-latest
     environment: hallo
-    if: ${ { contains($(git log -1 --pretty=%B), 'unity') } }
+    if: contains($(git log -1 --pretty=%B), 'unity')
     env:
       UNITY_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_UNITY}}
     steps:
