@@ -91,7 +91,7 @@ jobs:
           groups: testers
           file: build/app/outputs/flutter-apk/app-blink-release.apk
           releaseNotes: "test note \n version :50 \n new in version : test"
-    if: contains(COMMIT_MESSAGE, 'blink')
+    if: contains(github.event.head_commit.message, 'blink')
 
 
 
@@ -186,7 +186,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-unity-release.apk
-    if: contains(COMMIT_MESSAGE, 'unity')
+    if: contains(github.event.head_commit.message, 'unity')
 
 
 
