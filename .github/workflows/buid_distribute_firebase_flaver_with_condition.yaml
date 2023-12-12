@@ -12,7 +12,6 @@ name: "Build With Condition"
 jobs:
   build_blink:
     name: Build Blink
-    if: contains(COMMIT_MESSAGE, 'blink')
     runs-on: ubuntu-latest
     environment: hallo
     env:
@@ -92,13 +91,14 @@ jobs:
           groups: testers
           file: build/app/outputs/flutter-apk/app-blink-release.apk
           releaseNotes: "test note \n version :50 \n new in version : test"
+    if: contains(COMMIT_MESSAGE, 'blink')
+
 
 
   build_unity :
     name: Build Unity
     runs-on: ubuntu-latest
     environment: hallo
-    if: contains(COMMIT_MESSAGE, 'unity')
     env:
       UNITY_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_UNITY}}
     steps:
@@ -186,6 +186,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-unity-release.apk
+    if: contains(COMMIT_MESSAGE, 'unity')
 
 
 
