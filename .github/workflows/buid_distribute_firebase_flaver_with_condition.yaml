@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-  push:
-    branches:
-      - main
-      - master
-      - develop
+#  push:
+#    branches:
+#      - main
+#      - master
+#      - develop
 name: "Build With Condition"
 jobs:
   build_blink:
