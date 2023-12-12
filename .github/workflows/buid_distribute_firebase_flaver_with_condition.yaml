@@ -8,7 +8,7 @@ on:
       - main
       - master
       - develop
-name: "Build With Condition"
+name: "Build With  Condition"
 jobs:
   build_blink:
     name: Build Blink
