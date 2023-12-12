@@ -70,6 +70,7 @@ jobs:
           PP_PATH=$RUNNER_TEMP/blink_ci.mobileprovision
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
         #Build
       # Build and sign the ipa using a single flutter command
       - name: Building IPA

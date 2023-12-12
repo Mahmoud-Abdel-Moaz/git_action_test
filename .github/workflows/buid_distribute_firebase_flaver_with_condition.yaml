@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build With Condition"
 jobs:
   build_blink:
@@ -23,10 +23,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Check Commit Message
+      - name: Split Commit Message
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          echo "Commit Message: $COMMIT_MESSAGE"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          IFS=',' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
+          
+          # Set the second element as an environment variable
+          echo "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
 
       - name: Download blink Android keystore
         id: android_blink_keystore
@@ -104,7 +107,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-blink-release.apk
-          releaseNotes: "test note \n version :50 \n new in version : test"
+          releaseNotes: $SECOND_ELEMENT
     if: (contains(github.event.head_commit.message, 'blink') || contains(github.event.head_commit.message, 'all'))
 
 
@@ -121,10 +124,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Check Commit Message
+      - name: Split Commit Message
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          echo "Commit Message: $COMMIT_MESSAGE"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          IFS=',' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
+          
+          # Set the second element as an environment variable
+          echo "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
 
       - name: Download blink Android keystore
         id: android_blink_keystore
@@ -200,6 +206,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-unity-release.apk
+          releaseNotes: $SECOND_ELEMENT
     if: (contains(github.event.head_commit.message, 'unity')|| contains(github.event.head_commit.message, 'all'))
 
 

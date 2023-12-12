@@ -104,18 +104,21 @@ android {
     }*/
 
     signingConfigs {
+
         releaseProject1 {
             storePassword keystoreProperties1['storePassword']
             keyPassword keystoreProperties1['keyPassword']
             keyAlias keystoreProperties1['keyAlias']
             storeFile file(keystoreProperties1['storeFile'])
         }
+
         releaseProject2 {
             storePassword keystoreProperties2['storePassword']
             keyPassword keystoreProperties2['keyPassword']
             keyAlias keystoreProperties2['keyAlias']
             storeFile file(keystoreProperties2['storeFile'])
         }
+
         releaseProject3 {
             storePassword keystoreProperties3['storePassword']
             keyPassword keystoreProperties3['keyPassword']
