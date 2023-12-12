@@ -16,6 +16,7 @@ jobs:
     environment: hallo
     env:
       BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
+      SECOND_ELEMENT: ''
     steps:
       - uses: actions/checkout@v1
         # Make sure the @v0.8.0 matches the current version of the action
@@ -26,7 +27,7 @@ jobs:
       - name: Split Commit Message
         run: |
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          IFS=' ' read -ra COMMIT_WORDS <<< "${{ github.event.head_commit.message }}"
+          IFS=',' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
           
           # Set the second element as an environment variable
           echo "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
