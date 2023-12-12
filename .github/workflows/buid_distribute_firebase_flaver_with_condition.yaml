@@ -10,17 +10,74 @@ on:
       - develop
 name: "Build With Condition"
 jobs:
-#  starter-job:
-#    name: Set Configrations
-#    runs-on: ubuntu-latest
-#    environment: hallo
+  starter-job:
+    name: Set Configrations
+    runs-on: ubuntu-latest
+    environment: hallo
+    env:
+      BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
+    steps:
+      - name: Download blink Android keystore
+        id: android_blink_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: blink-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+
+      - name: Download unity Android keystore
+        id: android_unity_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: unity-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+
+      - name: Download sportico Android keystore
+        id: android_sportico_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: sportico-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+
+
+      - name: Create key.properties
+        run: |
+          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
+
+          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
+
+          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
+
+      - uses: actions/setup-java@v1
+        with:
+          distribution: 'zulu'
+          java-version: "12.x"
+          cache: gradle
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.16.1"
+          channel: 'stable'
+          cache: true
+
+      - name: Download firebase google services for blink
+        run: echo "$BLINK_FIREBASE" | base64 -d > android/app/src/blink/google-services.json
+
+
   build_blink:
     name: Build Blink
     runs-on: ubuntu-latest
     environment: hallo
     env:
       BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
-      SECOND_ELEMENT: ${'test read'}
+      SECOND_ELEMENT: 'test read'
     steps:
       - uses: actions/checkout@v1
         # Make sure the @v0.8.0 matches the current version of the action
@@ -110,7 +167,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-blink-release.apk
-          releaseNotes: "${SECOND_ELEMENT}"
+          releaseNotes: SECOND_ELEMENT
     if: (contains(github.event.head_commit.message, 'blink') || contains(github.event.head_commit.message, 'all'))
 
 
