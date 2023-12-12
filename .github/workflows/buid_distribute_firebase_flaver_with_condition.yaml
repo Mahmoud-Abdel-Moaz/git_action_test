@@ -300,7 +300,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-unity-release.apk
-          releaseNotes: "Unity Apk \n ${{ env.SERVER_WORK_ON }} \n ${{ env.RELEASE_NOTE }}"
+          releaseNotes: "Unity Apk ${{ env.SERVER_WORK_ON }} ${{ env.RELEASE_NOTE }}"
 
 
 
