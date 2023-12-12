@@ -35,6 +35,20 @@ jobs:
           fileName: blink-keystore.jks
           encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
 
+      - name: Download unity Android keystore
+        id: android_unity_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: unity-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+
+      - name: Download sportico Android keystore
+        id: android_sportico_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: sportico-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+
 
       - name: Create key.properties
         run: |
@@ -91,7 +105,7 @@ jobs:
           groups: testers
           file: build/app/outputs/flutter-apk/app-blink-release.apk
           releaseNotes: "test note \n version :50 \n new in version : test"
-    if: contains(github.event.head_commit.message, 'blink')
+    if: (contains(github.event.head_commit.message, 'blink') || contains(github.event.head_commit.message, 'all'))
 
 
 
@@ -186,7 +200,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-unity-release.apk
-    if: contains(github.event.head_commit.message, 'unity')
+    if: (contains(github.event.head_commit.message, 'unity')|| contains(github.event.head_commit.message, 'all'))
 
 
 
