@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build IOS"
 jobs:
   unity:
@@ -34,7 +34,10 @@ jobs:
           channel: 'stable'
           cache: true
       - name: Get dependencies
-        run: flutter pub get
+        run: |
+              if [[ contains(github.event.head_commit.message, 'error') ]]; then
+              flutter pub get          
+          exit 0
         #Install the Apple certificate and provisioning profile
       - name: Add Certificate File
         run: |
