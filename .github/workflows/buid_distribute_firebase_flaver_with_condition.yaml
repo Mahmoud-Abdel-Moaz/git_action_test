@@ -10,13 +10,17 @@ on:
       - develop
 name: "Build With Condition"
 jobs:
+#  starter-job:
+#    name: Set Configrations
+#    runs-on: ubuntu-latest
+#    environment: hallo
   build_blink:
     name: Build Blink
     runs-on: ubuntu-latest
     environment: hallo
     env:
       BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
-   #   SECOND_ELEMENT: ${''}
+      SECOND_ELEMENT: ${'test read'}
     steps:
       - uses: actions/checkout@v1
         # Make sure the @v0.8.0 matches the current version of the action
@@ -24,11 +28,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Split Commit Message
-        run: |
-          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          IFS=',' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
-          echo "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+#      - name: Split Commit Message
+#        run: |
+#          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+#          IFS=',' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
+#          echo "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
 
       - name: Download blink Android keystore
         id: android_blink_keystore
@@ -106,7 +110,7 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/flutter-apk/app-blink-release.apk
-          releaseNotes: "$SECOND_ELEMENT"
+          releaseNotes: "${SECOND_ELEMENT}"
     if: (contains(github.event.head_commit.message, 'blink') || contains(github.event.head_commit.message, 'all'))
 
 
