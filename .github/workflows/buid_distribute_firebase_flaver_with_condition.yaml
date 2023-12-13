@@ -78,7 +78,7 @@ jobs:
     environment: hallo
     env:
       BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
-    if: (contains(github.event.head_commit.message, 'blink') || contains(github.event.head_commit.message, 'all'))
+    if: (!contains(github.event.head_commit.message, 'ignore')&&(contains(github.event.head_commit.message, 'blink') || contains(github.event.head_commit.message, 'all')))
     steps:
       - uses: actions/checkout@v1
         # Make sure the @v0.8.0 matches the current version of the action
@@ -201,7 +201,7 @@ jobs:
     name: Build Unity
     runs-on: ubuntu-latest
     environment: hallo
-    if: (contains(github.event.head_commit.message, 'unity')|| contains(github.event.head_commit.message, 'all'))
+    if: (!contains(github.event.head_commit.message, 'ignore')&&(contains(github.event.head_commit.message, 'unity')|| contains(github.event.head_commit.message, 'all')))
     env:
       UNITY_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_UNITY}}
     steps:
