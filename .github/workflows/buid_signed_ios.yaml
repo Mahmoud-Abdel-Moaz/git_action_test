@@ -84,22 +84,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-#      - uses: webfactory/ssh-agent@v0.8.0
-#        with:
-#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-#
-#      - uses: subosito/flutter-action@v1
-#        with:
-#          flutter-version: "3.16.1"
-#          channel: 'stable'
-#          cache: true
-#      - name: Get dependencies
-#        run:  flutter pub get
-#        Install the Apple certificate and provisioning profile
-#      - name: Add Certificate File
-#        run: |
-#          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-#          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.16.1"
+          channel: 'stable'
+          cache: true
 
       - name: Add Profile File
         run: |
@@ -110,20 +99,6 @@ jobs:
         run: |
           EXPORT_OPTIONS_PATH="ios/Runner/ExportOptionsBlink.plist"
           echo -n "$EXPORT_OPTIONS_BASE64" | base64 -d > $EXPORT_OPTIONS_PATH
-
-#      - name: Create Keychain
-#        run: |
-#          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-#          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-#          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-#          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-#
-#      - name: Install the Apple certificate
-#        run: |
-#          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-#          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-#          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-#          security list-keychain -d user -s $KEYCHAIN_PATH
 
       - name: Install Apple Profile
         run: |
