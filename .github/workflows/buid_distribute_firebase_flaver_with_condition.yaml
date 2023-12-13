@@ -17,6 +17,13 @@ jobs:
     env:
       BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
     steps:
+
+      - uses: actions/checkout@v1
+        # Make sure the @v0.8.0 matches the current version of the action
+      - uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Download blink Android keystore
         id: android_blink_keystore
         uses: timheuer/base64-to-file@v1.0.3
