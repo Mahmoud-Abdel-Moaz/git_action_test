@@ -21,12 +21,27 @@ env:
 
 
 jobs:
+
+  initialize_build:
+    outputs:
+      CERTIFICATE_PATH: ${{ steps.cert.outputs.CERTIFICATE_PATH }}
+      steps:
+        - id: cert
+        - name: Add Certificate File
+          run: |
+             CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+             echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $$GITHUB_OUTPUT
+
+      
+
+
   build_blink:
     name: Build IOS - Blink
     runs-on: macos-latest
     environment: hallo
+    needs: initialize_build
     env:
-      BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+      BUILD_CERTIFICATE_BASE64: ${{ needs.initialize_build.outputs.CERTIFICATE_PATH}}
       P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
       BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
@@ -46,11 +61,11 @@ jobs:
           cache: true
       - name: Get dependencies
         run:  flutter pub get
-        #Install the Apple certificate and provisioning profile
-      - name: Add Certificate File
-        run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
+#        Install the Apple certificate and provisioning profile
+#      - name: Add Certificate File
+#        run: |
+#          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+#          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
 
       - name: Add Profile File
         run: |
