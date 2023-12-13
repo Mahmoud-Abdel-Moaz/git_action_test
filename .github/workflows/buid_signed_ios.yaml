@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build IOS"
 env:
   #      versions
@@ -24,30 +24,32 @@ jobs:
   initialize_build:
     name: Initialize Build
     runs-on: macos-latest
-    outputs:
-      CERTIFICATE_PATH: ${{ steps.cert.outputs.CERTIFICATE_PATH }}
+#    outputs:
+#      CERTIFICATE_PATH: ${{ steps.cert.outputs.CERTIFICATE_PATH }}
     env:
       P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      BUILD_CERTIFICATE_BASE64: ${secrets.BUILD_CERTIFICATE_BASE64}}
+
     steps:
       - uses: actions/checkout@v2
-      - uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#      - uses: webfactory/ssh-agent@v0.8.0
+#        with:
+#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#
+#      - uses: subosito/flutter-action@v1
+#        with:
+#          flutter-version: "3.16.1"
+#          channel: 'stable'
+#          cache: true
+#
+#      - name: Get dependencies
+#        run:  flutter pub get
 
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "3.16.1"
-          channel: 'stable'
-          cache: true
-
-      - name: Get dependencies
-        run:  flutter pub get
-
-      - id: cert #Add Certificate File
+      - name: Add Certificate File
         run: |
-           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-           echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $$GITHUB_OUTPUT
+            CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+            echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
 
       - name: Create Keychain
         run: |
@@ -109,19 +111,19 @@ jobs:
           EXPORT_OPTIONS_PATH="ios/Runner/ExportOptionsBlink.plist"
           echo -n "$EXPORT_OPTIONS_BASE64" | base64 -d > $EXPORT_OPTIONS_PATH
 
-      - name: Create Keychain
-        run: |
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-
-      - name: Install the Apple certificate
-        run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          security list-keychain -d user -s $KEYCHAIN_PATH
+#      - name: Create Keychain
+#        run: |
+#          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+#          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+#          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+#          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+#
+#      - name: Install the Apple certificate
+#        run: |
+#          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+#          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+#          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+#          security list-keychain -d user -s $KEYCHAIN_PATH
 
       - name: Install Apple Profile
         run: |
