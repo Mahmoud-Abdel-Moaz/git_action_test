@@ -26,12 +26,12 @@ jobs:
     runs-on: macos-latest
     outputs:
       CERTIFICATE_PATH: ${{ steps.cert.outputs.CERTIFICATE_PATH }}
-      steps:
-        - id: cert
-        - name: Add Certificate File
-          run: |
-             CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-             echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $$GITHUB_OUTPUT
+    steps:
+      - id: cert
+      - name: Add Certificate File
+        run: |
+           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+           echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $$GITHUB_OUTPUT
 
       
 
