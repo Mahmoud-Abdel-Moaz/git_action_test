@@ -90,7 +90,7 @@ jobs:
 #        run: |
 #          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
 #          IFS=',' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
-#          echo "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+#          echo  "SECOND_ELEMENT=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
 
       - name: Split Commit Message
         run: |
