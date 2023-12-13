@@ -21,8 +21,9 @@ env:
 
 
 jobs:
-
   initialize_build:
+    name: Initialize Build
+    runs-on: macos-latest
     outputs:
       CERTIFICATE_PATH: ${{ steps.cert.outputs.CERTIFICATE_PATH }}
       steps:
