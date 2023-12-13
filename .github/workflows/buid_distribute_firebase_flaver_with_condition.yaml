@@ -95,7 +95,7 @@ jobs:
       - name: Split Commit Message
         run: |
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          IFS= 'T' read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
+          IFS="T" read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
           echo "WORK_APPS=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
           echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
           echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
@@ -104,7 +104,7 @@ jobs:
       # blink
       - name: Get Release Note
         run: |
-          IFS= '-' read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
+          IFS="-" read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
           echo "RELEASE_NOTE=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
 
 #      # sportico
@@ -222,7 +222,7 @@ jobs:
       # unity
       - name: Get Release Note
         run: |
-          -
+          IFS="-" read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
           echo "RELEASE_NOTE=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
 
       - name: Download blink Android keystore
