@@ -47,7 +47,7 @@ jobs:
       - id: cert #Add Certificate File
         run: |
            CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-           echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $$GITHUB_OUTPUT
+           echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
 
       - name: Create Keychain
         run: |
