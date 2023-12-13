@@ -10,13 +10,108 @@ on:
       - develop
 name: "Build Android With Condition "
 jobs:
-#  starter-job:
-#    name: Set Configrations
-#    runs-on: ubuntu-latest
-#    environment: hallo
-#    env:
-#      BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
-#    steps:
+  starter-job:
+    name: Set Configrations
+    runs-on: ubuntu-latest
+    environment: hallo
+    env:
+      BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
+    if: (!contains(github.event.head_commit.message, 'ignore')&&contains(github.event.head_commit.message, 'android'))
+    steps:
+      - name: Download blink Android keystore
+        id: android_blink_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: blink-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+
+      - name: Download unity Android keystore
+        id: android_unity_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: unity-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+
+      - name: Download sportico Android keystore
+        id: android_sportico_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: sportico-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+
+
+      - name: Create key.properties
+        run: |
+          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
+
+          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
+
+          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
+
+      - uses: actions/setup-java@v1
+        with:
+          distribution: 'zulu'
+          java-version: "12.x"
+          cache: gradle
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.16.1"
+          channel: 'stable'
+          cache: true
+
+
+      - name: Download firebase google services for blink
+        run: echo "$BLINK_FIREBASE" | base64 -d > android/app/src/blink/google-services.json
+
+
+  build_blink:
+    name: Build Blink
+    runs-on: ubuntu-latest
+    environment: hallo
+    needs: starter-job
+    env:
+      BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
+    if: (!contains(github.event.head_commit.message, 'ignore')&&(contains(github.event.head_commit.message, 'androidBlink') || contains(github.event.head_commit.message, 'all')))
+    steps:
+      - uses: actions/checkout@v1
+        # Make sure the @v0.8.0 matches the current version of the action
+      - uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          #Comment Split
+      ############################
+
+      - name: Split Commit Message
+        run: |
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          IFS="T" read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
+          echo "WORK_APPS=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
+          echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+          echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
+          echo "RELEASE_ON=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
+
+      # blink
+      - name: Get Release Note
+        run: |
+          IFS="-" read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
+          echo "RELEASE_NOTE=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
+
+###########################
+
+
+          
+      
+
 #      - name: Download blink Android keystore
 #        id: android_blink_keystore
 #        uses: timheuer/base64-to-file@v1.0.3
@@ -55,99 +150,6 @@ jobs:
 #          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
 #          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
 #          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
-#
-#      - uses: actions/setup-java@v1
-#        with:
-#          distribution: 'zulu'
-#          java-version: "12.x"
-#          cache: gradle
-#      - uses: subosito/flutter-action@v1
-#        with:
-#          flutter-version: "3.16.1"
-#          channel: 'stable'
-#          cache: true
- #
-#
-#      - name: Download firebase google services for blink
-#        run: echo "$BLINK_FIREBASE" | base64 -d > android/app/src/blink/google-services.json
-
-
-  build_blink:
-    name: Build Blink
-    runs-on: ubuntu-latest
-    environment: hallo
-    env:
-      BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
-    if: (!contains(github.event.head_commit.message, 'ignore')&&(contains(github.event.head_commit.message, 'androidBlink') || contains(github.event.head_commit.message, 'all')))
-    steps:
-      - uses: actions/checkout@v1
-        # Make sure the @v0.8.0 matches the current version of the action
-      - uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-          #Comment Split
-      ###########################
-
-      - name: Split Commit Message
-        run: |
-          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          IFS="T" read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
-          echo "WORK_APPS=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
-          echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
-          echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
-          echo "RELEASE_ON=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
-
-      # blink
-      - name: Get Release Note
-        run: |
-          IFS="-" read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
-          echo "RELEASE_NOTE=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
-
-###########################
-
-
-          
-      
-
-      - name: Download blink Android keystore
-        id: android_blink_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: blink-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
-
-      - name: Download unity Android keystore
-        id: android_unity_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: unity-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
-
-      - name: Download sportico Android keystore
-        id: android_sportico_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: sportico-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
-
-
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
-          
-          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
-          
-          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
 
       - uses: actions/setup-java@v1
         with:
