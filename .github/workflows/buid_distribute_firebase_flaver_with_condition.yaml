@@ -89,7 +89,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
           #Comment Split
-      ###########################
+      ############################
 
       - name: Split Commit Message
         run: |
