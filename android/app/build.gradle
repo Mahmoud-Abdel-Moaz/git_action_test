@@ -51,7 +51,7 @@ if (keystorePropertiesFile3.exists()) {
 
 android {
     namespace "com.getaction.hello"
-    compileSdkVersion 33/*flutter.compileSdkVersion*/
+    compileSdkVersion 34/*flutter.compileSdkVersion*/
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -73,7 +73,7 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 30
-        targetSdkVersion 33/*flutter.targetSdkVersion*/
+        targetSdkVersion 34/*flutter.targetSdkVersion*/
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
