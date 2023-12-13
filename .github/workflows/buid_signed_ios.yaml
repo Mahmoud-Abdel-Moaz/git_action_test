@@ -165,6 +165,7 @@ jobs:
   build_unity:
     name: Build IOS - Unity
     runs-on: macos-latest
+    needs: initialize_build
     environment: unity
     env:
       BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
