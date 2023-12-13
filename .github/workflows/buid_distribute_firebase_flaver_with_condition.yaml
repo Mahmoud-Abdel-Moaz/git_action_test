@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build With Condition"
 jobs:
 #  starter-job:
@@ -156,7 +156,7 @@ jobs:
           cache: gradle
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "3.16.1"
+          flutter-version: "3.16.3"
           channel: 'stable'
           cache: true
 
@@ -271,7 +271,7 @@ jobs:
           cache: gradle
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "3.16.1"
+          flutter-version: "3.16.3"
           channel: 'stable'
           cache: true
       - name: Download firebase google services for unity
@@ -303,7 +303,7 @@ jobs:
           releaseNotes: "Unity Apk \n ${{ env.SERVER_WORK_ON }} \n ${{ env.RELEASE_NOTE }}"
 
   build_sportico :
-    name: Build Unity
+    name: Build Sportico
     runs-on: ubuntu-latest
     environment: hallo
     if: (!contains(github.event.head_commit.message, 'ignore')&&(contains(github.event.head_commit.message, 'sportico')|| contains(github.event.head_commit.message, 'all')))
@@ -374,11 +374,11 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           distribution: 'zulu'
-          java-version: "12.x"
+          java-version: "17"
           cache: gradle
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "3.16.1"
+          flutter-version: "3.16.3"
           channel: 'stable'
           cache: true
       - name: Download firebase google services for sportico
