@@ -193,7 +193,7 @@ jobs:
           groups: testers
           file: build/app/outputs/flutter-apk/app-blink-release.apk
           releaseNotes: "Blink Apk \n ${{ env.SERVER_WORK_ON }} \n ${{ env.RELEASE_NOTE }}"
-          #          releaseNotes: "${{ github.event.head_commit.message }}"
+          #          releaseNotes:  "${{ github.event.head_commit.message }}"
 
 
 
