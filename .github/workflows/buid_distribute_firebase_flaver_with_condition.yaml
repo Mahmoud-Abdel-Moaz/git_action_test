@@ -8,7 +8,7 @@ on:
       - main
       - master
       - develop
-name: "Build Android With Conditions "
+name: "Build Android With Condition "
 jobs:
 #  starter-job:
 #    name: Set Configrations
