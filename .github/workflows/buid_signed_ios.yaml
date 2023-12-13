@@ -28,8 +28,7 @@ jobs:
       CERTIFICATE_PATH: ${{ steps.cert.outputs.CERTIFICATE_PATH }}
     steps:
       - uses: actions/checkout@v2
-      - id: cert
-      - name: Add Certificate File
+      - id: cert #Add Certificate File
         run: |
            CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
            echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $$GITHUB_OUTPUT
