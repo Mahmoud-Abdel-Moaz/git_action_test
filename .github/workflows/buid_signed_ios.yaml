@@ -27,6 +27,7 @@ jobs:
     outputs:
       CERTIFICATE_PATH: ${{ steps.cert.outputs.CERTIFICATE_PATH }}
     steps:
+      - uses: actions/checkout@v2
       - id: cert
       - name: Add Certificate File
         run: |
