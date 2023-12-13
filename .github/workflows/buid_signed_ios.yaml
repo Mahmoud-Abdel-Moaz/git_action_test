@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build IOS"
 env:
   #      versions
@@ -26,6 +26,9 @@ jobs:
     runs-on: macos-latest
     outputs:
       CERTIFICATE_PATH: ${{ steps.cert.outputs.CERTIFICATE_PATH }}
+    env:
+      P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - uses: webfactory/ssh-agent@v0.8.0
@@ -46,8 +49,23 @@ jobs:
            CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
            echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $$GITHUB_OUTPUT
 
-      
+      - name: Create Keychain
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
+      - name: Install the Apple certificate
+        run: |
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+  
+  
+  
+  
 
   build_blink:
     name: Build IOS - Blink
