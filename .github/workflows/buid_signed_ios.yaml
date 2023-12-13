@@ -3,14 +3,25 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build IOS"
+env:
+  #      versions
+  BLINK_IOS_VERSION_NAME: "1.0.2+2"
+  BLINK_IOS_BUILD_NUMBER: "2"
+
+  UNITY_IOS_VERSION_NAME: "1.0.8+8"
+  UNITY_IOS_BUILD_NUMBER: "8"
+
+
+
+
 jobs:
-  unity:
+  build_blink:
     name: Build IOS - Blink
     runs-on: macos-latest
     environment: hallo
@@ -75,7 +86,7 @@ jobs:
         #Build
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
-        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptionsBlink.plist --flavor blink
+        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptionsBlink.plist --flavor blink --build-name=${{env.BLINK_IOS_VERSION_NAME}} --build-number=${{env.BLINK_IOS_BUILD_NUMBER}}
 
       # Collect the file and upload as artifact
       - name: collect ipa artifacts
@@ -103,7 +114,7 @@ jobs:
           rm ~/Library/MobileDevice/Provisioning\ Profiles/blink_ci.mobileprovision
           
 
-  build:
+  build_unity:
     name: Build IOS - Unity
     runs-on: macos-latest
     environment: unity
@@ -166,7 +177,8 @@ jobs:
         #Build
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
-        run: flutter build ipa --release --flavor unity --export-options-plist=ios/Runner/ExportOptionsUnity.plist
+        run: flutter build ipa --release --flavor unity --export-options-plist=ios/Runner/ExportOptionsUnity.plist --build-name=${{env.UNITY_IOS_VERSION_NAME}} --build-number=${{env.UNITY_IOS_BUILD_NUMBER}}
+
 
       # Collect the file and upload as artifact
       - name: collect ipa artifacts
