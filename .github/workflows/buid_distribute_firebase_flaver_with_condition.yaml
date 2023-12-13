@@ -154,6 +154,8 @@ jobs:
           distribution: 'zulu'
           java-version: "21.0.1"
           cache: gradle
+          check-latest: true
+
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: "3.16.3"
@@ -269,6 +271,8 @@ jobs:
           distribution: 'zulu'
           java-version: "21.0.1"
           cache: gradle
+          check-latest: true
+
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: "3.16.3"
@@ -376,6 +380,8 @@ jobs:
           distribution: 'zulu'
           java-version: "21.0.1"
           cache: gradle
+          check-latest: true
+
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: "3.16.3"
