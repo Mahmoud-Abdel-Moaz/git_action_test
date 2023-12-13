@@ -107,7 +107,7 @@ jobs:
           IFS="-" read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
           echo "RELEASE_NOTE=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
 
-#      # sportico
+#      # c sportico
 #      - name: Get Release Note
 #        run: |
 #          IFS='----' read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
