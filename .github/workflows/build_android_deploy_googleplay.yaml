@@ -8,7 +8,7 @@ on:
       - main
       - master
       - develop
-name: "Build & Deploy app on google play"
+name: "Build & Deploy app to google play"
 jobs:
   build:
     name: Build & Deploy app on google play
