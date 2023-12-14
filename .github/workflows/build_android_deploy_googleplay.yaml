@@ -29,6 +29,20 @@ jobs:
           fileName: blink-keystore.jks
           encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
 
+      - name: Download unity Android keystore
+        id: android_unity_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: unity-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+
+      - name: Download sportico Android keystore
+        id: android_sportico_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: sportico-keystore.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+
 
       - name: Create key.properties
         run: |
@@ -36,6 +50,16 @@ jobs:
           echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
+
+          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
+
+          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
+          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
 
       - uses: actions/setup-java@v1
         with:
