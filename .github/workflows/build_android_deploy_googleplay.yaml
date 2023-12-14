@@ -91,7 +91,7 @@ jobs:
           serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
           packageName: com.getaction.hello
           releaseFiles: build/app/outputs/bundle/blinkRelease/app-blink-release.aab
-          track: production
+          track: internal
           status: halted
 
 
@@ -100,6 +100,7 @@ jobs:
 
 
 #Status 'inProgress' requires a 'userFraction' to be set
+#Status 'halted' requires a 'userFraction' to be set
 #Only releases with status draft may be created on draft app.
 
 
