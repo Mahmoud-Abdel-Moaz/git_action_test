@@ -92,7 +92,7 @@ jobs:
           packageName: com.getaction.hello
           releaseFiles: build/app/outputs/bundle/blinkRelease/app-blink-release.aab
           track: internal
-          status: halted
+          status: completed
 
 
 #          track: production

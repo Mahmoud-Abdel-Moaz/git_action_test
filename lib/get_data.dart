@@ -18,3 +18,7 @@ Future<UserData> getData() async {
     rethrow;
   }
 }
+
+int addNumbers(int a, int b) {
+  return a + b;
+}
