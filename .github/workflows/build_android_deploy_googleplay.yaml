@@ -92,12 +92,11 @@ jobs:
           packageName: com.getaction.hello
           releaseFiles: build/app/outputs/bundle/blinkRelease/app-blink-release.aab
           track: production
-          status: completed
+          status: draft
 
 
 #Status 'inProgress' requires a 'userFraction' to be set
-
-
+#Only releases with status draft may be created on draft app.
 
 
 
