@@ -93,6 +93,7 @@ jobs:
           releaseFiles: build/app/outputs/bundle/blinkRelease/app-blink-release.aab
           track: internal
           status: completed
+          changesNotSentForReview: true
 
 
 #          track: production
