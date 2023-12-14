@@ -147,7 +147,7 @@ android {
         blink {
             dimension "app"
             applicationId "com.getaction.hello"
-            versionCode 320
+            versionCode 321
             versionName "2.1.36"
             signingConfig signingConfigs.releaseProject1
         }
