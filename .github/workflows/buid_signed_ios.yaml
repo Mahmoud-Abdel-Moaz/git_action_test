@@ -3,18 +3,18 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build IOS"
 env:
   #      versions
-  BLINK_IOS_VERSION_NAME: "1.0.0+3"
+  BLINK_IOS_VERSION_NAME: "1.0.3"
   BLINK_IOS_BUILD_NUMBER: "3"
 
-  UNITY_IOS_VERSION_NAME: "1.0.0+9"
+  UNITY_IOS_VERSION_NAME: "1.0.9"
   UNITY_IOS_BUILD_NUMBER: "9"
 
 
@@ -205,3 +205,57 @@ jobs:
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/unity_ci.mobileprovision
           
+
+
+  teas_name:
+    name: Test File Name
+    runs-on: macos-latest
+#    if: (contains(github.event.head_commit.message, 'test file name'))
+    steps:
+      - uses: actions/checkout@v2
+
+      # Collect the file and upload as artifact
+      - name: collect ipa artifacts
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: release-ipa
+          path: test_name/"bl:nk.ipa"
+#
+#      # Collect the file and upload as artifact
+#      - name: collect ipa artifacts
+#        uses: actions/upload-artifact@v2
+#        if: ${{ always() }}
+#        with:
+#          name: release-ipa
+#          path: "test_name/bl\/nk.ipa"
+
+
+      - name: List IPA files
+        if: ${{ always() }}
+        run: ls  test_name/*.ipa
+
+      - name: Collect IPA artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-ipa
+          path: $(ls test_name/*.ipa)
+
+
+      # Collect the file and upload as artifact
+      - name: collect ipa artifacts
+        if: ${{ always() }}
+        run: ls test_name
+
+
+#     - name: Perform actions on IPA files
+#       if: ${{ always() }}
+#       run: |
+#          # Iterate over each found .ipa file and perform actions (replace this with your actual actions)
+#          IFS=$'\n' # Set Internal Field Separator to newline
+#          for ipa_file in $ipa_files; do
+#            # Perform actions on each IPA file, e.g., move, copy, or process them
+#            echo "Processing $ipa_file"
+#            # Add your actions here
+#          done
