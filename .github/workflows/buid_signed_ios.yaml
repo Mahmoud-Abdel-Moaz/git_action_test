@@ -14,7 +14,7 @@ env:
   BLINK_IOS_VERSION_NAME: "1.0.3"
   BLINK_IOS_BUILD_NUMBER: "3"
 
-  UNITY_IOS_VERSION_NAME: "1.0.9"
+  UNITY_IOS_VERSION_NAME: "1.0.0+9"
   UNITY_IOS_BUILD_NUMBER: "9"
 
 
@@ -121,7 +121,7 @@ jobs:
     env:
       BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
       P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
-      BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+      BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.IOS_UPLOAD_EXPORT_OPTIONS_BASE64 }}
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
       EXPORT_OPTIONS_BASE64: ${{ secrets.IOS_EXPORT_OPTIONS_BASE64 }}
     if: (!contains(github.event.head_commit.message, 'ignore')&& contains(github.event.head_commit.message, 'ios unity') || contains(github.event.head_commit.message, 'all'))
@@ -180,22 +180,22 @@ jobs:
         run: flutter build ipa --release --flavor unity --export-options-plist=ios/Runner/ExportOptionsUnity.plist --build-name=${{env.UNITY_IOS_VERSION_NAME}} --build-number=${{env.UNITY_IOS_BUILD_NUMBER}}
 
 
-      # Collect the file and upload as artifact
-      - name: collect ipa artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-ipa
-          # Path to the release files
-          path: build/ios/ipa/Unity.ipa
-
-
-      - name:  Deploy to App Store  (Testflight)
-        uses: apple-actions/upload-testflight-build@v1
-        with:
-          app-path: build/ios/ipa/Unity.ipa
-          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          api-key-id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
-          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
+#      # Collect the file and upload as artifact
+#      - name: collect ipa artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: release-ipa
+#          # Path to the release files
+#          path: build/ios/ipa/Unity.ipa
+#
+#
+#      - name:  Deploy to App Store  (Testflight)
+#        uses: apple-actions/upload-testflight-build@v1
+#        with:
+#          app-path: build/ios/ipa/Unity.ipa
+#          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+#          api-key-id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+#          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
 
 
       #Clean up keychain and provisioning profile
@@ -206,21 +206,21 @@ jobs:
           rm ~/Library/MobileDevice/Provisioning\ Profiles/unity_ci.mobileprovision
           
 
-
-  teas_name:
-    name: Test File Name
-    runs-on: macos-latest
-#    if: (contains(github.event.head_commit.message, 'test file name'))
-    steps:
-      - uses: actions/checkout@v2
-
-      # Collect the file and upload as artifact
-      - name: collect ipa artifacts
-        uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: release-ipa
-          path: test_name/"bl:nk.ipa"
+#
+#  teas_name:
+#    name: Test File Name
+#    runs-on: macos-latest
+##    if: (contains(github.event.head_commit.message, 'test file name'))
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      # Collect the file and upload as artifact
+#      - name: collect ipa artifacts
+#        uses: actions/upload-artifact@v2
+#        if: ${{ always() }}
+#        with:
+#          name: release-ipa
+#          path: test_name/"bl:nk.ipa"
 #
 #      # Collect the file and upload as artifact
 #      - name: collect ipa artifacts
@@ -231,22 +231,22 @@ jobs:
 #          path: "test_name/bl\/nk.ipa"
 
 
-      - name: List IPA files
-        if: ${{ always() }}
-        run: ls  test_name/*.ipa
-
-      - name: Collect IPA artifact
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-ipa
-          path: $(ls test_name/*.ipa)
-
-
-      # Collect the file and upload as artifact
-      - name: collect ipa artifacts
-        if: ${{ always() }}
-        run: ls test_name
+#      - name: List IPA files
+#        if: ${{ always() }}
+#        run: ls  test_name/*.ipa
+#
+#      - name: Collect IPA artifact
+#        if: ${{ always() }}
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: release-ipa
+#          path: $(ls test_name/*.ipa)
+#
+#
+#      # Collect the file and upload as artifact
+#      - name: collect ipa artifacts
+#        if: ${{ always() }}
+#        run: ls test_name
 
 
 #     - name: Perform actions on IPA files
