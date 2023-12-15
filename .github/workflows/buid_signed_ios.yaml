@@ -11,10 +11,10 @@ on:
 name: "Build IOS"
 env:
   #      versions
-  BLINK_IOS_VERSION_NAME: "1.0.0+3"
+  BLINK_IOS_VERSION_NAME: "1.0.3"
   BLINK_IOS_BUILD_NUMBER: "3"
 
-  UNITY_IOS_VERSION_NAME: "1.0.0+9"
+  UNITY_IOS_VERSION_NAME: "1.0.9"
   UNITY_IOS_BUILD_NUMBER: "9"
 
 
@@ -205,3 +205,23 @@ jobs:
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/unity_ci.mobileprovision
           
+
+
+  teas_name:
+    name: Test File Name
+    runs-on: macos-latest
+    if: (contains(github.event.head_commit.message, 'test file name'))
+    steps:
+      - uses: actions/checkout@v2
+
+      # Collect the file and upload as artifact
+      - name: collect ipa artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-ipa
+          # Path to the release files
+          path: test_name/bl/nk.ipa
+
+
+
+
