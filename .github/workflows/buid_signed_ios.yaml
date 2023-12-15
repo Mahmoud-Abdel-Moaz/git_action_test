@@ -121,9 +121,9 @@ jobs:
     env:
       BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
       P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
-      BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.IOS_UPLOAD_EXPORT_OPTIONS_BASE64 }}
+      BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 } }
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-      EXPORT_OPTIONS_BASE64: ${{ secrets.IOS_EXPORT_OPTIONS_BASE64 }}
+      EXPORT_OPTIONS_BASE64: ${{ secrets.IOS_UPLOAD_EXPORT_OPTIONS_BASE64 }}  #IOS_UPLOAD_EXPORT_OPTIONS_BASE64
     if: (!contains(github.event.head_commit.message, 'ignore')&& contains(github.event.head_commit.message, 'ios unity') || contains(github.event.head_commit.message, 'all'))
     steps:
       - uses: actions/checkout@v2
@@ -174,6 +174,7 @@ jobs:
           PP_PATH=$RUNNER_TEMP/unity_ci.mobileprovision
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+        #Build
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
         run: flutter build ipa --release --flavor unity --export-options-plist=ios/Runner/ExportOptionsUnity.plist --build-name=${{env.UNITY_IOS_VERSION_NAME}} --build-number=${{env.UNITY_IOS_BUILD_NUMBER}}
