@@ -220,7 +220,7 @@ jobs:
         if: ${{ always() }}
         with:
           name: release-ipa
-          path: test_name/bl:nk.ipa
+          path: test_name/"bl:nk.ipa"
 #
 #      # Collect the file and upload as artifact
 #      - name: collect ipa artifacts
@@ -232,9 +232,11 @@ jobs:
 
 
       - name: List IPA files
+        if: ${{ always() }}
         run: ls  test_name/*.ipa
 
       - name: Collect IPA artifact
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: release-ipa
