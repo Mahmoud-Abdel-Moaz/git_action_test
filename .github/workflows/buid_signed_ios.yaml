@@ -214,22 +214,22 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # Collect the file and upload as artifact
-      - name: collect ipa artifacts
-        uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: release-ipa
-          path: "test_name/bl//nk.ipa"
-
-
-      # Collect the file and upload as artifact
-      - name: collect ipa artifacts
-        uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: release-ipa
-          path: "test_name/bl\/nk.ipa"
+#      # Collect the file and upload as artifact
+#      - name: collect ipa artifacts
+#        uses: actions/upload-artifact@v2
+#        if: ${{ always() }}
+#        with:
+#          name: release-ipa
+#          path: "test_name/bl//nk.ipa"
+#
+#
+#      # Collect the file and upload as artifact
+#      - name: collect ipa artifacts
+#        uses: actions/upload-artifact@v2
+#        if: ${{ always() }}
+#        with:
+#          name: release-ipa
+#          path: "test_name/bl\/nk.ipa"
 
 
       - name: List IPA files
