@@ -174,7 +174,6 @@ jobs:
           PP_PATH=$RUNNER_TEMP/unity_ci.mobileprovision
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-        #Build
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
         run: flutter build ipa --release --flavor unity --export-options-plist=ios/Runner/ExportOptionsUnity.plist --build-name=${{env.UNITY_IOS_VERSION_NAME}} --build-number=${{env.UNITY_IOS_BUILD_NUMBER}}
