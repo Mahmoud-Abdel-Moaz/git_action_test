@@ -219,7 +219,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: release-ipa
-          path: test_name/"blink.ipa"
+          path: test_name/blink.ipa
 
 
 #      # Collect the file and upload as artifact
