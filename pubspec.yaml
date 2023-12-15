@@ -41,76 +41,7 @@ dependencies:
   firebase_core: ^2.22.0
   http: ^1.1.0
   http_certificate_pinning: ^2.1.3
-  page_transition: ^2.1.0
-  animated_widgets: ^1.1.0
-  confetti: ^0.7.0
-  photo_view: ^0.14.0
-  extended_image: ^8.2.0
-  rounded_loading_button: ^2.1.0
-  skeleton_animation: ^0.1.4
-  flutter_slidable: ^3.0.0
-  flutter_swipe_action_cell: ^3.1.2
-  screen_brightness: ^0.2.2+1
-  scroll_to_index: ^3.0.1
-  grouped_list: ^5.1.2
-  lottie: ^2.6.0
-  flutter_svg: ^2.0.7
-  cached_network_image: ^3.3.0
-  video_player: ^2.7.2
-  flutter_rating_bar: ^4.0.1
- # flutter_pdfview: ^1.2.7
-  fl_country_code_picker: ^0.1.5
-  flutter_widget_from_html: ^0.14.3
-#  pinput: ^3.0.1
-#  intl: ^0.18.1
-#  image_picker: ^1.0.4
-#  image_cropper: ^5.0.0
-#  qr_flutter: ^4.1.0
-#  qr_code_scanner: ^1.0.1
-#  fluttertoast: ^8.2.2
-#  shared_preferences: ^2.2.1
-#  url_launcher: ^6.1.14
-#  map_launcher: ^3.0.1
-#  linkwell: ^2.0.6
-#  readmore: ^2.2.0
-#  flutter_app_badger: ^1.5.0
-#  internet_connection_checker: ^1.0.0+1
-#  path_provider: ^2.1.1
-#  notification_permissions: ^0.6.1
-#  permission_handler: ^11.0.0
-#  app_settings: ^5.1.1
-#  eraser: ^2.0.1
-#  device_info_plus: ^9.0.3
-#  sms_autofill: ^2.2.0
-#  dart_countries: ^3.0.3
-#  flutter_keyboard_visibility: ^5.4.1
-#  local_auth: ^2.1.7
-#  flutter_secure_storage: ^9.0.0
-#  connectivity_plus: ^5.0.1
-#  mime: ^1.0.4
-  file_saver: ^0.2.9
-#  solid_bottom_sheet: ^0.1.10
-#  bottom_inset_observer: ^3.1.0
-#  flutter_week_view: ^1.3.0
-#  table_calendar: ^3.0.9
-#  checkbox_grouped: ^2.0.0
-#  webview_flutter: ^4.4.0
-#  webview_flutter_wkwebview: 3.9.4
-#  google_maps_flutter: ^2.5.0
-#  location: ^5.0.3
-#  flutter_google_maps_webservices: ^1.1.1
-#  jose: ^0.3.4
-#  logger: ^2.0.2+1
-#  get: ^4.6.6
-#  provider: ^6.0.5
-#  flutter_bloc: ^8.1.3
-#  hydrated_bloc: ^9.1.2
 
-  # store_redirect: ^2.0.1
-  #  package_info_plus: ^5.0.1
-  #launch_review: ^3.0.1
-  #geocoding: ^2.1.0
-  # vibration: ^1.8.2
 
 dev_dependencies:
   flutter_test:
