@@ -210,7 +210,7 @@ jobs:
   teas_name:
     name: Test File Name
     runs-on: macos-latest
-    if: (contains(github.event.head_commit.message, 'test file name'))
+#    if: (contains(github.event.head_commit.message, 'test file name'))
     steps:
       - uses: actions/checkout@v2
 
@@ -219,8 +219,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: release-ipa
-          # Path to the release files
-          path: test_name/bl/nk.ipa
+          path: test_name/"bl/nk.ipa"
 
 
 
