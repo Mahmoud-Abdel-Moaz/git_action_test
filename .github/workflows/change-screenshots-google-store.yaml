@@ -27,6 +27,7 @@ jobs:
           echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > android/play-store-credentials.json
           cd android
           fastlane supply init
+          fastlane supply --skip_upload_changelogs true
           
 
         #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
