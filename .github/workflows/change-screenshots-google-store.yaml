@@ -1,17 +1,17 @@
 name: Deploy Screenshots to Google Play
 on:
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tags'
-  push:
-    branches:
-      - main
-      - master # change this if your main branch has a different name
+#    inputs:
+#      logLevel:
+#        description: 'Log level'
+#        required: true
+#        default: 'warning'
+#      tags:
+#        description: 'Test scenario tags'
+#  push:
+#    branches:
+#      - main
+#      - master # change this if your main branch has a different name
 
 jobs:
   release:
@@ -45,3 +45,6 @@ jobs:
         #fastlane supply init
         #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
         #fastlane supply --metadata_path fastlane/metadata/android --json_key json/key.json --skip_upload_changelogs true
+
+
+        #workflow id  =>  change-screenshots-google-store
