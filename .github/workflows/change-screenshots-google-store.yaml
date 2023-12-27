@@ -26,9 +26,8 @@ jobs:
           mkdir json
           echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > android/play-store-credentials.json
           cd android
-          fastlane supply init
           fastlane supply --skip_upload_changelogs true
           
-
+        #fastlane supply init
         #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
         #fastlane supply --metadata_path fastlane/metadata/android --json_key json/key.json --skip_upload_changelogs true
