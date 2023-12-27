@@ -1,9 +1,17 @@
 name: Deploy Screenshots to Google Play
 on:
-  push:
-    branches:
-      - main
-      - master # change this if your main branch has a different name
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test scenario tags'
+#  push:
+#    branches:
+#      - main
+#      - master # change this if your main branch has a different name
 
 jobs:
   release:
@@ -12,6 +20,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+
+      - name: printInputs
+        run: |
+          echo "Log level: ${{ github.event.inputs.logLevel }}"
+          echo "Tags: ${{ github.event.inputs.tags }}" 
+        
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
