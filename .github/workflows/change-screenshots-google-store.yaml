@@ -1,0 +1,32 @@
+name: Deploy Screenshots to Google Play
+on:
+  push:
+    branches:
+      - main
+      - master # change this if your main branch has a different name
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+#      - name: Install Fastlane
+#        run: gem install fastlane
+
+      - name: Deploy Screenshots to Google Play
+        run: |
+          mkdir json
+          echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > android/play-store-credentials.json
+          cd android
+          fastlane supply init
+          
+
+        #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
+        #fastlane supply --metadata_path fastlane/metadata/android --json_key json/key.json --skip_upload_changelogs true
