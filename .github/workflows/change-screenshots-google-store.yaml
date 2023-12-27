@@ -8,10 +8,10 @@ on:
         default: 'warning'
       tags:
         description: 'Test scenario tags'
-#  push:
-#    branches:
-#      - main
-#      - master # change this if your main branch has a different name
+  push:
+    branches:
+      - main
+      - master # change this if your main branch has a different name
 
 jobs:
   release:
