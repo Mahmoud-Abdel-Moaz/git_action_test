@@ -26,7 +26,7 @@ jobs:
       run: |
         fastlane run latest_testflight_build_number \
         app_identifier:"com.nxt.ci" \
-         --api_key "
+         api_key:"
         {
             \"key\": \"${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}\",
             \"key_id\": \"${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}\",
