@@ -25,9 +25,6 @@ jobs:
 #        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
       run: |
         fastlane run latest_testflight_build_number \
-#        username:"${{ secrets.APPSTORE_USERNAME }}" \
-#        team_name:"Hussein Reda" \
-#        team_id:"126599802" \
         app_identifier:"com.nxt.ci" \
          --api_key "
         {
@@ -37,3 +34,10 @@ jobs:
         }
          "
         
+
+
+#  fastlane run latest_testflight_build_number \
+#  username:"${{ secrets.APPSTORE_USERNAME }}" \
+#  team_name:"Hussein Reda" \
+#  team_id:"126599802" \
+#
