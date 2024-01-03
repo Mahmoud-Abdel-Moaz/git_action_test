@@ -20,13 +20,9 @@ jobs:
       run: gem install fastlane
 
     - name: Get latest TestFlight build number
-      run: fastlane run latest_testflight_build_number
-      env:
-        APP_IDENTIFIER: "com.nxt.ci"
-        USERNAME: "pro.hussein.reda@gmail.com"
-        TEAM_ID: "QR29L6XWT3"
-        TEAM_NAME: "Hussein Reda"
-#        APP_IDENTIFIER: "your.app.identifier"
-#        USERNAME: ${{ secrets.APPSTORE_USERNAME }}
-#        TEAM_ID: ${{ secrets.APPSTORE_TEAM_ID }}
-#        BUNDLE_ID: ${{ secrets.APPSTORE_BUNDLE_ID }}
+      run: |
+        fastlane run latest_testflight_build_number \
+        username:"pro.hussein.reda@gmail.com" \
+        team_name:"Hussein Reda" \ 
+        team_id:"126599802" \
+        app_identifier:"com.nxt.ci"
