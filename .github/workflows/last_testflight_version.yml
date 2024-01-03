@@ -27,10 +27,9 @@ jobs:
 
     - name: Get latest TestFlight build number
       if: ${{ always() }}
-
-      #      env:
-#        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
-#        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
+      env:
+        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
+        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
       run: |
         fastlane run latest_testflight_build_number \
         app_identifier:"com.nxt.ci" \
@@ -48,10 +47,9 @@ jobs:
 
     - name: Get latest TestFlight build number
       if: ${{ always() }}
-
-      #      env:
-      #        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
-      #        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
+      env:
+        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
+        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
       run: |
         fastlane run latest_testflight_build_number \
         app_identifier:"com.nxt.ci" \
