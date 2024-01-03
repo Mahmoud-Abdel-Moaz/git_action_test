@@ -1,0 +1,11 @@
+{
+  "blink": {
+    "VERSION_NAME": "1.0.3",
+    "BUILD_NUMBER": "3"
+  },
+
+  "unity": {
+    "VERSION_NAME": "1.0.0.10",
+    "BUILD_NUMBER": "10"
+  }
+}
