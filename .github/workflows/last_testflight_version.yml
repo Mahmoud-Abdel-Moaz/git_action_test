@@ -20,9 +20,13 @@ jobs:
       run: gem install fastlane
 
     - name: Get latest TestFlight build number
+      env:
+        FASTLANE_USER: "pro.hussein.reda@gmail.com"
+        FASTLANE_PASSWORD: "xx"
       run: |
         fastlane run latest_testflight_build_number \
         username:"pro.hussein.reda@gmail.com" \
         team_name:"Hussein Reda" \ 
         team_id:"126599802" \
         app_identifier:"com.nxt.ci"
+        
