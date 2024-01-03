@@ -42,7 +42,7 @@ jobs:
     - name: Create App store json
       if: ${{ always() }}
       run: |
-        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}", "key": "  -----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgcflv+5BltPCFHzpD\nz5wfS+rCmoXzvIaBakAni+XUPU+gCgYIKoZIzj0DAQehRANCAARWWdou7iRZbbe7\n0REBr3SZNRNwNzpnmGlnepNFGiUgZ21+/Gdg2lYHN/0H+L/t9X8CExqyFEFD7Ylu\nfH4SVTwj\n-----END PRIVATE KEY-----" , "in_house": false } ' > api_key.json
+        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}", "key": "  -----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgcflv+5BltPCFHzpDz5wfS+rCmoXzvIaBakAni+XUPU+gCgYIKoZIzj0DAQehRANCAARWWdou7iRZbbe70REBr3SZNRNwNzpnmGlnepNFGiUgZ21+/Gdg2lYHN/0H+L/t9X8CExqyFEFD7YlufH4SVTwj\n-----END PRIVATE KEY-----" , "in_house": false } ' > api_key.json
 
     - name: Get latest TestFlight build number
       if: ${{ always() }}
