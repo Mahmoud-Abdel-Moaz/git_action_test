@@ -21,11 +21,11 @@ jobs:
 
     - name: Get latest TestFlight build number
       env:
-        FASTLANE_USER: "pro.hussein.reda@gmail.com"
-        FASTLANE_PASSWORD: "xx"
+        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
+        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
       run: |
         fastlane run latest_testflight_build_number \
-        username:"pro.hussein.reda@gmail.com" \
+        username:"${{ secrets.APPSTORE_USERNAME }}" \
         team_name:"Hussein Reda" \ 
         team_id:"126599802" \
         app_identifier:"com.nxt.ci"
