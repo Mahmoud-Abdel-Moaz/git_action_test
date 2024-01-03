@@ -27,15 +27,12 @@ jobs:
 
     - name: Get latest TestFlight build number
       if: ${{ always() }}
-      env:
-        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
-        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
+#      env:
+#        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
+#        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
       run: |
         fastlane run latest_testflight_build_number \
         app_identifier:"com.nxt.ci" \
-        username:"pro.hussein.reda@gmail.com"  \
-        team_name:"Hussein Reda"\
-        team_id "126599802" \ 
         api_key_path:"api_key.json"
 
 
@@ -47,18 +44,21 @@ jobs:
 
     - name: Get latest TestFlight build number
       if: ${{ always() }}
-      env:
-        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
-        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
+#      env:
+#        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
+#        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
       run: |
         fastlane run latest_testflight_build_number \
         app_identifier:"com.nxt.ci" \
-        username:"pro.hussein.reda@gmail.com"  \
-        team_name:"Hussein Reda"\
-        team_id "126599802" \ 
         api_key_path:"api_key.json"
 
 
+#  fastlane run latest_testflight_build_number \
+#  app_identifier:"com.nxt.ci" \
+#  username:"pro.hussein.reda@gmail.com"  \
+#  team_name:"Hussein Reda"\
+#  team_id "126599802" \
+#  api_key_path:"api_key.json"
 
 
 
