@@ -28,5 +28,12 @@ jobs:
         username:"${{ secrets.APPSTORE_USERNAME }}" \
         team_name:"Hussein Reda" \ 
         team_id:"126599802" \
-        app_identifier:"com.nxt.ci"
+        app_identifier:"com.nxt.ci" \
+         --api_key "
+        {
+            \"key\": \"${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}\",
+            \"key_id\": \"${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}\",
+            \"issuer_id\": \"${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}\"
+        }
+         "
         
