@@ -16,6 +16,11 @@ jobs:
       with:
         ruby-version: 2.7.0
 
+    - name: Create App store json
+      run: |
+        echo '${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}' > api_private_key.p8
+        echo "{\"key_id\": \'${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}\',\"issuer_id\": \'${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}\',\"key_filepath\": \"api_private_key.p8\"} " > api_key.json
+
     - name: Install Fastlane
       run: gem install fastlane
 
@@ -26,13 +31,14 @@ jobs:
       run: |
         fastlane run latest_testflight_build_number \
         app_identifier:"com.nxt.ci" \
-         api_key:"
-        {
-            \"key\": \"${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}\",
-            \"key_id\": \"${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}\",
-            \"issuer_id\": \"${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}\"
-        }
-         "
+        api_key_path:"api_key.json.json"
+#         api_key:"
+#        {
+#            \"key\": \"${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}\",
+#            \"key_id\": \"${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}\",
+#            \"issuer_id\": \"${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}\"
+#        }
+#         "
         
 
 
