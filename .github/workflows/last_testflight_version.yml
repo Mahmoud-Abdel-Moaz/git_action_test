@@ -38,18 +38,22 @@ jobs:
 #        api_key_path:"api_key.json"
 
 
+
+
+
     - name: Get latest TestFlight build number
       id: testflight   # Add an ID for this step
       run: |
-        version=$(fastlane run latest_testflight_build_number \
-        app_identifier:"com.nxt.ci" \
-        api_key_path:"api_key.json" )
-        echo "::set-output name=buildnumber::$version"   # set the output
-        echo "The latest TestFlight build number is ${{ steps.testflight.outputs.buildnumber }}"
+        echo "::set-output name=build_number::$(bundle exec fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep -o '[0-9]\+')"
 
+#        version=$(fastlane run latest_testflight_build_number \
+#        app_identifier:"com.nxt.ci" \
+#        api_key_path:"api_key.json" \
+#        | awk '/[RESULT]/ {print $2}') # parse the output to get the build number
+#        echo "::set-output name=buildnumber::$version"   # set the output
 
-    - name: print result
-      run:  echo "The latest TestFlight build number is ${{ steps.testflight.outputs.buildnumber }}"
+    - name: Another step
+      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number }}"
 
 
 
