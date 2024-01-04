@@ -17,12 +17,12 @@ jobs:
         ruby-version: 2.7.0
 
 
-#    - name: Install Fastlane
-#      run: gem install fastlane
-#
-#
-#    - name: Create App store json
-#      run:  echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > api_key.json
+    - name: Install Fastlane
+      run: gem install fastlane
+
+
+    - name: Create App store json
+      run:  echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > api_key.json
 
 #      # Collect the file and upload as artifact
 #    - name: collect ipa artifacts
