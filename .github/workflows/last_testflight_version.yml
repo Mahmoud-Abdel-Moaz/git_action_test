@@ -47,45 +47,30 @@ jobs:
 
 
 
-
     - name: Get latest TestFlight build number
       id: testflight
       run: |
-        # Replace the following line with the actual command to retrieve the latest build number
-        latest_build_number=$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Result: " | awk '{print $3}')
-        
-        # Increment the build number by 1
-        incremented_build_number=$((latest_build_number + 1))
-        
-        echo "::set-output name=build_number::${incremented_build_number}"
+        echo "::set-output name=build_number::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Result: " | awk '{print $3}'  )"
+
 
     - name: Print Build Number
-      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number }}"
+      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number}} "
 
-#    - name: Get latest TestFlight build number
-#      id: testflight
-#      run: |
-#        echo "::set-output name=build_number::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Result: " | awk '{print $3}'  )"
-#
-#
-#    - name: Print Build Number
-#      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number}} "
-#
-#
-#    - name: Convert string to number
-#      id: convert
-#      run: |
-#        num_str="${{steps.testflight.outputs.build_number}}"
-#        num_val=$((10#${num_str}))
-#        echo "::set-output name=num_val::${num_val}"
-#
-#    - name: Use the number
-#      run: |
-#        INCREMENTED_NUMBER=$(expr ${{  steps.convert.outputs.num_val }} + 1)
-#         echo "${{ steps.convert.outputs.num_val }}"
-#         echo "${INCREMENTED_NUMBER}"
-#
-#
+
+    - name: Convert string to number
+      id: convert
+      run: |
+        num_str="${{steps.testflight.outputs.build_number}}"
+        num_val=$((10#${num_str}))
+        echo "::set-output name=num_val::${num_val}"
+
+    - name: Use the number
+      run: |
+         INCREMENTED_NUMBER=$(expr ${{steps.testflight.outputs.build_number}} + 1)
+         echo "${{steps.testflight.outputs.build_number}}"
+         echo "${INCREMENTED_NUMBER}"
+
+
 
 #    - name: Convert string to number
 #      id: convert
