@@ -11,57 +11,35 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.0
 
 
-    - name: Set up environment
-      run: echo "MY_VAR=" >> $GITHUB_ENV
+    - name: Install Fastlane
+      run: gem install fastlane
 
-    - name: Read multi-line secret and concatenate
+
+    - name: Create App store json
       run: |
-        MULTI_LINE_SECRET="${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}"
-        SINGLE_LINE_SECRET=$(echo "$MULTI_LINE_SECRET" | tr '\n' '\\n')
-        echo "MY_VAR=$SINGLE_LINE_SECRET" >> $GITHUB_ENV
-        echo "$SINGLE_LINE_SECRET" > api_key.json
+        
+        echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > api_key.json
+#        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "${{ env.API_PRIVATE_KEY }}"  , "in_house": false } ' > api_key.json
 
-
-#       Collect the file and upload as artifact
+      # Collect the file and upload as artifact
     - name: collect ipa artifacts
       uses: actions/upload-artifact@v2
       with:
         name: api_key
         path: api_key.json
 
+    - name: Get latest TestFlight build number
+      run: |
+        fastlane run latest_testflight_build_number \
+        app_identifier:"com.nxt.ci" \
+        api_key_path:"api_key.json"
 
 
 
-
-#    - name: Set up Ruby
-#      uses: ruby/setup-ruby@v1
-#      with:
-#        ruby-version: 2.7.0
-
-#
-#    - name: Install Fastlane
-#      run: gem install fastlane
-
-#  echo  "API_PRIVATE_KEY = ("${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n')"  >>  $GITHUB_ENV
-
-#    - name: Create App store json
-#      if: ${{ always() }}
-#      run: |
-#        echo "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" > api_key.json
-#        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n'  , "in_house": false } ' > api_key.json
-
-      # Collect the file and upload as artifact
-#    - name: collect ipa artifacts
-#      uses: actions/upload-artifact@v2
-#      with:
-#        name: api_key
-#        path: api_key.json
-#
-#    - name: Get latest TestFlight build number
-#      if: ${{ always() }}
-#      run: |
-#        fastlane run latest_testflight_build_number \
-#        app_identifier:"com.nxt.ci" \
-#        api_key_path:"api_key.json"
+#        echo "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n'  >>  $env.API_PRIVATE_KEY
