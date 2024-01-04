@@ -17,7 +17,7 @@ jobs:
     - name: Get Release Note
       run: |
         IFS="-" read -ra COMMIT_WORDS <<< "8-033[0m"
-        echo "RELEASE_NOTE=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
+        echo "BUILD_NUMBER=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
 
     - name: print value
       run: |
