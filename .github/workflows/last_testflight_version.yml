@@ -24,7 +24,7 @@ jobs:
     - name: Create App store json
       if: ${{ always() }}
       env:
-        API_PRIVATE_KEY : ""
+        API_PRIVATE_KEY : " "
       run: |
         echo "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n'  >>  $env.API_PRIVATE_KEY
         echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "${{ env.API_PRIVATE_KEY }}"  , "in_house": false } ' > api_key.json
