@@ -16,66 +16,23 @@ jobs:
       with:
         ruby-version: 2.7.0
 
-    - name: Install Fastlane
-      run: gem install fastlane
-
+    - name: Replace Newlines
+      run: |
+        echo "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | sed ':a;N;$!ba;s/\n/\\n/g
+#
+#
+#    - name: Install Fastlane
+#      run: gem install fastlane
+#
+#
 #    - name: Create App store json
 #      if: ${{ always() }}
 #      run: |
-#        echo '${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}' > api_private_key.p8
-#        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}", "key_filepath": "api_private_key.p8" , "in_house": false, "from_json_file": true  }' > api_key.json
-#
-#
+#        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgcflv+5BltPCFHzpD\nz5wfS+rCmoXzvIaBakAni+XUPU+gCgYIKoZIzj0DAQehRANCAARWWdou7iRZbbe7\n0REBr3SZNRNwNzpnmGlnepNFGiUgZ21+/Gdg2lYHN/0H+L/t9X8CExqyFEFD7Ylu\nfH4SVTwj\n-----END PRIVATE KEY-----"  , "in_house": false } ' > api_key.json
 #
 #    - name: Get latest TestFlight build number
 #      if: ${{ always() }}
-##      env:
-##        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
-##        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
 #      run: |
 #        fastlane run latest_testflight_build_number \
 #        app_identifier:"com.nxt.ci" \
 #        api_key_path:"api_key.json"
-
-
-
-    - name: Create App store json
-      if: ${{ always() }}
-      run: |
-        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgcflv+5BltPCFHzpD\nz5wfS+rCmoXzvIaBakAni+XUPU+gCgYIKoZIzj0DAQehRANCAARWWdou7iRZbbe7\n0REBr3SZNRNwNzpnmGlnepNFGiUgZ21+/Gdg2lYHN/0H+L/t9X8CExqyFEFD7Ylu\nfH4SVTwj\n-----END PRIVATE KEY-----"  , "in_house": false } ' > api_key.json
-
-    - name: Get latest TestFlight build number
-      if: ${{ always() }}
-#      env:
-#        FASTLANE_USER: ${{ secrets.APPSTORE_USERNAME }}
-#        FASTLANE_PASSWORD: ${{ secrets.APPSTORE_PASSWORD }}
-      run: |
-        fastlane run latest_testflight_build_number \
-        app_identifier:"com.nxt.ci" \
-        api_key_path:"api_key.json"
-
-
-#  fastlane run latest_testflight_build_number \
-#  app_identifier:"com.nxt.ci" \
-#  username:"pro.hussein.reda@gmail.com"  \
-#  team_name:"Hussein Reda"\
-#  team_id "126599802" \
-#  api_key_path:"api_key.json"
-
-
-
-#         api_key:"
-#        {
-#            \"key\": \"${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}\",
-#            \"key_id\": \"${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}\",
-#            \"issuer_id\": \"${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}\"
-#        }
-#         "
-        
-
-
-#  fastlane run latest_testflight_build_number \
-#  username:"${{ secrets.APPSTORE_USERNAME }}" \
-#  team_name:"Hussein Reda" \
-#  team_id:"126599802" \
-#
