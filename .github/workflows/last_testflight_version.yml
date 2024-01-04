@@ -19,7 +19,10 @@ jobs:
         echo "::set-output name=num_val::${num_val}"
 
     - name: Use the number
-      run: echo "${{ steps.convert.outputs.num_val }}"
+      run: |
+        INCREMENTED_NUMBER=$(expr ${{  steps.convert.outputs.num_val }} + 1)
+         echo "${{ steps.convert.outputs.num_val }}"
+         echo "${INCREMENTED_NUMBER}"
 
 #
 #    - name: Set up Ruby
