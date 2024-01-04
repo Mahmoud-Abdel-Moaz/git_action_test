@@ -13,7 +13,7 @@ jobs:
 
     - name: Get Release Note
       run: |
-        IFS="\" read -ra list <<< "8\033[0m"
+        IFS="\\" read -ra list <<< "8\033[0m"
         echo "BUILD_NUMBER=${list[0]}" >> $GITHUB_ENV
         echo "BUILD_NUMBER: ${{env.BUILD_NUMBER}}"
 #    - name: Convert string to number
