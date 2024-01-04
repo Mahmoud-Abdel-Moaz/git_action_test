@@ -60,7 +60,7 @@ jobs:
 
 
     - name: Get latest TestFlight build number
-      id: testflight   # Add an ID for this step
+      id: testflight2   # Add an ID for this step
       run: |
         version=$(fastlane run latest_testflight_build_number \
         app_identifier:"com.nxt.ci" \
@@ -73,7 +73,7 @@ jobs:
       
 
     - name: Print Build Number
-      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number }}"
+      run: echo "The latest TestFlight build number is ${{ steps.testflight2.outputs.build_number }}"
 
 
 #        echo "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n'  >>  $env.API_PRIVATE_KEY
