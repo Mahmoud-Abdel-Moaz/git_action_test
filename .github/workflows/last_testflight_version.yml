@@ -65,7 +65,7 @@ jobs:
 
 
     - name: Print Build Number
-      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number}} "
+      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number}}"
 
 
     - name: Get Release Note
@@ -74,16 +74,16 @@ jobs:
         echo "BUILD_NUMBER=${PARTS[0]}" >> $GITHUB_ENV
 
 
-    - name: Convert string to number
-      id: convert
-      run: |
-        num_str="${{env.BUILD_NUMBER}}"
-        num_val=$((10#${num_str}))
-        echo "::set-output name=num_val::${num_val}"
+#    - name: Convert string to number
+#      id: convert
+#      run: |
+#        num_str="${{env.BUILD_NUMBER}}"
+#        num_val=$((10#${num_str}))
+#        echo "::set-output name=num_val::${num_val}"
 
     - name: Use the number
       run: |
-        INCREMENTED_NUMBER=$(expr ${{  steps.convert.outputs.num_val }} + 1)
+        INCREMENTED_NUMBER=$(expr ${{env.BUILD_NUMBER}} + 1)
          echo "${{ steps.convert.outputs.num_val }}"
          echo "${INCREMENTED_NUMBER}"
 
