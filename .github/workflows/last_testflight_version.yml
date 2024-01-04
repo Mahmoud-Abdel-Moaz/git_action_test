@@ -61,8 +61,11 @@ jobs:
       id: convert
       run: |
         num_str="${{ steps.testflight.outputs.build_number }}"
-        echo num_str.length
+        echo "$num_str"
+        echo "$num_str.length"
+        
         num_val=$((10#${num_str}))
+        
         echo "::set-output name=num_val::${num_val}"
 
     - name: Use the number
