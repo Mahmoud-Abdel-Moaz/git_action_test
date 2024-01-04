@@ -60,14 +60,14 @@ jobs:
     - name: Convert string to number
       id: convert
       run: |
-        num_str="${{steps.testflight.outputs.build_number}}"
+        num_str=("${{steps.testflight.outputs.build_number}}" |  sed 's/[^0-9]//g' )
         num_val=$((10#${num_str}))
         echo "::set-output name=num_val::${num_val}"
 
     - name: Use the number
       run: |
-         INCREMENTED_NUMBER=$(expr ${{steps.testflight.outputs.build_number}} + 1)
-         echo "${{steps.testflight.outputs.build_number}}"
+        INCREMENTED_NUMBER=$(expr ${{  steps.convert.outputs.num_val }} + 1)
+         echo "${{ steps.convert.outputs.num_val }}"
          echo "${INCREMENTED_NUMBER}"
 
 
