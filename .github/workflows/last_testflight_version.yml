@@ -16,9 +16,19 @@ jobs:
       with:
         ruby-version: 2.7.0
 
+    - name: Set Multiline Message
+      run: |
+          multiline_message="This is a long message
+          that spans multiple lines.
+          You can use sed to replace
+          newlines with \\n characters."
+
     - name: Replace Newlines
       run: |
-        echo "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | sed ':a;N;$!ba;s/\n/\\n/g
+        echo "$multiline_message" | sed ':a;N;$!ba;s/\n/\\n/g'
+
+
+
 #
 #
 #    - name: Install Fastlane
