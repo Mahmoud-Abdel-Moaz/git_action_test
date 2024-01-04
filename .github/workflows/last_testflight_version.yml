@@ -42,14 +42,18 @@ jobs:
     - name: Print Build Number
       run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number}} "
 
+    - name: Convert string to number
+      id: convert
+      run: |
+          num_str="${{ steps.testflight.outputs.build_number }}"
+          num_val=$((10#${num_str}))
+          echo "::set-output name=build_number::${num_val}"
+
     - name: Increment build number
       id: testflight_incremented
       run: |
-        INCREMENTED_NUMBER=$(expr $((10#${{ steps.testflight.outputs.build_number }})) + 1)
+        INCREMENTED_NUMBER=$(expr ${{ steps.convert.outputs.build_number }} + 1)
         echo "::set-output name=build_number::$INCREMENTED_NUMBER"
 
     - name: Print incremented value
-      run: echo "Incremented build number is ${{ steps.increment.outputs.build_number }}"
-
-    - name: Print Build Number
-      run: echo "The latest TestFlight build number is ${{ steps.testflight_incremented.outputs.build_number}} "
+      run: echo "Incremented build number is ${{ steps.testflight_incremented.outputs.build_number }}"
