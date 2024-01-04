@@ -83,7 +83,7 @@ jobs:
 
     - name: Use the number
       run: |
-         INCREMENTED_NUMBER=$((env.BUILD_NUMBER + 1))
+        INCREMENTED_NUMBER=$(expr ${{env.BUILD_NUMBER}} + 1)
          echo "${{ steps.convert.outputs.num_val }}"
          echo "${INCREMENTED_NUMBER}"
 
