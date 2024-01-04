@@ -19,7 +19,7 @@ jobs:
     - name: Read multi-line secret and concatenate
       run: |
         MULTI_LINE_SECRET="${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}"
-        SINGLE_LINE_SECRET=$(echo "$MULTI_LINE_SECRET" | tr -d '\n')
+        SINGLE_LINE_SECRET=$(echo "$MULTI_LINE_SECRET" | tr '\n' '\\n')
         echo "MY_VAR=$SINGLE_LINE_SECRET" >> $GITHUB_ENV
         echo "$SINGLE_LINE_SECRET" > api_key.json
 
