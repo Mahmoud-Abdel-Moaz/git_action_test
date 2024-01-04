@@ -22,10 +22,7 @@ jobs:
 
 
     - name: Create App store json
-      run: |
-        
-        echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > api_key.json
-#        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "${{ env.API_PRIVATE_KEY }}"  , "in_house": false } ' > api_key.json
+      run:  echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > api_key.json
 
       # Collect the file and upload as artifact
     - name: collect ipa artifacts
@@ -34,11 +31,24 @@ jobs:
         name: api_key
         path: api_key.json
 
+#    - name: Get latest TestFlight build number
+#      run: |
+#        fastlane run latest_testflight_build_number \
+#        app_identifier:"com.nxt.ci" \
+#        api_key_path:"api_key.json"
+
+
     - name: Get latest TestFlight build number
+      id: testflight   # Add an ID for this step
       run: |
-        fastlane run latest_testflight_build_number \
+        version=$(fastlane run latest_testflight_build_number \
         app_identifier:"com.nxt.ci" \
-        api_key_path:"api_key.json"
+        api_key_path:"api_key.json" \
+        | awk '/[RESULT]/ {print $2}') # parse the output to get the build number
+        echo "::set-output name=buildnumber::$version"   # set the output
+
+    - name: Another step
+      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.buildnumber }}"
 
 
 
