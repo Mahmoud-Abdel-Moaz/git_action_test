@@ -16,16 +16,18 @@ jobs:
       with:
         ruby-version: 2.7.0
 
-    - name: Set Multiline Message
+    - name: Set Original Key
       run: |
-          multiline_message="This is a long message
-          that spans multiple lines.
-          You can use sed to replace
-          newlines with \\n characters."
+          original_key="-----BEGIN PRIVATE KEY-----
+          -----END PRIVATE KEY-----"
 
-    - name: Replace Newlines
+    - name: Convert Key Format
       run: |
-        echo "$multiline_message" | sed ':a;N;$!ba;s/\n/\\n/g'
+        converted_key=$(echo -e "$original_key")
+
+    - name: Print Converted Key
+      run: |
+        echo "Converted Key: $converted_key"
 
 
 
