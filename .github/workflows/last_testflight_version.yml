@@ -60,7 +60,7 @@ jobs:
     - name: Convert string to number
       id: convert
       run: |
-        num_str=("${{steps.testflight.outputs.build_number}}" |  sed 's/[^0-9]//g' )
+        num_str=$(echo "${{ steps.testflight.outputs.build_number }}" | sed 's/[^0-9]//g')
         num_val=$((10#${num_str}))
         echo "::set-output name=num_val::${num_val}"
 
