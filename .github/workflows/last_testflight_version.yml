@@ -23,8 +23,11 @@ jobs:
 
     - name: Create App store json
       if: ${{ always() }}
+      env:
+        API_PRIVATE_KEY : ""
       run: |
-        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": $(echo "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n')  , "in_house": false } ' > api_key.json
+        echo "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n'  >>  $API_PRIVATE_KEY
+        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "${{ API_PRIVATE_KEY }}"  , "in_house": false } ' > api_key.json
 
       # Collect the file and upload as artifact
     - name: collect ipa artifacts
