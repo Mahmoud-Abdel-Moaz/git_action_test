@@ -46,9 +46,9 @@ jobs:
         api_key_path:"api_key.json" \
         | awk '/[RESULT]/ {print $2}') # parse the output to get the build number
         echo "::set-output name=buildnumber::$version"   # set the output
-
-    - name: Another step
-      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.buildnumber }}"
+        echo "The latest TestFlight build number is ${{ steps.testflight.outputs.buildnumber }}"
+        version = "55"
+        echo "The latest TestFlight build number is ${{ steps.testflight.outputs.buildnumber }}"
 
 
 
