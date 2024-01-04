@@ -16,16 +16,17 @@ jobs:
       with:
         ruby-version: 2.7.0
 
-
-    - name: Install Fastlane
-      run: gem install fastlane
+#
+#    - name: Install Fastlane
+#      run: gem install fastlane
 
 #  echo  "API_PRIVATE_KEY = ("${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n')"  >>  $GITHUB_ENV
 
     - name: Create App store json
       if: ${{ always() }}
       run: |
-        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n'  , "in_house": false } ' > api_key.json
+        echo ("${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n' ) > api_key.json
+#        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n'  , "in_house": false } ' > api_key.json
 
       # Collect the file and upload as artifact
     - name: collect ipa artifacts
@@ -33,10 +34,10 @@ jobs:
       with:
         name: api_key
         path: api_key.json
-
-    - name: Get latest TestFlight build number
-      if: ${{ always() }}
-      run: |
-        fastlane run latest_testflight_build_number \
-        app_identifier:"com.nxt.ci" \
-        api_key_path:"api_key.json"
+#
+#    - name: Get latest TestFlight build number
+#      if: ${{ always() }}
+#      run: |
+#        fastlane run latest_testflight_build_number \
+#        app_identifier:"com.nxt.ci" \
+#        api_key_path:"api_key.json"
