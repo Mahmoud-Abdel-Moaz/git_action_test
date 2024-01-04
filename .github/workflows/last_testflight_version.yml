@@ -48,7 +48,7 @@ jobs:
         echo "The latest TestFlight build number is ${{ steps.testflight.outputs.buildnumber }}"
 
 
-      -name: print result
+    - name: print result
         echo "The latest TestFlight build number is ${{ steps.testflight.outputs.buildnumber }}"
 
 
