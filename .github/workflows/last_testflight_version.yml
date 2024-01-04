@@ -45,7 +45,7 @@ jobs:
     - name: Increment build number
       id: testflight_incremented
       run: |
-        INCREMENTED_NUMBER=$(expr ${{ steps.testflight.outputs.build_number }} + 1)
+        INCREMENTED_NUMBER=$(expr $((10#${{ steps.testflight.outputs.build_number }})) + 1)
         echo "::set-output name=build_number::$INCREMENTED_NUMBER"
 
     - name: Print incremented value
