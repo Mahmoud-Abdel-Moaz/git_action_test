@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Get Build Number
-    - uses: jungwinter/split@master
+      uses: jungwinter/split@master
       id: build_id
       with:
         msg: "8/033[0m"
