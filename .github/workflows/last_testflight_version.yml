@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: test
-    - run: |
+      run: |
         STRING_VARIABLE = "1"
         number_value=<span class="math-inline">\(\(10 \+ "</span>{STRING_VARIABLE}"))  # Add 10 to the string
         echo "The number is: <span class="math-inline">number\_value"
