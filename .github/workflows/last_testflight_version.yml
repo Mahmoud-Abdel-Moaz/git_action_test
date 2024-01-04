@@ -38,5 +38,13 @@ jobs:
       run: |
         echo "::set-output name=build_number::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Result: " | awk '{print $3}'  )"
 
+
+    - name: Increment build number
+      id: testflight_incremented
+      run: echo "::set-output name=build_number::$((${{ steps.testflight.outputs.build_number }} + 1))"
+
+    - name: Print incremented value
+      run: echo "Incremented build number is ${{ steps.increment.outputs.build_number }}"
+
     - name: Print Build Number
-      run: echo "The latest TestFlight build number is (${{ steps.testflight.outputs.build_number}} + 1)"
+      run: echo "The latest TestFlight build number is ${{ steps.testflight_incremented.outputs.build_number}} "
