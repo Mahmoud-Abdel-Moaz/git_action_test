@@ -11,11 +11,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: test
+    - name: Convert string to number
+      id: convert
       run: |
-        num_str="1"
-        number_value=<span class="math-inline">\(\(10 \+ "</span>{STRING_VARIABLE}"))  # Add 10 to the string
-        echo "The number is: <span class="math-inline">number\_value"
+        num_str="123"
+        num_val=$((10#${num_str}))
+        echo "::set-output name=num_val::${num_val}"
+
+    - name: Use the number
+      run: echo "${{ steps.convert.outputs.num_val }}"
+
 #
 #    - name: Set up Ruby
 #      uses: ruby/setup-ruby@v1
