@@ -20,12 +20,12 @@ jobs:
     - name: Install Fastlane
       run: gem install fastlane
 
+#  echo  "API_PRIVATE_KEY = ("${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n')"  >>  $GITHUB_ENV
 
     - name: Create App store json
       if: ${{ always() }}
       run: |
-        echo  "API_PRIVATE_KEY = ("${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n')"  >>  $GITHUB_ENV
-        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "${{ env.API_PRIVATE_KEY }}"  , "in_house": false } ' > api_key.json
+        echo ' { "key_id": "${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}", "issuer_id": "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}",  "key": "${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}" | tr '\n' '\\n'  , "in_house": false } ' > api_key.json
 
       # Collect the file and upload as artifact
     - name: collect ipa artifacts
