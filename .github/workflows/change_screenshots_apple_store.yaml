@@ -11,7 +11,7 @@ on:
 
 jobs:
   release:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -26,13 +26,15 @@ jobs:
       - name: Create App store json
         run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
 
-      - name: Install Fastlane
-        run: |
-          cd ios
-          gem install fastlane
+#      - name: Install Fastlane
+#        run: |
+#          cd ios
+#          gem install fastlane
 
       - name: Deploy Screenshots to Apple Store
-        run: fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --app_version 1.0.1
+        run: |
+          cd ios
+          fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --app_version 1.0.1
 
 #fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --app_version 1.0.1
       - name: Report Status
