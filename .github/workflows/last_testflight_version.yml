@@ -66,14 +66,14 @@ jobs:
         echo "::set-output name=build_number::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Result: " | awk '{print $3}'  )"
 
 
-    - name: Print Build Number
-      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number}}"
+#    - name: Print Build Number
+#      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number}}"
 
-
-    - name: Get Release Note
-      run: |
-        IFS="\\" read -ra PARTS <<< "${{steps.testflight.outputs.build_number }}"
-        echo "BUILD_NUMBER=${PARTS[0]}" >> $GITHUB_ENV
+#
+#    - name: Get Release Note
+#      run: |
+#        IFS="\\" read -ra PARTS <<< "${{steps.testflight.outputs.build_number }}"
+#        echo "BUILD_NUMBER=${PARTS[0]}" >> $GITHUB_ENV
 
 
 #    - name: Convert string to number
@@ -85,8 +85,8 @@ jobs:
 
     - name: Use the number
       run: |
-         INCREMENTED_NUMBER=$(expr ${{env.BUILD_NUMBER}} + 1)
-         echo "${{ steps.convert.outputs.num_val }}"
+         INCREMENTED_NUMBER=$(expr ${{steps.testflight.outputs.build_number}} + 1)
+         echo "${{ steps.testflight.outputs.build_number }}"
          echo "${INCREMENTED_NUMBER}"
 
 
