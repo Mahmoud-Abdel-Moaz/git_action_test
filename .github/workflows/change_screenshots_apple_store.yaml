@@ -1,0 +1,39 @@
+name: Deploy Screenshots to Apple Store
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test scenario tags'
+
+jobs:
+  release:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Deploy Screenshots to Apple Store
+        run: |
+          echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > ios/play-store-credentials.json
+          cd android
+          fastlane supply --skip_upload_changelogs true
+
+
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "{workflow} has {status_message}"
+          footer: "Linked Repo <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

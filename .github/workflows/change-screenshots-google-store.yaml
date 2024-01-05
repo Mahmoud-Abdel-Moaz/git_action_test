@@ -21,10 +21,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: printInputs
-        run: |
-          echo "Log level: ${{ github.event.inputs.logLevel }}"
-          echo "Tags: ${{ github.event.inputs.tags }}" 
+#      - name: printInputs
+#        run: |
+#          echo "Log level: ${{ github.event.inputs.logLevel }}"
+#          echo "Tags: ${{ github.event.inputs.tags }}"
         
 
       - name: Set up Ruby
@@ -37,14 +37,23 @@ jobs:
 
       - name: Deploy Screenshots to Google Play
         run: |
-          mkdir json
           echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > android/play-store-credentials.json
           cd android
           fastlane supply --skip_upload_changelogs true
+
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "{workflow} has {status_message}"
+          footer: "Linked Repo <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           
         #fastlane supply init
         #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
         #fastlane supply --metadata_path fastlane/metadata/android --json_key json/key.json --skip_upload_changelogs true
 
-
+       # fastlane supply --skip_upload_changelogs true --package_name com.getaction.hello --json_key play-store-credentials.json
         #workflow id  =>  change-screenshots-google-store

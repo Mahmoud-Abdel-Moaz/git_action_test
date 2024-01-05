@@ -213,7 +213,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-analytics")
 }
-
+//apply plugin: 'com.google.firebase.crashlytics'
 
 //   flutter build apk --flavor blink2 -t lib/main.dart
 //flutter run --flavor blink1
