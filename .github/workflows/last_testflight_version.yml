@@ -60,6 +60,8 @@ jobs:
 
     - name: Get latest TestFlight build number
       id: testflight
+      env:
+        FASTLANE_DISABLE_COLORS: true
       run: |
         echo "::set-output name=build_number::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Result: " | awk '{print $3}'  )"
 
@@ -83,7 +85,7 @@ jobs:
 
     - name: Use the number
       run: |
-        INCREMENTED_NUMBER=$(expr ${{env.BUILD_NUMBER}} + 1)
+         INCREMENTED_NUMBER=$(expr ${{env.BUILD_NUMBER}} + 1)
          echo "${{ steps.convert.outputs.num_val }}"
          echo "${INCREMENTED_NUMBER}"
 
