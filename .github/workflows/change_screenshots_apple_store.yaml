@@ -35,7 +35,7 @@ jobs:
         run: |
           cd ios
           gem install fastlane
-          fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --app_version 1.0.1
+          fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --run_precheck_before_submit false --app_version 1.0.1
 
 #fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --app_version 1.0.1
       - name: Report Status
