@@ -175,7 +175,7 @@ jobs:
 #      - name: Start Android Release Build Blink
 #        run: flutter build apk --flavor blink -t lib/main.dart
       - name: Start Android Release Build Blink
-        uses: ./.github/actions/deploy_action.yaml
+        uses: ./.github/actions/deploy_action
         with:
           flavor: 'blink'
 
@@ -295,7 +295,7 @@ jobs:
 #      - name: Start Android Release Build Unity
 #        run: flutter build apk --flavor unity -t lib/main.dart
       - name: Start Android Release Build Unity
-        uses: ./.github/actions/deploy_action.yaml
+        uses: ./.github/actions/deploy_action
         with:
           flavor: 'unity'
 
@@ -408,7 +408,7 @@ jobs:
 #      - name: Start Android Release Build Sportico
 #        run: flutter build apk --flavor sportico -t lib/main.dart
       - name: Start Android Release Build Sportico
-        uses: ./.github/actions/deploy_action.yaml
+        uses: ./.github/actions/deploy_action
         with:
           flavor: 'sportico'
 
