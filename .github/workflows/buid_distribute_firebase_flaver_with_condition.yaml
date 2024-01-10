@@ -172,8 +172,12 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
       # Build Apk blink
+#      - name: Start Android Release Build Blink
+#        run: flutter build apk --flavor blink -t lib/main.dart
       - name: Start Android Release Build Blink
-        run: flutter build apk --flavor blink -t lib/main.dart
+        uses: ./.github/actions/deploy_action
+        with:
+          flavor: 'blink'
 
 
         # Upload Android Blink
@@ -288,8 +292,12 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
         # Build Apk unity
+#      - name: Start Android Release Build Unity
+#        run: flutter build apk --flavor unity -t lib/main.dart
       - name: Start Android Release Build Unity
-        run: flutter build apk --flavor unity -t lib/main.dart
+        uses: ./.github/actions/deploy_action
+        with:
+          flavor: 'unity'
 
           # Upload Android Unity
       - name: Upload Android Unity Release
@@ -397,8 +405,12 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
         # Build Apk Sportico
+#      - name: Start Android Release Build Sportico
+#        run: flutter build apk --flavor sportico -t lib/main.dart
       - name: Start Android Release Build Sportico
-        run: flutter build apk --flavor sportico -t lib/main.dart
+        uses: ./.github/actions/deploy_action
+        with:
+          flavor: 'sportico'
 
           # Upload Android Sportico
       - name: Upload Android Sportico Release

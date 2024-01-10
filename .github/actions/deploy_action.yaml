@@ -1,0 +1,12 @@
+name: 'Deploy Action'
+description: 'This is my reusable action'
+inputs:
+  flavor:
+    description: 'flavor'
+    required: true
+    default: 'blink'
+runs:
+  using: "composite"
+  steps:
+    - name: Start Android Release Build
+      run: flutter build apk --flavor ${{ inputs.flavor }} -t lib/main.dart
