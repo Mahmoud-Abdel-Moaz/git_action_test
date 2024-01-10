@@ -53,6 +53,25 @@ runs:
       with:
         ssh-private-key: ${{ inputs.SSH_PRIVATE_KEY }}
 
+
+    #Comment Split
+    ###########################
+    - name: Split Commit Message
+      run: |
+        COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+        IFS="#" read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
+        echo "WORK_APPS=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
+        echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+        echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
+        echo "RELEASE_ON=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
+
+    # sportico
+    - name: Get Release Note
+      run: |
+        IFS="-" read -ra COMMIT_WORDS <<< "${{ env.APPS_RELEASE_NOTES }}"
+        echo "RELEASE_NOTE=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
+  ###########################
+
     - name: Download blink Android keystore
       id: android_blink_keystore
       uses: timheuer/base64-to-file@v1.0.3
