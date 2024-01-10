@@ -160,6 +160,7 @@ runs:
     - name: Start Android Release Bundle
       if: contains("${{ inputs.release_type }}", 'store')
       run: flutter build appbundle --flavor ${{ inputs.flavor }} -t lib/main.dart
+      shell: bash
 
     #deploy to google play
     - name: Release Build to internal track
