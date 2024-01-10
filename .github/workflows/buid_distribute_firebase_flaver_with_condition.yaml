@@ -190,7 +190,7 @@ jobs:
           sportico_store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
           sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
           sportico_key_alias:  ${{ secrets.KEY_ALIAS_SPORTICO }}
-          firebase_file: ${{BLINK_FIREBASE}}
+          firebase_file: $BLINK_FIREBASE
 
 
         # Upload Android Blink
