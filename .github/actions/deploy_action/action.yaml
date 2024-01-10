@@ -5,6 +5,18 @@ inputs:
     description: 'flavor'
     required: true
     default: 'blink'
+  blink_key_store:
+  blink_store_password:
+  blink_key_password:
+  blink_key_alias:
+  unity_key_store:
+  unity_store_password:
+  unity_key_password:
+  unity_key_alias:
+  sportico_key_store:
+  sportico_store_password:
+  sportico_key_password:
+  sportico_key_alias:
 #  firebase_file:
 #    description: 'firebase google service file'
 #    required: true
@@ -18,39 +30,39 @@ runs:
       uses: timheuer/base64-to-file@v1.0.3
       with:
         fileName: blink-keystore.jks
-        encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+        encodedString: ${{ inputs.blink_key_store }}
 
     - name: Download unity Android keystore
       id: android_unity_keystore
       uses: timheuer/base64-to-file@v1.0.3
       with:
         fileName: unity-keystore.jks
-        encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+        encodedString: ${{ inputs.unity_key_store }}
 
     - name: Download sportico Android keystore
       id: android_sportico_keystore
       uses: timheuer/base64-to-file@v1.0.3
       with:
         fileName: sportico-keystore.jks
-        encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+        encodedString: ${{ inputs.sportico_key_store }}
 
 
     - name: Create key.properties
       run: |
         echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
-        echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
-        echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
-        echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
+        echo "storePassword=${{ inputs.blink_store_password }}" >> android/key1.properties
+        echo "keyPassword=${{ inputs.blink_key_password }}" >> android/key1.properties
+        echo "keyAlias=${{ inputs.blink_key_alias }}" >> android/key1.properties
         
         echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
-        echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
-        echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
-        echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
+        echo "storePassword=${{ inputs.unity_store_password }}" >> android/key2.properties
+        echo "keyPassword=${{ inputs.unity_key_password }}" >> android/key2.properties
+        echo "keyAlias=${{ inputs.unity_key_alias }}" >> android/key2.properties
         
         echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
-        echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
-        echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
-        echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
+        echo "storePassword=${{ inputs.sportico_store_password }}" >> android/key3.properties
+        echo "keyPassword=${{ inputs.sportico_key_password }}" >> android/key3.properties
+        echo "keyAlias=${{ inputs.sportico_key_alias }}" >> android/key3.properties
       shell: bash
 
     - name: Start Android Release Build

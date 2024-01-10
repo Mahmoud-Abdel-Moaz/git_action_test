@@ -178,6 +178,18 @@ jobs:
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'blink'
+          blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+          blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
+          blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
+          blink_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
+          unity_key_store: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+          unity_store_password: ${{ secrets.STORE_PASSWORD_UNITY }}
+          unity_key_password: ${{ secrets.KEY_PASSWORD_UNITY }}
+          unity_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
+          sportico_key_store: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+          sportico_store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
+          sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
+          sportico_key_alias:  ${{ secrets.KEY_ALIAS_SPORTICO }}
 
 
         # Upload Android Blink
@@ -298,6 +310,18 @@ jobs:
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'unity'
+          blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+          blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
+          blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
+          blink_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
+          unity_key_store: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+          unity_store_password: ${{ secrets.STORE_PASSWORD_UNITY }}
+          unity_key_password: ${{ secrets.KEY_PASSWORD_UNITY }}
+          unity_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
+          sportico_key_store: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+          sportico_store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
+          sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
+          sportico_key_alias: ${{ secrets.KEY_ALIAS_SPORTICO }}
 
           # Upload Android Unity
       - name: Upload Android Unity Release
@@ -412,6 +436,18 @@ jobs:
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'sportico'
+          blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+          blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
+          blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
+          blink_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
+          unity_key_store: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+          unity_store_password: ${{ secrets.STORE_PASSWORD_UNITY }}
+          unity_key_password: ${{ secrets.KEY_PASSWORD_UNITY }}
+          unity_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
+          sportico_key_store: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+          sportico_store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
+          sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
+          sportico_key_alias: ${{ secrets.KEY_ALIAS_SPORTICO }}
 
           # Upload Android Sportico
       - name: Upload Android Sportico Release
