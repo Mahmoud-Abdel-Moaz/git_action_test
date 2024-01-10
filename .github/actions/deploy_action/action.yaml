@@ -64,6 +64,7 @@ runs:
         echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
         echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
         echo "RELEASE_ON=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
+      shell: bash
 
     # sportico
     - name: Get Release Note
