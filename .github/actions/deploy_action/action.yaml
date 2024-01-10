@@ -6,17 +6,53 @@ inputs:
     required: true
     default: 'blink'
   blink_key_store:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   blink_store_password:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   blink_key_password:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   blink_key_alias:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   unity_key_store:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   unity_store_password:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   unity_key_password:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   unity_key_alias:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   sportico_key_store:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   sportico_store_password:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   sportico_key_password:
+    description: 'flavor'
+    required: true
+    default: 'blink'
   sportico_key_alias:
+    description: 'flavor'
+    required: true
+    default: 'blink'
 #  firebase_file:
 #    description: 'firebase google service file'
 #    required: true
