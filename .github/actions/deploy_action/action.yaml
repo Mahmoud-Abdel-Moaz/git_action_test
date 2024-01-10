@@ -169,7 +169,7 @@ runs:
       with:
         serviceAccountJsonPlainText: ${{inputs.playStore_account_key}}
         packageName: ${{inputs.package_id}}
-        releaseFiles: build/app/outputs/bundle/-${{ inputs.flavor }}Release/app-${{ inputs.flavor }}-release.aab
+        releaseFiles: build/app/outputs/bundle/${{ inputs.flavor }}Release/app-${{ inputs.flavor }}-release.aab
         track: production
         status: completed
         changesNotSentForReview: true
