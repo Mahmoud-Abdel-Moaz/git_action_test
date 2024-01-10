@@ -11,52 +11,28 @@ inputs:
     default: 'blink'
   blink_store_password:
     description: 'flavor'
-    required: true
-    default: 'blink'
   blink_key_password:
     description: 'flavor'
-    required: true
-    default: 'blink'
   blink_key_alias:
     description: 'flavor'
-    required: true
-    default: 'blink'
   unity_key_store:
     description: 'flavor'
-    required: true
-    default: 'blink'
   unity_store_password:
     description: 'flavor'
-    required: true
-    default: 'blink'
   unity_key_password:
     description: 'flavor'
-    required: true
-    default: 'blink'
   unity_key_alias:
     description: 'flavor'
-    required: true
-    default: 'blink'
   sportico_key_store:
     description: 'flavor'
-    required: true
-    default: 'blink'
   sportico_store_password:
     description: 'flavor'
-    required: true
-    default: 'blink'
   sportico_key_password:
     description: 'flavor'
-    required: true
-    default: 'blink'
   sportico_key_alias:
     description: 'flavor'
-    required: true
-    default: 'blink'
-#  firebase_file:
-#    description: 'firebase google service file'
-#    required: true
-#    default: 'blink'
+  firebase_file:
+    description: 'firebase google service file'
 runs:
   using: "composite"
   steps:
@@ -100,6 +76,27 @@ runs:
         echo "keyPassword=${{ inputs.sportico_key_password }}" >> android/key3.properties
         echo "keyAlias=${{ inputs.sportico_key_alias }}" >> android/key3.properties
       shell: bash
+
+    - uses: actions/setup-java@v1
+      with:
+        distribution: 'zulu'
+        java-version: "17"
+        cache: gradle
+        check-latest: true
+
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: "3.16.1"
+        channel: 'stable'
+        cache: true
+
+    - name: Download firebase google services for blink
+      run: echo "$BLINK_FIREBASE" | base64 -d > android/app/src/blink/google-services.json
+      shell: bash
+
+
+    - name: Get dependencies
+      run: flutter pub get
 
     - name: Start Android Release Build
       run: flutter build apk --flavor ${{ inputs.flavor }} -t lib/main.dart
