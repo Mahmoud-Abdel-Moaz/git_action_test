@@ -97,6 +97,7 @@ runs:
 
     - name: Get dependencies
       run: flutter pub get
+      shell: bash
 
     - name: Start Android Release Build
       run: flutter build apk --flavor ${{ inputs.flavor }} -t lib/main.dart
