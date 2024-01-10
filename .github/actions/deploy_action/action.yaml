@@ -10,3 +10,4 @@ runs:
   steps:
     - name: Start Android Release Build
       run: flutter build apk --flavor ${{ inputs.flavor }} -t lib/main.dart
+      shell: bash
