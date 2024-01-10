@@ -110,67 +110,7 @@ jobs:
 ###########################
 
 
-          
-      
 
-      - name: Download blink Android keystore
-        id: android_blink_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: blink-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
-
-      - name: Download unity Android keystore
-        id: android_unity_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: unity-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
-
-      - name: Download sportico Android keystore
-        id: android_sportico_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: sportico-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
-
-
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
-          
-          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
-          
-          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
-
-      - uses: actions/setup-java@v1
-        with:
-          distribution: 'zulu'
-          java-version: "17"
-          cache: gradle
-          check-latest: true
-
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "3.16.1"
-          channel: 'stable'
-          cache: true
-
-      - name: Download firebase google services for blink
-        run: echo "$BLINK_FIREBASE" | base64 -d > android/app/src/blink/google-services.json
-
-
-      - name: Get dependencies
-        run: flutter pub get
       # Build Apk blink
 #      - name: Start Android Release Build Blink
 #        run: flutter build apk --flavor blink -t lib/main.dart
@@ -178,6 +118,7 @@ jobs:
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'blink'
+          firebase_file: $BLINK_FIREBASE
 
 
         # Upload Android Blink
@@ -234,60 +175,60 @@ jobs:
       ###########################
 
 
-      - name: Download blink Android keystore
-        id: android_blink_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: blink-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
-
-      - name: Download unity Android keystore
-        id: android_unity_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: unity-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
-
-      - name: Download sportico Android keystore
-        id: android_sportico_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: sportico-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
-
-
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
-          
-          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
-          
-          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
-
-      - uses: actions/setup-java@v1
-        with:
-          distribution: 'zulu'
-          java-version: "17"
-          cache: gradle
-          check-latest: true
-
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "3.16.1"
-          channel: 'stable'
-          cache: true
-      - name: Download firebase google services for unity
-        run: echo "$UNITY_FIREBASE" | base64 -d > android/app/src/unity/google-services.json
-
+#      - name: Download blink Android keystore
+#        id: android_blink_keystore
+#        uses: timheuer/base64-to-file@v1.0.3
+#        with:
+#          fileName: blink-keystore.jks
+#          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+#
+#      - name: Download unity Android keystore
+#        id: android_unity_keystore
+#        uses: timheuer/base64-to-file@v1.0.3
+#        with:
+#          fileName: unity-keystore.jks
+#          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+#
+#      - name: Download sportico Android keystore
+#        id: android_sportico_keystore
+#        uses: timheuer/base64-to-file@v1.0.3
+#        with:
+#          fileName: sportico-keystore.jks
+#          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+#
+#
+#      - name: Create key.properties
+#        run: |
+#          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
+#          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
+#          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
+#          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
+#
+#          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
+#          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
+#          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
+#          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
+#
+#          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
+#          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
+#          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
+#          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
+#
+#      - uses: actions/setup-java@v1
+#        with:
+#          distribution: 'zulu'
+#          java-version: "17"
+#          cache: gradle
+#          check-latest: true
+#
+#      - uses: subosito/flutter-action@v1
+#        with:
+#          flutter-version: "3.16.1"
+#          channel: 'stable'
+#          cache: true
+#      - name: Download firebase google services for unity
+#        run: echo "$UNITY_FIREBASE" | base64 -d > android/app/src/unity/google-services.json
+#
 
       - name: Get dependencies
         run: flutter pub get
@@ -298,6 +239,8 @@ jobs:
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'unity'
+          firebase_file: $UNITY_FIREBASE
+
 
           # Upload Android Unity
       - name: Upload Android Unity Release
@@ -347,63 +290,63 @@ jobs:
           echo "RELEASE_NOTE=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
       ###########################
 
-      - name: Download blink Android keystore
-        id: android_blink_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: blink-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
-
-      - name: Download unity Android keystore
-        id: android_unity_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: unity-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
-
-      - name: Download sportico Android keystore
-        id: android_sportico_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: sportico-keystore.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
-
-
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
-          
-          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
-          
-          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
-          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
-
-      - uses: actions/setup-java@v1
-        with:
-          distribution: 'zulu'
-          java-version: "17"
-          cache: gradle
-          check-latest: true
-
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "3.16.1"
-          channel: 'stable'
-          cache: true
-      - name: Download firebase google services for sportico
-        run: echo "$SPORTICO_FIREBASE" | base64 -d > android/app/src/unity/google-services.json
-
-
-      - name: Get dependencies
-        run: flutter pub get
+#      - name: Download blink Android keystore
+#        id: android_blink_keystore
+#        uses: timheuer/base64-to-file@v1.0.3
+#        with:
+#          fileName: blink-keystore.jks
+#          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+#
+#      - name: Download unity Android keystore
+#        id: android_unity_keystore
+#        uses: timheuer/base64-to-file@v1.0.3
+#        with:
+#          fileName: unity-keystore.jks
+#          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+#
+#      - name: Download sportico Android keystore
+#        id: android_sportico_keystore
+#        uses: timheuer/base64-to-file@v1.0.3
+#        with:
+#          fileName: sportico-keystore.jks
+#          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
+#
+#
+#      - name: Create key.properties
+#        run: |
+#          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
+#          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
+#          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
+#          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
+#
+#          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
+#          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
+#          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
+#          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
+#
+#          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
+#          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
+#          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
+#          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
+#
+#      - uses: actions/setup-java@v1
+#        with:
+#          distribution: 'zulu'
+#          java-version: "17"
+#          cache: gradle
+#          check-latest: true
+#
+#      - uses: subosito/flutter-action@v1
+#        with:
+#          flutter-version: "3.16.1"
+#          channel: 'stable'
+#          cache: true
+#      - name: Download firebase google services for sportico
+#        run: echo "$SPORTICO_FIREBASE" | base64 -d > android/app/src/unity/google-services.json
+#
+#
+#      - name: Get dependencies
+#        run: flutter pub get
         # Build Apk Sportico
 #      - name: Start Android Release Build Sportico
 #        run: flutter build apk --flavor sportico -t lib/main.dart
@@ -411,6 +354,7 @@ jobs:
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'sportico'
+          firebase_file: $SPORTICO_FIREBASE
 
           # Upload Android Sportico
       - name: Upload Android Sportico Release
