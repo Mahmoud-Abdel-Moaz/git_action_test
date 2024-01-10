@@ -83,12 +83,8 @@ jobs:
       BLINK_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_BLINK}}
     if: (!contains(github.event.head_commit.message, 'ignore')&&(contains(github.event.head_commit.message, 'androidBlink') || contains(github.event.head_commit.message, 'all')))
     steps:
-      - uses: actions/checkout@v1
-        # Make sure the @v0.8.0 matches the current version of the action
-      - uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - uses: actions/checkout@v1
           #Comment Split
       ###########################
 
@@ -114,6 +110,7 @@ jobs:
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'blink'
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
           blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
           blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
@@ -144,10 +141,8 @@ jobs:
     env:
       UNITY_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_UNITY}}
     steps:
+
       - uses: actions/checkout@v1
-      - uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
           #Comment Split
       ###########################
@@ -168,71 +163,11 @@ jobs:
 
       ###########################
 
-
-#      - name: Download blink Android keystore
-#        id: android_blink_keystore
-#        uses: timheuer/base64-to-file@v1.0.3
-#        with:
-#          fileName: blink-keystore.jks
-#          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
-#
-#      - name: Download unity Android keystore
-#        id: android_unity_keystore
-#        uses: timheuer/base64-to-file@v1.0.3
-#        with:
-#          fileName: unity-keystore.jks
-#          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
-#
-#      - name: Download sportico Android keystore
-#        id: android_sportico_keystore
-#        uses: timheuer/base64-to-file@v1.0.3
-#        with:
-#          fileName: sportico-keystore.jks
-#          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
-
-
-#      - name: Create key.properties
-#        run: |
-#          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
-#          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
-#          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
-#          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
-#
-#          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
-#          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
-#          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
-#          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
-#
-#          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
-#          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
-#          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
-#          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
-
-      - uses: actions/setup-java@v1
-        with:
-          distribution: 'zulu'
-          java-version: "17"
-          cache: gradle
-          check-latest: true
-
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "3.16.1"
-          channel: 'stable'
-          cache: true
-      - name: Download firebase google services for unity
-        run: echo "$UNITY_FIREBASE" | base64 -d > android/app/src/unity/google-services.json
-
-
-      - name: Get dependencies
-        run: flutter pub get
-        # Build Apk unity
-#      - name: Start Android Release Build Unity
-#        run: flutter build apk --flavor unity -t lib/main.dart
       - name: Start Android Release Build Unity
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'unity'
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
           blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
           blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
@@ -245,24 +180,12 @@ jobs:
           sportico_store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
           sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
           sportico_key_alias: ${{ secrets.KEY_ALIAS_SPORTICO }}
-
-          # Upload Android Unity
-      - name: Upload Android Unity Release
-        uses: actions/upload-artifact@v2
-        with:
-          name: android-unity-release
-          path: build/app/outputs/flutter-apk/app-unity-release.apk
-
-          # Distribution Unity
-      - name: Firebase Unity Distribution
-        if: contains("${{ env.RELEASE_ON }}", 'firebase')
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-        with:
-          appId: ${{secrets.FIREBASE_UNITY_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: testers
-          file: build/app/outputs/flutter-apk/app-unity-release.apk
-          releaseNotes: "Unity Apk \n ${{ env.SERVER_WORK_ON }} \n ${{ env.RELEASE_NOTE }}"
+          firebase_file: $UNITY_FIREBASE
+          FIREBASE_APP_ID: ${{secrets.FIREBASE_UNITY_APP_ID}}
+          CREDENTIAL_FILE_CONTENT: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          release_on: ${{ env.RELEASE_ON }}
+          SERVER_WORK_ON: ${{ env.SERVER_WORK_ON }}
+          RELEASE_NOTE: ${{ env.RELEASE_NOTE }}
 
   build_sportico :
     name: Build Sportico
@@ -272,10 +195,8 @@ jobs:
     env:
       UNITY_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_SPORTICO}}
     steps:
+
       - uses: actions/checkout@v1
-      - uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           #Comment Split
 ###########################
       - name: Split Commit Message
@@ -294,71 +215,11 @@ jobs:
           echo "RELEASE_NOTE=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
       ###########################
 
-#      - name: Download blink Android keystore
-#        id: android_blink_keystore
-#        uses: timheuer/base64-to-file@v1.0.3
-#        with:
-#          fileName: blink-keystore.jks
-#          encodedString: ${{ secrets.KEYSTORE_BASE64_BLINK }}
-#
-#      - name: Download unity Android keystore
-#        id: android_unity_keystore
-#        uses: timheuer/base64-to-file@v1.0.3
-#        with:
-#          fileName: unity-keystore.jks
-#          encodedString: ${{ secrets.KEYSTORE_BASE64_UNITY }}
-#
-#      - name: Download sportico Android keystore
-#        id: android_sportico_keystore
-#        uses: timheuer/base64-to-file@v1.0.3
-#        with:
-#          fileName: sportico-keystore.jks
-#          encodedString: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
-
-
-#      - name: Create key.properties
-#        run: |
-#          echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
-#          echo "storePassword=${{ secrets.STORE_PASSWORD_BLINK }}" >> android/key1.properties
-#          echo "keyPassword=${{ secrets.KEY_PASSWORD_BLINK }}" >> android/key1.properties
-#          echo "keyAlias=${{ secrets.KEY_ALIAS_BLINK }}" >> android/key1.properties
-#
-#          echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
-#          echo "storePassword=${{ secrets.STORE_PASSWORD_UNITY }}" >> android/key2.properties
-#          echo "keyPassword=${{ secrets.KEY_PASSWORD_UNITY }}" >> android/key2.properties
-#          echo "keyAlias=${{ secrets.KEY_ALIAS_UNITY }}" >> android/key2.properties
-#
-#          echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
-#          echo "storePassword=${{ secrets.STORE_PASSWORD_SPORTICO }}" >> android/key3.properties
-#          echo "keyPassword=${{ secrets.KEY_PASSWORD_SPORTICO }}" >> android/key3.properties
-#          echo "keyAlias=${{ secrets.KEY_ALIAS_SPORTICO }}" >> android/key3.properties
-
-      - uses: actions/setup-java@v1
-        with:
-          distribution: 'zulu'
-          java-version: "17"
-          cache: gradle
-          check-latest: true
-
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "3.16.1"
-          channel: 'stable'
-          cache: true
-
-      - name: Download firebase google services for sportico
-        run: echo "$SPORTICO_FIREBASE" | base64 -d > android/app/src/unity/google-services.json
-
-
-      - name: Get dependencies
-        run: flutter pub get
-        # Build Apk Sportico
-#      - name: Start Android Release Build Sportico
-#        run: flutter build apk --flavor sportico -t lib/main.dart
       - name: Start Android Release Build Sportico
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'sportico'
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
           blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
           blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
@@ -371,29 +232,9 @@ jobs:
           sportico_store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
           sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
           sportico_key_alias: ${{ secrets.KEY_ALIAS_SPORTICO }}
-
-          # Upload Android Sportico
-      - name: Upload Android Sportico Release
-        uses: actions/upload-artifact@v2
-        with:
-          name: android-sportico-release
-          path: build/app/outputs/flutter-apk/app-sportico-release.apk
-
-          # Distribution Sportico
-      - name: Firebase Sportico Distribution
-        if: contains("${{ env.RELEASE_ON }}", 'firebase')
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
-        with:
-          appId: ${{secrets.FIREBASE_SPORTICO_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: testers
-          file: build/app/outputs/flutter-apk/app-sportico-release.apk
-          releaseNotes: "Sportico Apk \n ${{ env.SERVER_WORK_ON }} \n ${{ env.RELEASE_NOTE }}"
-
-
-
-
-
-
-
-
+          firebase_file: $SPORTICO_FIREBASE
+          FIREBASE_APP_ID: ${{secrets.FIREBASE_SPORTICO_APP_ID}}
+          CREDENTIAL_FILE_CONTENT: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          release_on: ${{ env.RELEASE_ON }}
+          SERVER_WORK_ON: ${{ env.SERVER_WORK_ON }}
+          RELEASE_NOTE: ${{ env.RELEASE_NOTE }}

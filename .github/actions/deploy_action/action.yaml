@@ -5,10 +5,10 @@ inputs:
     description: 'flavor'
     required: true
     default: 'blink'
+  SSH_PRIVATE_KEY:
+    description: 'SSH_PRIVATE_KEY'
   blink_key_store:
     description: 'flavor'
-    required: true
-    default: 'blink'
   blink_store_password:
     description: 'flavor'
   blink_key_password:
@@ -47,6 +47,11 @@ inputs:
 runs:
   using: "composite"
   steps:
+
+    # Make sure the @v0.8.0 matches the current version of the action
+    - uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: ${{ inputs.SSH_PRIVATE_KEY }}
 
     - name: Download blink Android keystore
       id: android_blink_keystore
