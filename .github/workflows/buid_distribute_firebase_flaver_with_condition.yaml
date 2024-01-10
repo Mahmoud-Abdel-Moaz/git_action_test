@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 
 #  androidBlink # server staging # fixing blink home page \n version 2.5.0 build 5 - fixing  home page \n version 1.0.0 build 9 - fixing home page \n version 1.0.0 build 5 # apk, firebase
 name: "Build Android With Condition "
