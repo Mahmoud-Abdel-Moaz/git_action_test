@@ -147,21 +147,21 @@ android {
         blink {
             dimension "app"
             applicationId "com.getaction.hello"
-            versionCode 322
+            versionCode 600
             versionName "2.1.37"
             signingConfig signingConfigs.releaseProject1
         }
         unity {
             dimension "app"
             applicationId "com.hallo.code_magic_test"
-            versionCode 103
+            versionCode 600
             versionName "1.0.21"
             signingConfig signingConfigs.releaseProject2
         }
         sportico {
             dimension "app"
             applicationId "com.getaction.sportico"
-            versionCode 103
+            versionCode 600
             versionName "1.0.21"
             signingConfig signingConfigs.releaseProject3
         }

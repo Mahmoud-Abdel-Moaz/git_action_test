@@ -5,44 +5,57 @@ inputs:
     description: 'flavor'
     required: true
     default: 'blink'
-  SSH_PRIVATE_KEY:
-    description: 'SSH_PRIVATE_KEY'
+  ssh_private_key:
+    description: 'this is SSH private key to access private repo'
+
+
   blink_key_store:
-    description: 'flavor'
+    description: 'this is Blink key store file base 64'
   blink_store_password:
-    description: 'flavor'
+    description: 'this is Blink store password'
   blink_key_password:
-    description: 'flavor'
+    description: 'this is Blink key password'
   blink_key_alias:
-    description: 'flavor'
+    description: 'this is Blink key alias'
+
   unity_key_store:
-    description: 'flavor'
+    description: 'this is Unity key store file base 64'
   unity_store_password:
-    description: 'flavor'
+    description: 'this is Unity store password'
   unity_key_password:
-    description: 'flavor'
+    description: 'this is Unity key password'
   unity_key_alias:
-    description: 'flavor'
+    description: 'this is Unity key alias'
+
   sportico_key_store:
-    description: 'flavor'
+    description: 'this is Sportico key store file base 64'
   sportico_store_password:
-    description: 'flavor'
+    description: 'this is Sportico store password'
   sportico_key_password:
-    description: 'flavor'
+    description: 'this is Sportico key password'
   sportico_key_alias:
-    description: 'flavor'
+    description: 'this is Sportico key alias'
+
+
   firebase_file:
-    description: 'firebase google service file'
-  FIREBASE_APP_ID:
-    description: 'FIREBASE_APP_ID'
-  CREDENTIAL_FILE_CONTENT:
-    description: 'CREDENTIAL_FILE_CONTENT'
-  release_on:
-    description: 'release on'
-  SERVER_WORK_ON:
-    description: 'SERVER_WORK_ON'
-  RELEASE_NOTE:
-    description: 'RELEASE_NOTE'
+    description: 'this is firebase google service file'
+  firebase_app_id:
+    description: 'this project app is on firebase'
+  credential_file_content:
+    description: 'this is Firebase app Distribution service credentials file content'
+
+
+  playStore_account_key:
+    description: 'this is Google play deploy service credentials file content'
+  package_id:
+    description: 'this is app package id'
+
+  release_type: # change name
+    description: 'this is where want release app'
+  development_server:
+    description: 'this server that app connect with'
+  release_note:
+    description: 'this app release note on Firebase app distribution'
 
 runs:
   using: "composite"
@@ -51,7 +64,7 @@ runs:
     # Make sure the @v0.8.0 matches the current version of the action
     - uses: webfactory/ssh-agent@v0.8.0
       with:
-        ssh-private-key: ${{ inputs.SSH_PRIVATE_KEY }}
+        ssh-private-key: ${{ inputs.ssh_private_key }}
 
 
     - name: Download blink Android keystore
@@ -107,7 +120,7 @@ runs:
         channel: 'stable'
         cache: true
 
-    - name: Download firebase google services for blink
+    - name: Download firebase google services file
       run: echo "${{inputs.firebase_file}}" | base64 -d > android/app/src/${{ inputs.flavor }}/google-services.json
       shell: bash
 
@@ -117,25 +130,45 @@ runs:
       shell: bash
 
     - name: Start Android Release Build
+      if: contains("${{ inputs.release_type }}", 'firebase')
       run: flutter build apk --flavor ${{ inputs.flavor }} -t lib/main.dart
       shell: bash
 
 
-    # Upload Android Blink
+    # Upload Android Apk
     - name: Upload Android Release
+      if: contains("${{ inputs.release_type }}", 'firebase')
       uses: actions/upload-artifact@v2
       with:
         name: android-blink-release
         path: build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk
 
         # Distribution Blink
-    - name: Firebase Blink Distribution
-      if: contains("${{ inputs.release_on }}", 'firebase')
+    - name: Firebase App Distribution
+      if: contains("${{ inputs.release_type }}", 'firebase')
       uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
       with:
-        appId: ${{inputs.FIREBASE_APP_ID}}
-        serviceCredentialsFileContent: ${{ inputs.CREDENTIAL_FILE_CONTENT }}
+        appId: ${{inputs.firebase_app_id}}
+        serviceCredentialsFileContent: ${{ inputs.credential_file_content }}
         groups: testers
         file: build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk
-        releaseNotes: "Blink Apk \n ${{ inputs.SERVER_WORK_ON }} \n ${{ inputs.RELEASE_NOTE }}"
+        releaseNotes: "Blink Apk \n ${{ inputs.development_server }} \n ${{ inputs.release_note }}"
         #          releaseNotes:  "${{ github.event.head_commit.message }}"
+
+
+    # Build bundle blink
+    - name: Start Android Release Bundle
+      if: contains("${{ inputs.release_type }}", 'store')
+      run: flutter build appbundle --flavor ${{ inputs.flavor }} -t lib/main.dart
+
+    #deploy to google play
+    - name: Release Build to internal track
+      if: contains("${{ inputs.release_type }}", 'store')
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJsonPlainText: ${{inputs.playStore_account_key}}
+        packageName: ${{inputs.package_id}}
+        releaseFiles: build/app/outputs/bundle/blinkRelease/app-${{ inputs.flavor }}-release.aab
+        track: production
+        status: completed
+        changesNotSentForReview: true

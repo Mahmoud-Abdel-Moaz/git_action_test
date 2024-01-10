@@ -93,9 +93,9 @@ jobs:
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           IFS="#" read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
           echo "WORK_APPS=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
-          echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+          echo "DEVELOPMENT_SERVER=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
           echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
-          echo "RELEASE_ON=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
+          echo "RELEASE_TYPE=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
 
       # blink
       - name: Get Release Note
@@ -106,11 +106,11 @@ jobs:
 ###########################
 
 
-      - name: Start Android Release Build Blink
+      - name: Start Release Blink
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'blink'
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
           blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
           blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
@@ -124,11 +124,13 @@ jobs:
           sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
           sportico_key_alias:  ${{ secrets.KEY_ALIAS_SPORTICO }}
           firebase_file: $BLINK_FIREBASE
-          FIREBASE_APP_ID: ${{secrets.FIREBASE_BLINK_APP_ID}}
-          CREDENTIAL_FILE_CONTENT: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          release_on: ${{ env.RELEASE_ON }}
-          SERVER_WORK_ON: ${{ env.SERVER_WORK_ON }}
-          RELEASE_NOTE: ${{ env.RELEASE_NOTE }}
+          firebase_app_id: ${{secrets.FIREBASE_BLINK_APP_ID}}
+          credential_file_content: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          release_type: ${{ env.RELEASE_TYPE }}
+          development_server: ${{ env.DEVELOPMENT_SERVER }}
+          releaseNotes: ${{ env.RELEASE_NOTE }}
+          playStore_account_key: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
+          package_id: com.getaction.hello
 
 
 
@@ -151,9 +153,9 @@ jobs:
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           IFS="#" read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
           echo "WORK_APPS=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
-          echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+          echo "DEVELOPMENT_SERVER=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
           echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
-          echo "RELEASE_ON=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
+          echo "RELEASE_TYPE=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
 
       # unity
       - name: Get Release Note
@@ -163,11 +165,11 @@ jobs:
 
       ###########################
 
-      - name: Start Android Release Build Unity
+      - name: Start Release Unity
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'unity'
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
           blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
           blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
@@ -181,11 +183,13 @@ jobs:
           sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
           sportico_key_alias: ${{ secrets.KEY_ALIAS_SPORTICO }}
           firebase_file: $UNITY_FIREBASE
-          FIREBASE_APP_ID: ${{secrets.FIREBASE_UNITY_APP_ID}}
-          CREDENTIAL_FILE_CONTENT: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          release_on: ${{ env.RELEASE_ON }}
-          SERVER_WORK_ON: ${{ env.SERVER_WORK_ON }}
-          RELEASE_NOTE: ${{ env.RELEASE_NOTE }}
+          firebase_app_id: ${{secrets.FIREBASE_UNITY_APP_ID}}
+          credential_file_content: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          release_type: ${{ env.RELEASE_TYPE }}
+          development_server: ${{ env.DEVELOPMENT_SERVER }}
+          releaseNotes: ${{ env.RELEASE_NOTE }}
+          playStore_account_key: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
+          package_id: com.hallo.code_magic_test
 
   build_sportico :
     name: Build Sportico
@@ -193,10 +197,12 @@ jobs:
     environment: hallo
     if: (!contains(github.event.head_commit.message, 'ignore')&&(contains(github.event.head_commit.message, 'android sportico')|| contains(github.event.head_commit.message, 'all')))
     env:
-      UNITY_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_SPORTICO}}
+      SPORTICO_FIREBASE: ${{secrets.FIREBASE_GOOGLE_SERVICES_SPORTICO}}
     steps:
 
       - uses: actions/checkout@v1
+
+
           #Comment Split
 ###########################
       - name: Split Commit Message
@@ -204,9 +210,9 @@ jobs:
           COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
           IFS="#" read -ra COMMIT_WORDS <<< "$COMMIT_MESSAGE"
           echo "WORK_APPS=${COMMIT_WORDS[0]}" >> $GITHUB_ENV
-          echo "SERVER_WORK_ON=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
+          echo "DEVELOPMENT_SERVER=${COMMIT_WORDS[1]}" >> $GITHUB_ENV
           echo "APPS_RELEASE_NOTES=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
-          echo "RELEASE_ON=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
+          echo "RELEASE_TYPE=${COMMIT_WORDS[3]}" >> $GITHUB_ENV
 
       # sportico
       - name: Get Release Note
@@ -215,11 +221,11 @@ jobs:
           echo "RELEASE_NOTE=${COMMIT_WORDS[2]}" >> $GITHUB_ENV
       ###########################
 
-      - name: Start Android Release Build Sportico
+      - name: Start Release Sportico
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'sportico'
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
           blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
           blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
@@ -233,8 +239,10 @@ jobs:
           sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
           sportico_key_alias: ${{ secrets.KEY_ALIAS_SPORTICO }}
           firebase_file: $SPORTICO_FIREBASE
-          FIREBASE_APP_ID: ${{secrets.FIREBASE_SPORTICO_APP_ID}}
-          CREDENTIAL_FILE_CONTENT: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          release_on: ${{ env.RELEASE_ON }}
-          SERVER_WORK_ON: ${{ env.SERVER_WORK_ON }}
-          RELEASE_NOTE: ${{ env.RELEASE_NOTE }}
+          firebase_app_id: ${{secrets.FIREBASE_SPORTICO_APP_ID}}
+          credential_file_content: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          release_type: ${{ env.RELEASE_TYPE }}
+          development_server: ${{ env.DEVELOPMENT_SERVER }}
+          releaseNotes: ${{ env.RELEASE_NOTE }}
+          playStore_account_key: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
+          package_id: com.getaction.sportico
