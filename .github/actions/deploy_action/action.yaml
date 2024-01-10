@@ -33,6 +33,17 @@ inputs:
     description: 'flavor'
   firebase_file:
     description: 'firebase google service file'
+  FIREBASE_APP_ID:
+    description: 'FIREBASE_APP_ID'
+  CREDENTIAL_FILE_CONTENT:
+    description: 'CREDENTIAL_FILE_CONTENT'
+  release_on:
+    description: 'release on'
+  SERVER_WORK_ON:
+    description: 'SERVER_WORK_ON'
+  RELEASE_NOTE:
+    description: 'RELEASE_NOTE'
+
 runs:
   using: "composite"
   steps:
@@ -102,3 +113,23 @@ runs:
     - name: Start Android Release Build
       run: flutter build apk --flavor ${{ inputs.flavor }} -t lib/main.dart
       shell: bash
+
+
+    # Upload Android Blink
+    - name: Upload Android Release
+      uses: actions/upload-artifact@v2
+      with:
+        name: android-blink-release
+        path: build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk
+
+        # Distribution Blink
+    - name: Firebase Blink Distribution
+      if: contains("${{ inputs.release_on }}", 'firebase')
+      uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+      with:
+        appId: ${{inputs.FIREBASE_APP_ID}}
+        serviceCredentialsFileContent: ${{ inputs.CREDENTIAL_FILE_CONTENT }}
+        groups: testers
+        file: build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk
+        releaseNotes: "Blink Apk \n ${{ inputs.SERVER_WORK_ON }} \n ${{ inputs.RELEASE_NOTE }}"
+        #          releaseNotes:  "${{ github.event.head_commit.message }}"
