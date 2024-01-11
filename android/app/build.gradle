@@ -82,7 +82,7 @@ android {
 
 
 
-/*    signingConfigs {
+    signingConfigs {
         releaseProject1 {
             storePassword keystoreProperties['storePassword']
             keyPassword keystoreProperties['keyPassword']
@@ -101,9 +101,9 @@ android {
             keyAlias keystoreProperties['keyAlias']
             storeFile file(keystoreProperties['storeFile'])
         }
-    }*/
+    }
 
-    signingConfigs {
+    /*signingConfigs {
 
         releaseProject1 {
             storePassword keystoreProperties1['storePassword']
@@ -125,7 +125,7 @@ android {
             keyAlias keystoreProperties3['keyAlias']
             storeFile file(keystoreProperties3['storeFile'])
         }
-    }
+    }*/
 
     /*signingConfigs {
         releaseProject1 {

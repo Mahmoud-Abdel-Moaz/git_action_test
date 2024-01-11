@@ -131,7 +131,10 @@ jobs:
           releaseNotes: ${{ env.RELEASE_NOTE }}
           playStore_account_key: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
           package_id: com.getaction.hello
-
+          key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
+          store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
+          key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
+          key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
 
 
 
@@ -190,6 +193,10 @@ jobs:
           releaseNotes: ${{ env.RELEASE_NOTE }}
           playStore_account_key: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
           package_id: com.hallo.code_magic_test
+          key_store: ${{ secrets.KEYSTORE_BASE64_UNITY }}
+          store_password: ${{ secrets.STORE_PASSWORD_UNITY }}
+          key_password: ${{ secrets.KEY_PASSWORD_UNITY }}
+          key_alias: ${{ secrets.KEY_ALIAS_UNITY }}
 
   build_sportico :
     name: Build Sportico
@@ -246,3 +253,7 @@ jobs:
           releaseNotes: ${{ env.RELEASE_NOTE }}
           playStore_account_key: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
           package_id: com.getaction.sportico
+          key_store: ${{ secrets.STORE_PASSWORD_SPORTICO }}
+          store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
+          key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
+          key_alias: ${{ secrets.KEY_ALIAS_SPORTICO }}

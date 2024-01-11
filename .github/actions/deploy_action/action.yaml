@@ -5,9 +5,18 @@ inputs:
     description: 'flavor'
     required: true
     default: 'blink'
+
   ssh_private_key:
     description: 'this is SSH private key to access private repo'
 
+  key_store:
+    description: 'this is Blink key store file base 64'
+  store_password:
+    description: 'this is Blink store password'
+  key_password:
+    description: 'this is Blink key password'
+  key_alias:
+    description: 'this is Blink key alias'
 
   blink_key_store:
     description: 'this is Blink key store file base 64'
@@ -36,21 +45,19 @@ inputs:
   sportico_key_alias:
     description: 'this is Sportico key alias'
 
-
   firebase_file:
-    description: 'this is firebase google service file'
+    description: 'this is firebase google service file base 64'
   firebase_app_id:
     description: 'this project app is on firebase'
   credential_file_content:
     description: 'this is Firebase app Distribution service credentials file content'
-
 
   playStore_account_key:
     description: 'this is Google play deploy service credentials file content'
   package_id:
     description: 'this is app package id'
 
-  release_type: # change name
+  release_type:
     description: 'this is where want release app'
   development_server:
     description: 'this server that app connect with'
@@ -65,6 +72,14 @@ runs:
     - uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ inputs.ssh_private_key }}
+
+
+    - name: Download Android keystore
+      id: android_keystore
+      uses: timheuer/base64-to-file@v1.0.3
+      with:
+        fileName: keystore.jks
+        encodedString: ${{ inputs.key_store }}
 
 
     - name: Download blink Android keystore
@@ -91,6 +106,11 @@ runs:
 
     - name: Create key.properties
       run: |
+        echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+        echo "storePassword=${{ inputs.store_password }}" >> android/key.properties
+        echo "keyPassword=${{ inputs.key_password }}" >> android/key.properties
+        echo "keyAlias=${{ inputs.key_alias }}" >> android/key.properties
+        
         echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
         echo "storePassword=${{ inputs.blink_store_password }}" >> android/key1.properties
         echo "keyPassword=${{ inputs.blink_key_password }}" >> android/key1.properties
@@ -135,15 +155,30 @@ runs:
       shell: bash
 
 
+
+    # Build bundle blink
+    - name: Start Android Release Bundle
+      if: contains("${{ inputs.release_type }}", 'store')
+      run: flutter build appbundle --flavor ${{ inputs.flavor }} -t lib/main.dart
+      shell: bash
+
     # Upload Android Apk
     - name: Upload Android Release
       if: contains("${{ inputs.release_type }}", 'firebase')
       uses: actions/upload-artifact@v2
       with:
-        name: android-blink-release
+        name: android-${{ inputs.flavor }}-release
         path: build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk
 
-        # Distribution Blink
+    # Upload Android Apk
+    - name: Upload Android bundle Release
+      if: contains("${{ inputs.release_type }}", 'store')
+      uses: actions/upload-artifact@v2
+      with:
+        name: android-bundle-${{ inputs.flavor }}-release
+        path: build/app/outputs/bundle/${{ inputs.flavor }}Release/app-${{ inputs.flavor }}-release.aab
+
+        # Distribution Flavor
     - name: Firebase App Distribution
       if: contains("${{ inputs.release_type }}", 'firebase')
       uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
@@ -152,15 +187,9 @@ runs:
         serviceCredentialsFileContent: ${{ inputs.credential_file_content }}
         groups: testers
         file: build/app/outputs/flutter-apk/app-${{ inputs.flavor }}-release.apk
-        releaseNotes: "Blink Apk \n ${{ inputs.development_server }} \n ${{ inputs.release_note }}"
+        releaseNotes: "${{ inputs.flavor }} Apk \n ${{ inputs.development_server }} \n ${{ inputs.release_note }}"
         #          releaseNotes:  "${{ github.event.head_commit.message }}"
 
-
-    # Build bundle blink
-    - name: Start Android Release Bundle
-      if: contains("${{ inputs.release_type }}", 'store')
-      run: flutter build appbundle --flavor ${{ inputs.flavor }} -t lib/main.dart
-      shell: bash
 
     #deploy to google play
     - name: Release Build to internal track
@@ -172,4 +201,3 @@ runs:
         releaseFiles: build/app/outputs/bundle/${{ inputs.flavor }}Release/app-${{ inputs.flavor }}-release.aab
         track: production
         status: completed
-        changesNotSentForReview: true
