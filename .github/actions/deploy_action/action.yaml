@@ -10,40 +10,41 @@ inputs:
     description: 'this is SSH private key to access private repo'
 
   key_store:
-    description: 'this is Blink key store file base 64'
+    description: 'this is App key store file base 64'
   store_password:
-    description: 'this is Blink store password'
+    description: 'this is App store password'
   key_password:
-    description: 'this is Blink key password'
+    description: 'this is App key password'
   key_alias:
-    description: 'this is Blink key alias'
+    description: 'this is App key alias'
 
-  blink_key_store:
-    description: 'this is Blink key store file base 64'
-  blink_store_password:
-    description: 'this is Blink store password'
-  blink_key_password:
-    description: 'this is Blink key password'
-  blink_key_alias:
-    description: 'this is Blink key alias'
 
-  unity_key_store:
-    description: 'this is Unity key store file base 64'
-  unity_store_password:
-    description: 'this is Unity store password'
-  unity_key_password:
-    description: 'this is Unity key password'
-  unity_key_alias:
-    description: 'this is Unity key alias'
-
-  sportico_key_store:
-    description: 'this is Sportico key store file base 64'
-  sportico_store_password:
-    description: 'this is Sportico store password'
-  sportico_key_password:
-    description: 'this is Sportico key password'
-  sportico_key_alias:
-    description: 'this is Sportico key alias'
+#    blink_key_store:
+#      description: 'this is Blink key store file base 64'
+#    blink_store_password:
+#      description: 'this is Blink store password'
+#    blink_key_password:
+#      description: 'this is Blink key password'
+#    blink_key_alias:
+#      description: 'this is Blink key alias'
+#
+#    unity_key_store:
+#      description: 'this is Unity key store file base 64'
+#    unity_store_password:
+#      description: 'this is Unity store password'
+#    unity_key_password:
+#      description: 'this is Unity key password'
+#    unity_key_alias:
+#      description: 'this is Unity key alias'
+#
+#    sportico_key_store:
+#      description: 'this is Sportico key store file base 64'
+#    sportico_store_password:
+#      description: 'this is Sportico store password'
+#    sportico_key_password:
+#      description: 'this is Sportico key password'
+#    sportico_key_alias:
+#      description: 'this is Sportico key alias'
 
   firebase_file:
     description: 'this is firebase google service file base 64'
@@ -82,49 +83,13 @@ runs:
         encodedString: ${{ inputs.key_store }}
 
 
-    - name: Download blink Android keystore
-      id: android_blink_keystore
-      uses: timheuer/base64-to-file@v1.0.3
-      with:
-        fileName: blink-keystore.jks
-        encodedString: ${{ inputs.blink_key_store }}
-
-    - name: Download unity Android keystore
-      id: android_unity_keystore
-      uses: timheuer/base64-to-file@v1.0.3
-      with:
-        fileName: unity-keystore.jks
-        encodedString: ${{ inputs.unity_key_store }}
-
-    - name: Download sportico Android keystore
-      id: android_sportico_keystore
-      uses: timheuer/base64-to-file@v1.0.3
-      with:
-        fileName: sportico-keystore.jks
-        encodedString: ${{ inputs.sportico_key_store }}
-
-
     - name: Create key.properties
       run: |
         echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
         echo "storePassword=${{ inputs.store_password }}" >> android/key.properties
         echo "keyPassword=${{ inputs.key_password }}" >> android/key.properties
         echo "keyAlias=${{ inputs.key_alias }}" >> android/key.properties
-        
-        echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
-        echo "storePassword=${{ inputs.blink_store_password }}" >> android/key1.properties
-        echo "keyPassword=${{ inputs.blink_key_password }}" >> android/key1.properties
-        echo "keyAlias=${{ inputs.blink_key_alias }}" >> android/key1.properties
-        
-        echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
-        echo "storePassword=${{ inputs.unity_store_password }}" >> android/key2.properties
-        echo "keyPassword=${{ inputs.unity_key_password }}" >> android/key2.properties
-        echo "keyAlias=${{ inputs.unity_key_alias }}" >> android/key2.properties
-        
-        echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
-        echo "storePassword=${{ inputs.sportico_store_password }}" >> android/key3.properties
-        echo "keyPassword=${{ inputs.sportico_key_password }}" >> android/key3.properties
-        echo "keyAlias=${{ inputs.sportico_key_alias }}" >> android/key3.properties
+
       shell: bash
 
     - uses: actions/setup-java@v1
@@ -201,3 +166,52 @@ runs:
         releaseFiles: build/app/outputs/bundle/${{ inputs.flavor }}Release/app-${{ inputs.flavor }}-release.aab
         track: production
         status: completed
+
+
+
+
+
+#    - name: Download blink Android keystore
+#      id: android_blink_keystore
+#      uses: timheuer/base64-to-file@v1.0.3
+#      with:
+#        fileName: blink-keystore.jks
+#        encodedString: ${{ inputs.blink_key_store }}
+#
+#    - name: Download unity Android keystore
+#      id: android_unity_keystore
+#      uses: timheuer/base64-to-file@v1.0.3
+#      with:
+#        fileName: unity-keystore.jks
+#        encodedString: ${{ inputs.unity_key_store }}
+#
+#    - name: Download sportico Android keystore
+#      id: android_sportico_keystore
+#      uses: timheuer/base64-to-file@v1.0.3
+#      with:
+#        fileName: sportico-keystore.jks
+#        encodedString: ${{ inputs.sportico_key_store }}
+#
+#
+#    - name: Create key.properties
+#      run: |
+#        echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+#        echo "storePassword=${{ inputs.store_password }}" >> android/key.properties
+#        echo "keyPassword=${{ inputs.key_password }}" >> android/key.properties
+#        echo "keyAlias=${{ inputs.key_alias }}" >> android/key.properties
+#
+#        echo "storeFile=${{ steps.android_blink_keystore.outputs.filePath }}" > android/key1.properties
+#        echo "storePassword=${{ inputs.blink_store_password }}" >> android/key1.properties
+#        echo "keyPassword=${{ inputs.blink_key_password }}" >> android/key1.properties
+#        echo "keyAlias=${{ inputs.blink_key_alias }}" >> android/key1.properties
+#
+#        echo "storeFile=${{ steps.android_unity_keystore.outputs.filePath }}" > android/key2.properties
+#        echo "storePassword=${{ inputs.unity_store_password }}" >> android/key2.properties
+#        echo "keyPassword=${{ inputs.unity_key_password }}" >> android/key2.properties
+#        echo "keyAlias=${{ inputs.unity_key_alias }}" >> android/key2.properties
+#
+#        echo "storeFile=${{ steps.android_sportico_keystore.outputs.filePath }}" > android/key3.properties
+#        echo "storePassword=${{ inputs.sportico_store_password }}" >> android/key3.properties
+#        echo "keyPassword=${{ inputs.sportico_key_password }}" >> android/key3.properties
+#        echo "keyAlias=${{ inputs.sportico_key_alias }}" >> android/key3.properties
+#      shell: bash

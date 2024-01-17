@@ -1,0 +1,167 @@
+name: 'Deploy Action'
+description: 'This is my reusable action'
+inputs:
+  flavor:
+    description: 'flavor'
+    required: true
+    default: 'blink'
+
+  app_name:
+    description: 'app Name'
+    required: true
+    default: 'Blink'
+
+  ssh_private_key:
+    description: 'this is SSH private key to access private repo'
+
+  build_certificate_base64:
+    description: 'this is iOS App Certificate base64'
+  build_provision_profile_base64:
+    description: 'this is iOS App Provision Profile base64'
+  export_options_base64:
+    description: 'this is iOS App Export Options base64'
+  keychain_password:
+    description: 'this is Keychain Password'
+  p12_password:
+    description: 'this is Provision Profile Password'
+
+
+  iOS_version_name:
+    description: 'this is iOS App Version Name'
+  iOS_build_number:
+    description: 'this is iOS App Build Number'
+
+  apple_store_api_key_json:
+    description: 'this is iOS App Build Identifier'
+  app_build_identifier:
+    description: 'this is iOS App Build Identifier'
+
+  app_store_connect_issuer_id:
+    description: 'this is Apple Store Connect Issuer Id'
+  app_store_connect_api_key_id:
+    description: 'this is Apple Store Connect API Key Id'
+  app_store_connect_api_private_key:
+    description: 'this is Apple Store Connect API Private Key'
+
+
+
+
+runs:
+  using: "composite"
+  steps:
+
+    - uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: ${{ inputs.ssh_private_key }}
+
+
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: "3.16.1"
+        channel: 'stable'
+        cache: true
+
+    - name: Get dependencies
+      run: flutter pub get
+      shell: bash
+
+
+    - name: Add Certificate File
+      run: |
+        CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+        echo "${{ inputs.build_certificate_base64 }}" | base64 -d > $CERTIFICATE_PATH
+      shell: bash
+
+    - name: Add Profile File
+      run: |
+        PP_PATH=$RUNNER_TEMP/blink_ci.mobileprovision
+        echo "${{ inputs.build_provision_profile_base64 }}" | base64 -d > $PP_PATH
+      shell: bash
+
+    - name: Add ExportOptions File
+      run: |
+        EXPORT_OPTIONS_PATH="ios/Runner/ExportOptions.plist"
+        echo -n "${{ inputs.export_options_base64 }}" | base64 -d > $EXPORT_OPTIONS_PATH
+      shell: bash
+
+    - name: Create Keychain
+      run: | 
+        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+        security create-keychain -p "${{ inputs.keychain_password }}" $KEYCHAIN_PATH
+        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+        security unlock-keychain -p "${{ inputs.keychain_password }}" $KEYCHAIN_PATH
+      shell: bash
+
+    - name: Install the Apple certificate
+      run: |
+        CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+        security import $CERTIFICATE_PATH -P "${{ inputs.p12_password }}" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+        security list-keychain -d user -s $KEYCHAIN_PATH
+      shell: bash
+
+    - name: Install Apple Profile
+      run: |
+        PP_PATH=$RUNNER_TEMP/${{ inputs.flavor }}_ci.mobileprovision
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+      shell: bash
+
+    - name: Install Fastlane
+      run: gem install fastlane
+      shell: bash
+
+    - name: Create App store json
+      run: echo  "${{ inputs.apple_store_api_key_json }}" > api_key.json
+      shell: bash
+
+    - name: Get latest TestFlight build number
+      id: testflight
+      env:
+        FASTLANE_DISABLE_COLORS: true
+      run: |
+        echo "::set-output name=build_number::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"${{ inputs.app_build_identifier }}" | grep "Result: " | awk '{print $3}'  )"
+        echo "::set-output name=build_name::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"${{ inputs.app_build_identifier }}" | grep "Latest upload for version " | awk '{print $6}' )"
+      shell: bash
+
+      #Build
+    # Build and sign the ipa using a single flutter command
+    - name: Building IPA
+      run: |
+        NEXT_BUILD_NUMBER=$(expr ${{steps.testflight.outputs.build_number}} + 1)
+        NEXT_BUILD_NAME=${{steps.testflight.outputs.build_name}}
+        flutter build ipa --release --export-options-plist=ios/Runner/ExportOptions.plist --flavor ${{ inputs.flavor }} --build-name=${NEXT_BUILD_NAME} --build-number=${NEXT_BUILD_NUMBER}
+      shell: bash
+
+    # Collect the file and upload as artifact
+    - name: collect ipa artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.app_name }}-release-ipa
+        # Path to the release files
+        path: build/ios/ipa/${{ inputs.app_name }}.ipa
+
+
+    - name:  Deploy to App Store  (Testflight)
+      uses: apple-actions/upload-testflight-build@v1
+      with:
+        app-path: build/ios/ipa/${{ inputs.app_name }}.ipa
+        issuer-id: ${{ inputs.app_store_connect_issuer_id }}
+        api-key-id: ${{ inputs.app_store_connect_api_key_id }}
+        api-private-key: ${{ inputs.app_store_connect_api_private_key }}
+
+
+    #Clean up keychain and provisioning profile
+    - name: Clean up keychain and provisioning profile
+      if: ${{ always() }}
+      run: |
+        security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+        rm ~/Library/MobileDevice/Provisioning\ Profiles/${{ inputs.flavor }}_ci.mobileprovision
+      shell: bash
+
+      
+
+
+
+
+

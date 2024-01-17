@@ -3,11 +3,11 @@ on:
     branches:
       - main
       - master
-#  push:
-#    branches:
-#      - main
-#      - master
-#      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
 name: "Build IOS"
 env:
   #      versions
@@ -34,85 +34,130 @@ jobs:
       EXPORT_OPTIONS_BASE64: ${{ secrets.IOS_EXPORT_OPTIONS_BASE64 }}
     if: (!contains(github.event.head_commit.message, 'ignore')&& contains(github.event.head_commit.message, 'ios blink') || contains(github.event.head_commit.message, 'all'))
     steps:
+
       - uses: actions/checkout@v2
 
-      - uses: webfactory/ssh-agent@v0.8.0
+      - name: Start iOS Blink Build
+        uses: ./.github/actions/ios_action
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          flavor: 'blink'
+          app_name: 'Blink'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          build_certificate_base64: $BUILD_CERTIFICATE_BASE64
+          build_provision_profile_base64: $BUILD_PROVISION_PROFILE_BASE64
+          export_options_base64: $EXPORT_OPTIONS_BASE64
+          keychain_password: $KEYCHAIN_PASSWORD
+          p12_password: $P12_PASSWORD
+          iOS_version_name: ${{env.BLINK_IOS_VERSION_NAME}}
+          iOS_build_number: ${{env.BLINK_IOS_BUILD_NUMBER}}
+          apple_store_api_key_json: ${{ secrets.APPLE_STORE_API_KEY_JSON }}
+          app_build_identifier: com.nxt.ci
+          app_store_connect_issuer_id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          app_store_connect_api_key_id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          app_store_connect_api_private_key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
 
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "3.16.1"
-          channel: 'stable'
-          cache: true
-      - name: Get dependencies
-        run:  flutter pub get
-#        Install the Apple certificate and provisioning profile
-      - name: Add Certificate File
-        run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
+#      - uses: webfactory/ssh-agent@v0.8.0
+#        with:
+#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#
+#      - uses: subosito/flutter-action@v1
+#        with:
+#          flutter-version: "3.16.1"
+#          channel: 'stable'
+#          cache: true
+#      - name: Get dependencies
+#        run:  flutter pub get
+#      - name: Add Certificate File
+#        run: |
+#          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+#          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
+#
+#      - name: Add Profile File
+#        run: |
+#          PP_PATH=$RUNNER_TEMP/blink_ci.mobileprovision
+#          echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > $PP_PATH
+#
+#      - name: Add ExportOptions File
+#        run: |
+#          EXPORT_OPTIONS_PATH="ios/Runner/ExportOptionsBlink.plist"
+#          echo -n "$EXPORT_OPTIONS_BASE64" | base64 -d > $EXPORT_OPTIONS_PATH
+#
+#      - name: Create Keychain
+#        run: |
+#          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+#          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+#          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+#          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+#
+#      - name: Install the Apple certificate
+#        run: |
+#          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+#          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+#          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+#          security list-keychain -d user -s $KEYCHAIN_PATH
+#
+#      - name: Install Apple Profile
+#        run: |
+#          PP_PATH=$RUNNER_TEMP/blink_ci.mobileprovision
+#          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+#          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+#
+#
+#      - name: Set up Ruby
+#        uses: ruby/setup-ruby@v1
+#        with:
+#          ruby-version: 2.7.0
+#
+#
+#      - name: Install Fastlane
+#        run: gem install fastlane
+#
+#
+#      - name: Create App store json
+#        run:  echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > api_key.json
+#
+#
+#      - name: Get latest TestFlight build number
+#        id: testflight
+#        env:
+#          FASTLANE_DISABLE_COLORS: true
+#        run: |
+#          echo "::set-output name=build_number::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Result: " | awk '{print $3}'  )"
+#          echo "::set-output name=build_name::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Latest upload for version " | awk '{print $6}' )"
+#
+#
+#        #Build
+#      - name: Building IPA
+#        run:  |
+#          NEXT_BUILD_NUMBER=$(expr ${{steps.testflight.outputs.build_number}} + 1)
+#          NEXT_BUILD_NAME=${{steps.testflight.outputs.build_name}}
+#          flutter build ipa --release --export-options-plist=ios/Runner/ExportOptionsBlink.plist --flavor blink --build-name=${NEXT_BUILD_NAME} --build-number=${NEXT_BUILD_NUMBER}
+#
+#      - name: collect ipa artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: release-ipa
+#          # Path to the release files
+#          path: build/ios/ipa/Blink.ipa
+#
+#
+#      - name:  Deploy to App Store  (Testflight)
+#        uses: apple-actions/upload-testflight-build@v1
+#        with:
+#          app-path: build/ios/ipa/Blink.ipa
+#          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+#          api-key-id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+#          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
+#
+#
+#      - name: Clean up keychain and provisioning profile
+#        if: ${{ always() }}
+#        run: |
+#          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+#          rm ~/Library/MobileDevice/Provisioning\ Profiles/blink_ci.mobileprovision
+#
 
-      - name: Add Profile File
-        run: |
-          PP_PATH=$RUNNER_TEMP/blink_ci.mobileprovision
-          echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > $PP_PATH
 
-      - name: Add ExportOptions File
-        run: |
-          EXPORT_OPTIONS_PATH="ios/Runner/ExportOptionsBlink.plist"
-          echo -n "$EXPORT_OPTIONS_BASE64" | base64 -d > $EXPORT_OPTIONS_PATH
-
-      - name: Create Keychain
-        run: |
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-
-      - name: Install the Apple certificate
-        run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          security list-keychain -d user -s $KEYCHAIN_PATH
-
-      - name: Install Apple Profile
-        run: |
-          PP_PATH=$RUNNER_TEMP/blink_ci.mobileprovision
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-
-        #Build
-      # Build and sign the ipa using a single flutter command
-      - name: Building IPA
-        run: flutter build ipa --release --export-options-plist=ios/Runner/ExportOptionsBlink.plist --flavor blink --build-name=${{env.BLINK_IOS_VERSION_NAME}} --build-number=${{env.BLINK_IOS_BUILD_NUMBER}}
-
-      # Collect the file and upload as artifact
-      - name: collect ipa artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-ipa
-          # Path to the release files
-          path: build/ios/ipa/Blink.ipa
-
-
-      - name:  Deploy to App Store  (Testflight)
-        uses: apple-actions/upload-testflight-build@v1
-        with:
-          app-path: build/ios/ipa/Blink.ipa
-          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          api-key-id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
-          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
-
-
-      #Clean up keychain and provisioning profile
-      - name: Clean up keychain and provisioning profile
-        if: ${{ always() }}
-        run: |
-          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-          rm ~/Library/MobileDevice/Provisioning\ Profiles/blink_ci.mobileprovision
-          
 
   build_unity:
     name: Build IOS - Unity
@@ -128,56 +173,81 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: webfactory/ssh-agent@v0.8.0
+      - name: Start iOS Unity Build
+        uses: ./.github/actions/ios_action
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          flavor: 'unity'
+          app_name: 'Unity'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          build_certificate_base64: $BUILD_CERTIFICATE_BASE64
+          build_provision_profile_base64: $BUILD_PROVISION_PROFILE_BASE64
+          export_options_base64: $EXPORT_OPTIONS_BASE64
+          keychain_password: $KEYCHAIN_PASSWORD
+          p12_password: $P12_PASSWORD
+          iOS_version_name: ${{env.UNITY_IOS_VERSION_NAME}}
+          iOS_build_number: ${{env.UNITY_IOS_BUILD_NUMBER}}
+          apple_store_api_key_json: ${{ secrets.APPLE_STORE_API_KEY_JSON }}
+          app_build_identifier: com.nxt.ci
+          app_store_connect_issuer_id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          app_store_connect_api_key_id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          app_store_connect_api_private_key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
 
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: "3.16.1"
-          channel: 'stable'
-          cache: true
-      - name: Get dependencies
-        run: flutter pub get
-        #Install the Apple certificate and provisioning profile
-      - name: Add Certificate File
-        run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
-
-      - name: Add Profile File
-        run: |
-          PP_PATH=$RUNNER_TEMP/unity_ci.mobileprovision
-          echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > $PP_PATH
-
-      - name: Add ExportOptions File
-        run: |
-          EXPORT_OPTIONS_PATH="ios/Runner/ExportOptionsUnity.plist"
-          echo -n "$EXPORT_OPTIONS_BASE64" | base64 -d > $EXPORT_OPTIONS_PATH
-
-      - name: Create Keychain
-        run: |
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-
-      - name: Install the Apple certificate
-        run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          security list-keychain -d user -s $KEYCHAIN_PATH
-
-      - name: Install Apple Profile
-        run: |
-          PP_PATH=$RUNNER_TEMP/unity_ci.mobileprovision
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-        #Build
-      # Build and sign the ipa using a single flutter command
-      - name: Building IPA
-        run: flutter build ipa --release --flavor unity --export-options-plist=ios/Runner/ExportOptionsUnity.plist --build-name=${{env.UNITY_IOS_VERSION_NAME}} --build-number=${{env.UNITY_IOS_BUILD_NUMBER}}
+#      - uses: webfactory/ssh-agent@v0.8.0
+#        with:
+#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#
+#      - uses: subosito/flutter-action@v1
+#        with:
+#          flutter-version: "3.16.1"
+#          channel: 'stable'
+#          cache: true
+#
+#      - name: Get dependencies
+#        run: flutter pub get
+#
+#      - name: Add Certificate File
+#        run: |
+#          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+#          echo "$BUILD_CERTIFICATE_BASE64" | base64 -d > $CERTIFICATE_PATH
+#
+#
+#      - name: Add Profile File
+#        run: |
+#          PP_PATH=$RUNNER_TEMP/unity_ci.mobileprovision
+#          echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 -d > $PP_PATH
+#
+#
+#      - name: Add ExportOptions File
+#        run: |
+#          EXPORT_OPTIONS_PATH="ios/Runner/ExportOptionsUnity.plist"
+#          echo -n "$EXPORT_OPTIONS_BASE64" | base64 -d > $EXPORT_OPTIONS_PATH
+#
+#
+#      - name: Create Keychain
+#        run: |
+#          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+#          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+#          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+#          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+#
+#
+#      - name: Install the Apple certificate
+#        run: |
+#          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+#          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+#          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+#          security list-keychain -d user -s $KEYCHAIN_PATH
+#
+#
+#      - name: Install Apple Profile
+#        run: |
+#          PP_PATH=$RUNNER_TEMP/unity_ci.mobileprovision
+#          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+#          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+#        #Build
+#
+#      - name: Building IPA
+#        run: flutter build ipa --release --flavor unity --export-options-plist=ios/Runner/ExportOptionsUnity.plist --build-name=${{env.UNITY_IOS_VERSION_NAME}} --build-number=${{env.UNITY_IOS_BUILD_NUMBER}}
 
 
 #      # Collect the file and upload as artifact
@@ -197,14 +267,12 @@ jobs:
 #          api-key-id: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
 #          api-private-key: ${{ secrets.APP_STORE_CONNECT_API_PRIVATE_KEY }}
 
-
-      #Clean up keychain and provisioning profile
-      - name: Clean up keychain and provisioning profile
-        if: ${{ always() }}
-        run: |
-          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-          rm ~/Library/MobileDevice/Provisioning\ Profiles/unity_ci.mobileprovision
-          
+#      - name: Clean up keychain and provisioning profile
+#        if: ${{ always() }}
+#        run: |
+#          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+#          rm ~/Library/MobileDevice/Provisioning\ Profiles/unity_ci.mobileprovision
+#
 
 #
 #  teas_name:

@@ -105,24 +105,11 @@ jobs:
 
 ###########################
 
-
       - name: Start Release Blink
         uses: ./.github/actions/deploy_action
         with:
           flavor: 'blink'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
-          blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
-          blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
-          blink_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
-          unity_key_store: ${{ secrets.KEYSTORE_BASE64_UNITY }}
-          unity_store_password: ${{ secrets.STORE_PASSWORD_UNITY }}
-          unity_key_password: ${{ secrets.KEY_PASSWORD_UNITY }}
-          unity_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
-          sportico_key_store: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
-          sportico_store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
-          sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
-          sportico_key_alias:  ${{ secrets.KEY_ALIAS_SPORTICO }}
           firebase_file: $BLINK_FIREBASE
           firebase_app_id: ${{secrets.FIREBASE_BLINK_APP_ID}}
           credential_file_content: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
@@ -173,18 +160,6 @@ jobs:
         with:
           flavor: 'unity'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
-          blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
-          blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
-          blink_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
-          unity_key_store: ${{ secrets.KEYSTORE_BASE64_UNITY }}
-          unity_store_password: ${{ secrets.STORE_PASSWORD_UNITY }}
-          unity_key_password: ${{ secrets.KEY_PASSWORD_UNITY }}
-          unity_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
-          sportico_key_store: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
-          sportico_store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
-          sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
-          sportico_key_alias: ${{ secrets.KEY_ALIAS_SPORTICO }}
           firebase_file: $UNITY_FIREBASE
           firebase_app_id: ${{secrets.FIREBASE_UNITY_APP_ID}}
           credential_file_content: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
@@ -233,18 +208,6 @@ jobs:
         with:
           flavor: 'sportico'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          blink_key_store: ${{ secrets.KEYSTORE_BASE64_BLINK }}
-          blink_store_password: ${{ secrets.STORE_PASSWORD_BLINK }}
-          blink_key_password: ${{ secrets.KEY_PASSWORD_BLINK }}
-          blink_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
-          unity_key_store: ${{ secrets.KEYSTORE_BASE64_UNITY }}
-          unity_store_password: ${{ secrets.STORE_PASSWORD_UNITY }}
-          unity_key_password: ${{ secrets.KEY_PASSWORD_UNITY }}
-          unity_key_alias: ${{ secrets.KEY_ALIAS_BLINK }}
-          sportico_key_store: ${{ secrets.KEYSTORE_BASE64_SPORTICO }}
-          sportico_store_password: ${{ secrets.STORE_PASSWORD_SPORTICO }}
-          sportico_key_password: ${{ secrets.KEY_PASSWORD_SPORTICO }}
-          sportico_key_alias: ${{ secrets.KEY_ALIAS_SPORTICO }}
           firebase_file: $SPORTICO_FIREBASE
           firebase_app_id: ${{secrets.FIREBASE_SPORTICO_APP_ID}}
           credential_file_content: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
