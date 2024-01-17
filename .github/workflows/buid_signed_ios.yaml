@@ -9,7 +9,7 @@ on:
       - master
       - develop
 name: "Build IOS"
-env:
+#env:
   #      versions
 #  BLINK_IOS_VERSION_NAME: "1.0.3"
 #  BLINK_IOS_BUILD_NUMBER: "3"
