@@ -11,11 +11,11 @@ on:
 name: "Build IOS"
 env:
   #      versions
-  BLINK_IOS_VERSION_NAME: "1.0.3"
-  BLINK_IOS_BUILD_NUMBER: "3"
-
-  UNITY_IOS_VERSION_NAME: "1.0.0+10"
-  UNITY_IOS_BUILD_NUMBER: "10"
+#  BLINK_IOS_VERSION_NAME: "1.0.3"
+#  BLINK_IOS_BUILD_NUMBER: "3"
+#
+#  UNITY_IOS_VERSION_NAME: "1.0.0+10"
+#  UNITY_IOS_BUILD_NUMBER: "10"
 
 
 
@@ -48,8 +48,6 @@ jobs:
           export_options_base64: $EXPORT_OPTIONS_BASE64
           keychain_password: $KEYCHAIN_PASSWORD
           p12_password: $P12_PASSWORD
-          iOS_version_name: ${{env.BLINK_IOS_VERSION_NAME}}
-          iOS_build_number: ${{env.BLINK_IOS_BUILD_NUMBER}}
           apple_store_api_key_json: ${{ secrets.APPLE_STORE_API_KEY_JSON }}
           app_build_identifier: com.nxt.ci
           app_store_connect_issuer_id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
@@ -184,8 +182,6 @@ jobs:
           export_options_base64: $EXPORT_OPTIONS_BASE64
           keychain_password: $KEYCHAIN_PASSWORD
           p12_password: $P12_PASSWORD
-          iOS_version_name: ${{env.UNITY_IOS_VERSION_NAME}}
-          iOS_build_number: ${{env.UNITY_IOS_BUILD_NUMBER}}
           apple_store_api_key_json: ${{ secrets.APPLE_STORE_API_KEY_JSON }}
           app_build_identifier: com.nxt.ci
           app_store_connect_issuer_id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
@@ -248,7 +244,6 @@ jobs:
 #
 #      - name: Building IPA
 #        run: flutter build ipa --release --flavor unity --export-options-plist=ios/Runner/ExportOptionsUnity.plist --build-name=${{env.UNITY_IOS_VERSION_NAME}} --build-number=${{env.UNITY_IOS_BUILD_NUMBER}}
-
 
 #      # Collect the file and upload as artifact
 #      - name: collect ipa artifacts

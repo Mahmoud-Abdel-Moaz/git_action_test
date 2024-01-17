@@ -25,12 +25,6 @@ inputs:
   p12_password:
     description: 'this is Provision Profile Password'
 
-
-  iOS_version_name:
-    description: 'this is iOS App Version Name'
-  iOS_build_number:
-    description: 'this is iOS App Build Number'
-
   apple_store_api_key_json:
     description: 'this is iOS App Build Identifier'
   app_build_identifier:
