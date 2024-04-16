@@ -5,11 +5,62 @@ on:
       - master
 
 jobs:
-  build:
+  get_build_number:
     runs-on: macOS-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.0
+
+    - name: Install Fastlane
+      run: gem install fastlane
+
+    - name: Create App store json
+      run:  echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > api_key.json
+
+##      # Collect the file and upload as artifact
+##    - name: collect ipa artifacts
+##      uses: actions/upload-artifact@v2
+##      with:
+##        name: api_key
+##        path: api_key.json
+
+    - name: Get latest TestFlight build number
+      id: testflight
+      env:
+        FASTLANE_DISABLE_COLORS: true
+      run: |
+        echo "::set-output name=build_number::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Result: " | awk '{print $3}'  )"
+        echo "::set-output name=build_name::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Latest upload for version " | awk '{print $6}' )"
+
+    - name: Use the number
+      run: |
+         INCREMENTED_NUMBER=$(expr ${{steps.testflight.outputs.build_number}} + 1)
+         echo "${{ steps.testflight.outputs.build_number }}"
+         echo "${INCREMENTED_NUMBER}"
+
+
+
+#    - name: Print Build Number
+#      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number}}"
+
+#
+#    - name: Get Release Note
+#      run: |
+#        IFS="\\" read -ra PARTS <<< "${{steps.testflight.outputs.build_number }}"
+#        echo "BUILD_NUMBER=${PARTS[0]}" >> $GITHUB_ENV
+
+
+#    - name: Convert string to number
+#      id: convert
+#      run: |
+#        num_str="${{env.BUILD_NUMBER}}"
+#        num_val=$((10#${num_str}))
+#        echo "::set-output name=num_val::${num_val}"
 
 
 
@@ -36,58 +87,6 @@ jobs:
 #         echo "${INCREMENTED_NUMBER}"
 
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7.0
-
-
-    - name: Install Fastlane
-      run: gem install fastlane
-
-
-    - name: Create App store json
-      run:  echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > api_key.json
-
-##      # Collect the file and upload as artifact
-##    - name: collect ipa artifacts
-##      uses: actions/upload-artifact@v2
-##      with:
-##        name: api_key
-##        path: api_key.json
-#
-#
-
-    - name: Get latest TestFlight build number
-      id: testflight
-      env:
-        FASTLANE_DISABLE_COLORS: true
-      run: |
-        echo "::set-output name=build_number::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Result: " | awk '{print $3}'  )"
-        echo "::set-output name=build_name::$(fastlane run latest_testflight_build_number api_key_path:"api_key.json" app_identifier:"com.nxt.ci" | grep "Latest upload for version " | awk '{print $6}' )"
-
-#    - name: Print Build Number
-#      run: echo "The latest TestFlight build number is ${{ steps.testflight.outputs.build_number}}"
-
-#
-#    - name: Get Release Note
-#      run: |
-#        IFS="\\" read -ra PARTS <<< "${{steps.testflight.outputs.build_number }}"
-#        echo "BUILD_NUMBER=${PARTS[0]}" >> $GITHUB_ENV
-
-
-#    - name: Convert string to number
-#      id: convert
-#      run: |
-#        num_str="${{env.BUILD_NUMBER}}"
-#        num_val=$((10#${num_str}))
-#        echo "::set-output name=num_val::${num_val}"
-
-    - name: Use the number
-      run: |
-         INCREMENTED_NUMBER=$(expr ${{steps.testflight.outputs.build_number}} + 1)
-         echo "${{ steps.testflight.outputs.build_number }}"
-         echo "${INCREMENTED_NUMBER}"
 
 
 
