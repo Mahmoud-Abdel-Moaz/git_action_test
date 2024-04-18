@@ -6,6 +6,7 @@ on:
 
 jobs:
   get_build_number:
+    if: contains("${{ inputs.release_type }}", 'get_last_ios_build')
     runs-on: macOS-latest
     steps:
     - name: Checkout code
