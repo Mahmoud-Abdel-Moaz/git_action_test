@@ -6,8 +6,8 @@ on:
 
 jobs:
   get_build_number:
-    if: contains("${{ inputs.release_type }}", 'get_last_ios_build')
     runs-on: macOS-latest
+    if: (contains(github.event.head_commit.message, 'ios last build number'))
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
