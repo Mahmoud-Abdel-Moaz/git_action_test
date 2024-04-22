@@ -2,6 +2,9 @@ name: Deploy Screenshots to Apple Store
 on:
   workflow_dispatch:
     inputs:
+      nawAppName:
+        type: string
+        description: "new app name"
       logLevel:
         description: 'Log level'
         required: true
@@ -20,6 +23,11 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2.2
+
+
+
+      - name: Test App Name
+        run: echo "Received data -  ${{ github.event.inputs.nawAppName }}"
 
 
 
