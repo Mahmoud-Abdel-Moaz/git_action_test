@@ -55,7 +55,7 @@ jobs:
 
       - name: Set Application Package Id
         run: |
-          echo 'package_name("${{ github.event.inputs.package_id}})' > android/fastlane/Appfile
+          echo 'package_name("${{ github.event.inputs.package_id}}")' > android/fastlane/Appfile
 
 
       - name: Set Application Title
