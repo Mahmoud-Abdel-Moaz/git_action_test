@@ -10,7 +10,17 @@ on:
         description: 'Test scenario tags'
       title:
         description: 'Application title'
-        default: 'warning'
+        default: 'hallo'
+        required: true
+      short_description:
+        description: 'Application Short Description'
+        default: 'hallo Short Description'
+        required: true
+      full_description:
+        description: 'Application Full Description'
+        default: 'hallo Full Description'
+        required: true
+
 
 #  push:
 #    branches:
@@ -42,6 +52,14 @@ jobs:
       - name: Set Application Title
         run: |
           echo '${{ github.event.inputs.title }}' > android/fastlane/metadata/android/en-US/title.txt
+
+      - name: Set Application Short Description
+        run: |
+          echo '${{ github.event.inputs.short_description }}' > android/fastlane/metadata/android/en-US/short_description.txt
+
+      - name: Set Application Full Description
+        run: |
+          echo '${{ github.event.inputs.full_description }}' > android/fastlane/metadata/android/en-US/full_description.txt
 
       - name: Deploy Screenshots to Google Play
         run: |
