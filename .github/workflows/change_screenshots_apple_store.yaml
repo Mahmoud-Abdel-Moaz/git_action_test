@@ -2,7 +2,7 @@ name: Deploy Screenshots to Apple Store
 on:
   workflow_dispatch:
     inputs:
-      nawAppName:
+      newAppName:
         type: string
         description: "new app name"
       logLevel:
@@ -27,7 +27,7 @@ jobs:
 
 
       - name: Test App Name
-        run: echo "Received data -  ${{ github.event.inputs.nawAppName }}"
+        run: echo "Received data -  ${{ github.event.inputs.newAppName }}"
 
 
 
