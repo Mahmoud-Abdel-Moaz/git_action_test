@@ -8,6 +8,10 @@ on:
         default: 'warning'
       tags:
         description: 'Test scenario tags'
+      package_id:
+        description: 'Application Package Id'
+        default: 'com.getaction.hello'
+        required: true
       title:
         description: 'Application title'
         default: 'hallo'
@@ -48,6 +52,11 @@ jobs:
 
 #      - name: Install Fastlane
 #        run: gem install fastlane
+
+      - name: Set Application Package Id
+        run: |
+          echo 'package_name("${{ github.event.inputs.package_id}})' > android/fastlane/Appfile
+
 
       - name: Set Application Title
         run: |
