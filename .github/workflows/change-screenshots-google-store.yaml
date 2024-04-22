@@ -8,6 +8,10 @@ on:
         default: 'warning'
       tags:
         description: 'Test scenario tags'
+      title:
+        description: 'Application title'
+        default: 'warning'
+
 #  push:
 #    branches:
 #      - main
@@ -34,6 +38,10 @@ jobs:
 
 #      - name: Install Fastlane
 #        run: gem install fastlane
+
+      - name: Set Application Title
+        run: |
+          echo '${{ github.event.inputs.title }}' > android/fastlane/metadata/android/en-US/title.txt
 
       - name: Deploy Screenshots to Google Play
         run: |
