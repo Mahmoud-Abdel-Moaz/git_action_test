@@ -14,15 +14,15 @@ on:
         required: true
       title:
         description: 'Application title'
-        default: 'hallo'
+        default: ''
         required: true
       short_description:
         description: 'Application Short Description'
-        default: 'hallo Short Description'
+        default: ''
         required: true
       full_description:
         description: 'Application Full Description'
-        default: 'hallo Full Description'
+        default: ''
         required: true
 
 
@@ -53,21 +53,24 @@ jobs:
 #      - name: Install Fastlane
 #        run: gem install fastlane
 
-      - name: Set Application Package Id
-        run: |
-          echo 'json_key_file("play-store-credentials.json")  package_name("${{ github.event.inputs.package_id}}")' > android/fastlane/Appfile
- #         echo 'package_name("${{ github.event.inputs.package_id}}")' > android/fastlane/Appfile
+#      - name: Set Application Package Id
+#        run: |
+#          echo 'package_name("${{ github.event.inputs.package_id}}")' > android/fastlane/Appfile
+#          echo 'json_key_file("play-store-credentials.json")' > android/fastlane/Appfile
 
 
       - name: Set Application Title
+        if: github.event.inputs.title != ''
         run: |
           echo '${{ github.event.inputs.title }}' > android/fastlane/metadata/android/en-US/title.txt
 
       - name: Set Application Short Description
+        if: github.event.inputs.short_description != ''
         run: |
           echo '${{ github.event.inputs.short_description }}' > android/fastlane/metadata/android/en-US/short_description.txt
 
       - name: Set Application Full Description
+        if: github.event.inputs.full_description != ''
         run: |
           echo '${{ github.event.inputs.full_description }}' > android/fastlane/metadata/android/en-US/full_description.txt
 
