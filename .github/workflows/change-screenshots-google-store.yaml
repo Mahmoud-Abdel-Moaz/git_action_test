@@ -15,15 +15,12 @@ on:
       title:
         description: 'Application title'
         default: ''
-        required: true
       short_description:
         description: 'Application Short Description'
         default: ''
-        required: true
       full_description:
         description: 'Application Full Description'
         default: ''
-        required: true
 
 
 #  push:
