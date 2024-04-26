@@ -53,7 +53,7 @@ jobs:
       - name: Set Application Package Id
         run: |
           echo 'package_name("${{ github.event.inputs.package_id}}")' >> android/fastlane/Appfile
-          echo 'json_key_file("play-store-credentials.json")' >> android/fastlane/Appfile
+     #     echo 'json_key_file("play-store-credentials.json")' >> android/fastlane/Appfile
 
       - name: Print fastlane file content
         run: cat android/fastlane/Appfile
