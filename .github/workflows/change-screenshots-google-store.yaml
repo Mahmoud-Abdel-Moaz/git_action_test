@@ -50,11 +50,13 @@ jobs:
 #      - name: Install Fastlane
 #        run: gem install fastlane
 
-#      - name: Set Application Package Id
-#        run: |
-#          echo 'package_name("${{ github.event.inputs.package_id}}")' > android/fastlane/Appfile
-#          echo 'json_key_file("play-store-credentials.json")' > android/fastlane/Appfile
+      - name: Set Application Package Id
+        run: |
+          echo 'package_name("${{ github.event.inputs.package_id}}")' > android/fastlane/Appfile
+          echo 'json_key_file("play-store-credentials.json")' > android/fastlane/Appfile
 
+      - name: Print fastlane file content
+        run: cat android/fastlane/Appfile
 
       - name: Set Application Title
         if: github.event.inputs.title != ''
