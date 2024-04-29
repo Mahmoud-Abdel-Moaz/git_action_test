@@ -91,6 +91,9 @@ jobs:
           cd android
           fastlane supply --skip_upload_changelogs true
 
+      - name: ${{github.event.inputs.id}}
+        run: echo run identifier ${{ inputs.title }}
+
       - name: Report Status
         if: always()
         uses: ravsamhq/notify-slack-action@v2
