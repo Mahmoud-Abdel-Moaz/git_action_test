@@ -50,17 +50,17 @@ jobs:
 #      - name: Install Fastlane
 #        run: gem install fastlane
 
-      - uses: lasith-kg/dispatch-workflow@v1
-        id: dispatch-with-discovery
-        name: "Dispatch Workflow With Discovery"
-        with:
-          dispacth-method: workflow_dispatch | repository_dispatch
-          discover: true
-      - id: echo-run-id-url
-        name: "Echo Run ID and Run URL"
-        run: |
-          echo "${{ steps.dispatch-with-discovery.outputs.run-id }}"
-          echo "${{ steps.dispatch-with-discovery.outputs.run-url }}"
+#      - uses: lasith-kg/dispatch-workflow@v1
+#        id: dispatch-with-discovery
+#        name: "Dispatch Workflow With Discovery"
+#        with:
+#          dispacth-method: workflow_dispatch | repository_dispatch
+#          discover: true
+#      - id: echo-run-id-url
+#        name: "Echo Run ID and Run URL"
+#        run: |
+#          echo "${{ steps.dispatch-with-discovery.outputs.run-id }}"
+#          echo "${{ steps.dispatch-with-discovery.outputs.run-url }}"
 
       - name: Set Application Package Id
         run: |
