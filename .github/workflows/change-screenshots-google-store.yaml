@@ -50,6 +50,18 @@ jobs:
 #      - name: Install Fastlane
 #        run: gem install fastlane
 
+      - uses: lasith-kg/dispatch-workflow@v1
+        id: dispatch-with-discovery
+        name: "Dispatch Workflow With Discovery"
+        with:
+          dispacth-method: workflow_dispatch | repository_dispatch
+          discover: true
+      - id: echo-run-id-url
+        name: "Echo Run ID and Run URL"
+        run: |
+          echo "${{ steps.dispatch-with-discovery.outputs.run-id }}"
+          echo "${{ steps.dispatch-with-discovery.outputs.run-url }}"
+
       - name: Set Application Package Id
         run: |
           echo 'package_name("${{ github.event.inputs.package_id}}")' >> android/fastlane/Appfile
@@ -88,7 +100,7 @@ jobs:
           footer: "Linked Repo <{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          
+
         #fastlane supply init
         #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
         #fastlane supply --metadata_path fastlane/metadata/android --json_key json/key.json --skip_upload_changelogs true
