@@ -18,6 +18,9 @@ on:
       icon:
         description: 'Iconّ'
         default: ''
+      feature_graphic:
+        description: 'feature Graphic'
+        default: ''
 
 
 #  push:
@@ -44,36 +47,26 @@ jobs:
         with:
           ruby-version: 2.6
 
-#      - name: Install Fastlane
-#        run: gem install fastlane
 
-#      - uses: lasith-kg/dispatch-workflow@v1
-#        id: dispatch-with-discovery
-#        name: "Dispatch Workflow With Discovery"
-#        with:
-#          dispacth-method: workflow_dispatch | repository_dispatch
-#          discover: true
-#      - id: echo-run-id-url
-#        name: "Echo Run ID and Run URL"
-#        run: |
-#          echo "${{ steps.dispatch-with-discovery.outputs.run-id }}"
-#          echo "${{ steps.dispatch-with-discovery.outputs.run-url }}"
-
+      #  Package Id
       - name: Set Application Package Id
         run: |
           echo 'package_name("${{ github.event.inputs.package_id}}")' >> android/fastlane/Appfile
      #     echo 'json_key_file("play-store-credentials.json")' >> android/fastlane/Appfile
 
+      #  Title
       - name: Set Application Title
         if: github.event.inputs.title != ''
         run: |
           echo '${{ github.event.inputs.title }}' > android/fastlane/metadata/android/en-US/title.txt
 
+      #  Short Description
       - name: Set Application Short Description
         if: github.event.inputs.short_description != ''
         run: |
           echo '${{ github.event.inputs.short_description }}' > android/fastlane/metadata/android/en-US/short_description.txt
 
+      #  Full Description
       - name: Set Application Full Description
         if: github.event.inputs.full_description != ''
         run: |
@@ -83,6 +76,7 @@ jobs:
 #        if: github.event.inputs.icon != ''
 #        run: curl -L ${{ github.event.inputs.icon }} -o android/fastlane/metadata/android/en-US/images/icon.png
 
+      #  Icon
       - name: Set Application Icon
         if: github.event.inputs.icon != ''
         uses: suisei-cn/actions-download-file@v1  # Download file action
@@ -90,6 +84,15 @@ jobs:
           url: ${{ github.event.inputs.icon }}  # URL of the file
           target: android/fastlane/metadata/android/en-US/images/  # Optional, target directory (defaults to current directory)
           filename: icon.png  # Optional, desired filename
+
+      #  feature Graphic
+      - name: Set Application feature Graphic
+        if: github.event.inputs.feature_graphic != ''
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: ${{ github.event.inputs.feature_graphic }}
+          target: android/fastlane/metadata/android/en-US/images/
+          filename: featureGraphic.png
 
       - name: Deploy Screenshots to Google Play
         run: |
