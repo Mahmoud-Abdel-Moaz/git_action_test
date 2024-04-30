@@ -15,6 +15,9 @@ on:
       full_description:
         description: 'Application Full Description'
         default: ''
+      icon:
+        description: 'Iconّ'
+        default: ''
 
 
 #  push:
@@ -75,6 +78,10 @@ jobs:
         if: github.event.inputs.full_description != ''
         run: |
           echo '${{ github.event.inputs.full_description }}' > android/fastlane/metadata/android/en-US/full_description.txt
+
+      - name: Set Application Icon
+        if: github.event.inputs.icon != ''
+        run: curl -L ${{ github.event.inputs.icon }} -o android/fastlane/metadata/android/en-US/images/icon.png
 
       - name: Deploy Screenshots to Google Play
         run: |
