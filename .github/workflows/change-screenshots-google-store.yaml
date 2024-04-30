@@ -79,9 +79,16 @@ jobs:
         run: |
           echo '${{ github.event.inputs.full_description }}' > android/fastlane/metadata/android/en-US/full_description.txt
 
+#      - name: Set Application Icon
+#        if: github.event.inputs.icon != ''
+#        run: curl -L ${{ github.event.inputs.icon }} -o android/fastlane/metadata/android/en-US/images/icon.png
       - name: Set Application Icon
         if: github.event.inputs.icon != ''
-        run: curl -L ${{ github.event.inputs.icon }} -o android/fastlane/metadata/android/en-US/images/icon.png
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        with:
+          url: ${{ github.event.inputs.icon }}  # URL of the file
+          target: android/fastlane/metadata/android/en-US/images/  # Optional, target directory (defaults to current directory)
+          filename: icon.png  # Optional, desired filename
 
       - name: Deploy Screenshots to Google Play
         run: |
