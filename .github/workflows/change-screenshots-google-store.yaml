@@ -2,15 +2,20 @@ name: Deploy Screenshots to Google Play
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'
+      package_id:
+        description: 'Application Package Id'
+        default: 'com.getaction.hello'
         required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tags'
       title:
         description: 'Application title'
-        default: 'warning'
+        default: ''
+      short_description:
+        description: 'Application Short Description'
+        default: ''
+      full_description:
+        description: 'Application Full Description'
+        default: ''
+
 
 #  push:
 #    branches:
@@ -39,15 +44,46 @@ jobs:
 #      - name: Install Fastlane
 #        run: gem install fastlane
 
+#      - uses: lasith-kg/dispatch-workflow@v1
+#        id: dispatch-with-discovery
+#        name: "Dispatch Workflow With Discovery"
+#        with:
+#          dispacth-method: workflow_dispatch | repository_dispatch
+#          discover: true
+#      - id: echo-run-id-url
+#        name: "Echo Run ID and Run URL"
+#        run: |
+#          echo "${{ steps.dispatch-with-discovery.outputs.run-id }}"
+#          echo "${{ steps.dispatch-with-discovery.outputs.run-url }}"
+
+      - name: Set Application Package Id
+        run: |
+          echo 'package_name("${{ github.event.inputs.package_id}}")' >> android/fastlane/Appfile
+     #     echo 'json_key_file("play-store-credentials.json")' >> android/fastlane/Appfile
+
       - name: Set Application Title
+        if: github.event.inputs.title != ''
         run: |
           echo '${{ github.event.inputs.title }}' > android/fastlane/metadata/android/en-US/title.txt
+
+      - name: Set Application Short Description
+        if: github.event.inputs.short_description != ''
+        run: |
+          echo '${{ github.event.inputs.short_description }}' > android/fastlane/metadata/android/en-US/short_description.txt
+
+      - name: Set Application Full Description
+        if: github.event.inputs.full_description != ''
+        run: |
+          echo '${{ github.event.inputs.full_description }}' > android/fastlane/metadata/android/en-US/full_description.txt
 
       - name: Deploy Screenshots to Google Play
         run: |
           echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > android/play-store-credentials.json
           cd android
           fastlane supply --skip_upload_changelogs true
+
+      - name: ${{github.event.inputs.id}}
+        run: echo run identifier ${{ inputs.title }}
 
       - name: Report Status
         if: always()
@@ -58,7 +94,7 @@ jobs:
           footer: "Linked Repo <{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          
+
         #fastlane supply init
         #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
         #fastlane supply --metadata_path fastlane/metadata/android --json_key json/key.json --skip_upload_changelogs true
