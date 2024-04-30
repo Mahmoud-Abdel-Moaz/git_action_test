@@ -82,6 +82,7 @@ jobs:
       - name: Set Application Icon
         if: github.event.inputs.icon != ''
         run: curl -L ${{ github.event.inputs.icon }} -o android/fastlane/metadata/android/en-US/images/icon.png
+
 #      - name: Set Application Icon
 #        if: github.event.inputs.icon != ''
 #        uses: suisei-cn/actions-download-file@v1  # Download file action
