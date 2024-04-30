@@ -2,12 +2,6 @@ name: Deploy Screenshots to Google Play
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tags'
       package_id:
         description: 'Application Package Id'
         default: 'com.getaction.hello'
@@ -66,9 +60,6 @@ jobs:
         run: |
           echo 'package_name("${{ github.event.inputs.package_id}}")' >> android/fastlane/Appfile
      #     echo 'json_key_file("play-store-credentials.json")' >> android/fastlane/Appfile
-
-      - name: Print fastlane file content
-        run: cat android/fastlane/Appfile
 
       - name: Set Application Title
         if: github.event.inputs.title != ''
