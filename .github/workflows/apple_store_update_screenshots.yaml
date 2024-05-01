@@ -7,6 +7,40 @@ on:
         required: true
 
 
+    iphone_screenshot_1:
+      description: 'iphone_screenshot_1'
+      default: ''
+
+    iphone_screenshot_2:
+      description: 'iphone_screenshot_2'
+      default: ''
+
+    iphone_screenshot_3:
+      description: 'iphone_screenshot_3'
+      default: ''
+
+    iphone_screenshot_4:
+      description: 'iphone_screenshot_4'
+      default: ''
+
+    ipad_screenshot_1:
+      description: 'ipad_screenshot_1'
+      default: ''
+
+    ipad_screenshot_2:
+      description: 'ipad_screenshot_2'
+      default: ''
+
+    ipad_screenshot_3:
+      description: 'ipad_screenshot_3'
+      default: ''
+
+    ipad_screenshot_4:
+      description: 'ipad_screenshot_4'
+      default: ''
+
+
+
 
 
 jobs:
@@ -25,6 +59,62 @@ jobs:
       - name: Create App store json
         run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
 
+
+      - name: Set iphone_screenshot_1
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.iphone_screenshot_1 != ''
+        with:
+          url: ${{ github.event.inputs.iphone_screenshot_1 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set iphone_screenshot_2
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.iphone_screenshot_2 != ''
+        with:
+          url: ${{ github.event.inputs.iphone_screenshot_2 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set iphone_screenshot_3
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.iphone_screenshot_3 != ''
+        with:
+          url: ${{ github.event.inputs.iphone_screenshot_3}}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set iphone_screenshot_4
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.iphone_screenshot_4 != ''
+        with:
+          url: ${{ github.event.inputs.iphone_screenshot_4 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set ipad_screenshot_1
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.ipad_screenshot_1 != ''
+        with:
+          url: ${{ github.event.inputs.ipad_screenshot_1 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set ipad_screenshot_2
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.ipad_screenshot_2 != ''
+        with:
+          url: ${{ github.event.inputs.ipad_screenshot_2 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set ipad_screenshot_3
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.ipad_screenshot_3 != ''
+        with:
+          url: ${{ github.event.inputs.ipad_screenshot_3 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set ipad_screenshot_4
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.ipad_screenshot_4 != ''
+        with:
+          url: ${{ github.event.inputs.ipad_screenshot_4 }}
+          target: ios/fastlane/screenshots/en-US/
 
       - name: Deploy Screenshots to Apple Store
         run: |
