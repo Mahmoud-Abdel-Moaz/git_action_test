@@ -1,0 +1,33 @@
+name: 'Deploy Action'
+description: 'This is my reusable action'
+inputs:
+
+  url:
+    description: 'file url'
+    required: true
+    default: ''
+
+  filename:
+    description: 'file name'
+    required: true
+
+  filepath:
+    description: 'file path'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+
+#    - name: Download firebase google services file
+#      run: echo "${{inputs.firebase_file}}" | base64 -d > android/app/src/${{ inputs.flavor }}/google-services.json
+#      shell: bash
+
+    - name: Set Application feature Graphic
+      if: github.event.inputs.feature_graphic != ''
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ inputs.url }}
+        target: inputs.filepath
+        filename: inputs.filename
+
