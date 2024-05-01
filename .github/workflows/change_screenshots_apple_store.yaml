@@ -2,42 +2,110 @@ name: Deploy Screenshots to Apple Store
 on:
   workflow_dispatch:
     inputs:
+
+#     for metadata update
+#     1.
       newAppName:
         type: string
         description: "new app name"
+#     2.
       subtitle:
         type: string
         description: "new app subtitle"
+#     3.
       description:
         type: string
         description: "new app description"
+#     4.
       promotionalText:
         type: string
         description: "new app promotional Text"
+#     5.
       keywords:
         type: string
         description: "new app keywords"
+#     6.
       supportUrl:
         type: string
         description: "new app support url"
+#     7.
       marketingUrl:
         type: string
         description: "new app marketing url"
+#     8.
       appleTvPrivacyPolicy:
         type: string
         description: "new app apple Tv Privacy Policy"
+#     9.
       privacyUrl:
         type: string
         description: "new app privacy url"
+#    10.
       releaseNotes:
         type: string
         description: "new app release notes"
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tags'
+
+##     for review information update
+#
+##    1.
+#      demoPassword:
+#        type: string
+#        description: "new app demo password"
+##    2.
+#      demoUser:
+#        type: string
+#        description: "new app demo user"
+##    3.
+#      emailAddress:
+#        type: string
+#        description: "new app release email address"
+##    4.
+#      firstName:
+#        type: string
+#        description: "new app first name"
+##    5.
+#      lastName:
+#        type: string
+#        description: "new app last name"
+##    6.
+#      infoNotes:
+#        type: string
+#        description: "new app info notes"
+##    7.
+#      phoneNumber:
+#        type: string
+#        description: "new app release notes"
+#
+##      general info
+##    1.
+#      copyright:
+#        type: string
+#        description: "new copyright"
+##    2.
+#      primaryCategory:
+#        type: string
+#        description: "new primary category"
+##    3.
+#      primaryFirstSubCategory:
+#        type: string
+#        description: "new app primary first sub category"
+##    4.
+#      primarySecondSubCategory:
+#        type: string
+#        description: "new app second first sub category"
+##    5.
+#      secondaryCategory:
+#        type: string
+#        description: "new app secondary category"
+##    6.
+#      secondaryFirstSubCategory:
+#        type: string
+#        description: "new app secondary first sub category"
+##    7.
+#      secondarySecondSubCategory:
+#        type: string
+#        description: "new app secondary second sub category"
+
 
 
 
@@ -193,12 +261,12 @@ jobs:
       
 
       #fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --app_version 1.0.1
-#      - name: Report Status
-#        if: always()
-#        uses: ravsamhq/notify-slack-action@v2
-#        with:
-#          status: ${{ job.status }}
-#          notification_title: "{workflow} has {status_message}"
-#          footer: "Linked Repo <{repo_url}|{repo}>"
-#        env:
-#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "{workflow} has {status_message}"
+          footer: "Linked Repo <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
