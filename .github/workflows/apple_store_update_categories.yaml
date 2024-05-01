@@ -79,7 +79,7 @@ jobs:
 
 #     5. secondary category
       - name: Create secondary category file
-        run: echo  "${{ github.event.inputs.secondaryCategory}" > ios/fastlane/metadata/secondary_category.txt
+        run: echo  "${{ github.event.inputs.secondaryCategory}} " > ios/fastlane/metadata/secondary_category.txt
 
 #     6. secondary first sub category
       - name: Create secondary first sub category  file
