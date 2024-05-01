@@ -1,4 +1,4 @@
-name: Deploy Screenshots to Apple Store
+name: Deploy categories to Apple Store
 on:
   workflow_dispatch:
     inputs:
