@@ -1,0 +1,275 @@
+name: Deploy Screenshots to Apple Store
+on:
+  workflow_dispatch:
+    inputs:
+      appBundleId:
+        description: 'App Bundle Id'
+        required: true
+
+      #     for metadata update
+#     1.
+      newAppName:
+        type: string
+        description: "new app name"
+#     2.
+      subtitle:
+        type: string
+        description: "new app subtitle"
+#     3.
+      description:
+        type: string
+        description: "new app description"
+#     4.
+      promotionalText:
+        type: string
+        description: "new app promotional Text"
+#     5.
+      keywords:
+        type: string
+        description: "new app keywords"
+#     6.
+      supportUrl:
+        type: string
+        description: "new app support url"
+#     7.
+      marketingUrl:
+        type: string
+        description: "new app marketing url"
+##     8.
+#      appleTvPrivacyPolicy:
+#        type: string
+#        description: "new app apple Tv Privacy Policy"
+#     9.
+      privacyUrl:
+        type: string
+        description: "new app privacy url"
+#    10.
+      releaseNotes:
+        type: string
+        description: "new app release notes"
+
+##     for review information update
+#
+##    1.
+#      demoPassword:
+#        type: string
+#        description: "new app demo password"
+##    2.
+#      demoUser:
+#        type: string
+#        description: "new app demo user"
+##    3.
+#      emailAddress:
+#        type: string
+#        description: "new app release email address"
+##    4.
+#      firstName:
+#        type: string
+#        description: "new app first name"
+##    5.
+#      lastName:
+#        type: string
+#        description: "new app last name"
+##    6.
+#      infoNotes:
+#        type: string
+#        description: "new app info notes"
+##    7.
+#      phoneNumber:
+#        type: string
+#        description: "new app release notes"
+#
+##      general info
+##    1.
+#      copyright:
+#        type: string
+#        description: "new copyright"
+##    2.
+#      primaryCategory:
+#        type: string
+#        description: "new primary category"
+##    3.
+#      primaryFirstSubCategory:
+#        type: string
+#        description: "new app primary first sub category"
+##    4.
+#      primarySecondSubCategory:
+#        type: string
+#        description: "new app second first sub category"
+##    5.
+#      secondaryCategory:
+#        type: string
+#        description: "new app secondary category"
+##    6.
+#      secondaryFirstSubCategory:
+#        type: string
+#        description: "new app secondary first sub category"
+##    7.
+#      secondarySecondSubCategory:
+#        type: string
+#        description: "new app secondary second sub category"
+
+
+
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+
+
+      - name: Create App store json
+        run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
+
+#      app meta data   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
+
+#     1. App Name
+      - name: Create app name file
+        run: echo  "${{ github.event.inputs.newAppName }}" > ios/fastlane/metadata/en-US/name.txt
+
+#     2. subtitle
+      - name: Create subtitle file
+        run: echo  "${{ github.event.inputs.subtitle }}" > ios/fastlane/metadata/en-US/subtitle.txt
+
+#     3. description
+      - name: Create description file
+        run: echo  "${{ github.event.inputs.description }}" > ios/fastlane/metadata/en-US/description.txt
+
+#     4. promotionalText
+      - name: Create app name file
+        run: echo  "${{ github.event.inputs.promotionalText }}" > ios/fastlane/metadata/en-US/promotional_text.txt
+
+#     5. keywords
+      - name: Create keywords file
+        run: echo  "${{ github.event.inputs.keywords }}" > ios/fastlane/metadata/en-US/keywords.txt
+
+#     6. support Url
+      - name: Create support  url file
+        run: echo  "${{ github.event.inputs.supportUrl }}" > ios/fastlane/metadata/en-US/support_url.txt
+
+#     7. marketingUrl
+      - name: Create marketing url file
+        run: echo  "${{ github.event.inputs.marketingUrl }}" > ios/fastlane/metadata/en-US/marketing_url.txt
+
+##     8. apple Tv Privacy Policy
+#      - name: Create apple Tv Privacy Policy file
+#        run: echo  "${{ github.event.inputs.appleTvPrivacyPolicy }}" > ios/fastlane/metadata/en-US/apple_tv_privacy_policy.txt
+
+#     9. privacy url
+      - name: Create app name file
+        run: echo  "${{ github.event.inputs.privacyUrl }}" > ios/fastlane/metadata/en-US/privacy_url.txt
+
+#     10. release notes
+      - name: Create release notes file
+        run: echo  "${{ github.event.inputs.releaseNotes }}" > ios/fastlane/metadata/en-US/release_notes.txt
+
+#      app meta data   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end
+
+#
+##      app review information  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
+#
+#
+##     1. demo password
+#      - name: Create demo password file
+#        run: echo  "${{ github.event.inputs.demoPassword }}" > ios/fastlane/metadata/review_information/demo_password.txt
+#
+##     2. demo user
+#      - name: Create demo user file
+#        run: echo  "${{ github.event.inputs.demoUser }}" > ios/fastlane/metadata/review_information/demo_user.txt
+#
+##     3. email address
+#      - name: Create email address file
+#        run: echo  "${{ github.event.inputs.emailAddress }}" > ios/fastlane/metadata/review_information/email_address.txt
+#
+##     4. first name
+#      - name: Create fist name file
+#        run: echo  "${{ github.event.inputs.firstName }}" > ios/fastlane/metadata/review_information/first_name.txt
+#
+#
+##     5. last name
+#      - name: Create last name file
+#        run: echo  "${{ github.event.inputs.lastName }}" > ios/fastlane/metadata/review_information/last_name.txt
+#
+##     6. Notes
+#      - name: Create notes  file
+#        run: echo  "${{ github.event.inputs.infoNotes }}" > ios/fastlane/metadata/review_information/notes.txt
+#
+##     7. phone number
+#      - name: Create phone number file
+#        run: echo  "${{ github.event.inputs.phoneNumber }}" > ios/fastlane/metadata/review_information/phone_number.txt
+#
+##      app review information  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end
+#
+#
+##      app general info  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
+#
+#
+#
+#
+##     1. copyright
+#      - name: Create copyright file
+#        run: echo  "${{ github.event.inputs.copyright  }}" > ios/fastlane/metadata/copyright.txt
+#
+##     2. primary category
+#      - name: Create primary category file
+#        run: echo  "${{ github.event.inputs.primaryCategory }}" > ios/fastlane/metadata/primary_category.txt
+#
+##     3. primary first sub category
+#      - name: Create  primary first sub category file
+#        run: echo  "${{ github.event.inputs.primaryFirstSubCategory }}" > ios/fastlane/metadata/primary_first_sub_category.txt
+#
+##     4.  primary Second sub category
+#      - name: Create  primary first sub category file
+#        run: echo  "${{ github.event.inputs.primarySecondSubCategory }}" > ios/fastlane/metadata/primary_second_sub_category.txt
+#
+#
+##     5. secondary category
+#      - name: Create secondary category file
+#        run: echo  "${{ github.event.inputs.secondaryCategory}" > ios/fastlane/metadata/secondary_category.txt
+#
+##     6. secondary first sub category
+#      - name: Create secondary first sub category  file
+#        run: echo  "${{ github.event.inputs.secondaryFirstSubCategory }}" > ios/fastlane/metadata/secondary_first_sub_category.txt
+#
+##     7. secondary second sub category
+#      - name: Create secondary second sub category file
+#        run: echo  "${{ github.event.inputs.secondarySecondSubCategory }}" > ios/fastlane/metadata/secondary_second_sub_category.txt
+#
+##      app general info  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end
+#
+
+
+#      - name: Install Fastlane
+#        run: |
+#          cd ios
+#          gem install fastlane
+
+      - name: Deploy Screenshots to Apple Store
+        run: |
+          cd ios
+          gem install fastlane
+          fastlane deliver --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId } --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots true
+#          fastlane deliver --api_key_path api_key.json  --app_identifierchange_screenshots_apple_store.yaml --force true --skip_metadata false --overwrite_screenshots true --run_precheck_before_submit false --app_version 1.0.1 --skip_app_version_update true --automatic_release true --skip_screenshots true
+      
+      
+      
+      
+      
+
+      #fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --app_version 1.0.1
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "{workflow} has {status_message}"
+          footer: "Linked Repo <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

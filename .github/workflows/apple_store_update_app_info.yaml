@@ -2,8 +2,11 @@ name: Deploy Screenshots to Apple Store
 on:
   workflow_dispatch:
     inputs:
+      appBundleId:
+        description: 'App Bundle Id'
+        required: true
 
-#     for metadata update
+      #     for metadata update
 #     1.
       newAppName:
         type: string
@@ -32,10 +35,10 @@ on:
       marketingUrl:
         type: string
         description: "new app marketing url"
-#     8.
-      appleTvPrivacyPolicy:
-        type: string
-        description: "new app apple Tv Privacy Policy"
+##     8.
+#      appleTvPrivacyPolicy:
+#        type: string
+#        description: "new app apple Tv Privacy Policy"
 #     9.
       privacyUrl:
         type: string
@@ -155,9 +158,9 @@ jobs:
       - name: Create marketing url file
         run: echo  "${{ github.event.inputs.marketingUrl }}" > ios/fastlane/metadata/en-US/marketing_url.txt
 
-#     8. apple Tv Privacy Policy
-      - name: Create apple Tv Privacy Policy file
-        run: echo  "${{ github.event.inputs.appleTvPrivacyPolicy }}" > ios/fastlane/metadata/en-US/apple_tv_privacy_policy.txt
+##     8. apple Tv Privacy Policy
+#      - name: Create apple Tv Privacy Policy file
+#        run: echo  "${{ github.event.inputs.appleTvPrivacyPolicy }}" > ios/fastlane/metadata/en-US/apple_tv_privacy_policy.txt
 
 #     9. privacy url
       - name: Create app name file
@@ -252,8 +255,8 @@ jobs:
         run: |
           cd ios
           gem install fastlane
-          fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots true
-#          fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata false --overwrite_screenshots true --run_precheck_before_submit false --app_version 1.0.1 --skip_app_version_update true --automatic_release true --skip_screenshots true
+          fastlane deliver --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId } --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots true
+#          fastlane deliver --api_key_path api_key.json  --app_identifierchange_screenshots_apple_store.yaml --force true --skip_metadata false --overwrite_screenshots true --run_precheck_before_submit false --app_version 1.0.1 --skip_app_version_update true --automatic_release true --skip_screenshots true
       
       
       

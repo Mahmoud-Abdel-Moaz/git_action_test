@@ -1,0 +1,98 @@
+name: Deploy Screenshots to Apple Store
+on:
+  workflow_dispatch:
+    inputs:
+      appBundleId:
+        description: 'App Bundle Id'
+        required: true
+#     for review information update
+
+#    1.
+      demoPassword:
+        type: string
+        description: "new app demo password"
+#    2.
+      demoUser:
+        type: string
+        description: "new app demo user"
+#    3.
+      emailAddress:
+        type: string
+        description: "new app release email address"
+#    4.
+      firstName:
+        type: string
+        description: "new app first name"
+#    5.
+      lastName:
+        type: string
+        description: "new app last name"
+#    6.
+      infoNotes:
+        type: string
+        description: "new app info notes"
+#    7.
+      phoneNumber:
+        type: string
+        description: "new app release notes"
+
+
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+
+
+      - name: Create App store json
+        run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
+
+
+
+#      app review information  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
+
+
+#     1. demo password
+      - name: Create demo password file
+        run: echo  "${{ github.event.inputs.demoPassword }}" > ios/fastlane/metadata/review_information/demo_password.txt
+
+#     2. demo user
+      - name: Create demo user file
+        run: echo  "${{ github.event.inputs.demoUser }}" > ios/fastlane/metadata/review_information/demo_user.txt
+
+#     3. email address
+      - name: Create email address file
+        run: echo  "${{ github.event.inputs.emailAddress }}" > ios/fastlane/metadata/review_information/email_address.txt
+
+#     4. first name
+      - name: Create fist name file
+        run: echo  "${{ github.event.inputs.firstName }}" > ios/fastlane/metadata/review_information/first_name.txt
+
+
+#     5. last name
+      - name: Create last name file
+        run: echo  "${{ github.event.inputs.lastName }}" > ios/fastlane/metadata/review_information/last_name.txt
+
+#     6. Notes
+      - name: Create notes  file
+        run: echo  "${{ github.event.inputs.infoNotes }}" > ios/fastlane/metadata/review_information/notes.txt
+
+#     7. phone number
+      - name: Create phone number file
+        run: echo  "${{ github.event.inputs.phoneNumber }}" > ios/fastlane/metadata/review_information/phone_number.txt
+
+#      app review information  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> end
+
+
+      - name: Deploy review information to Apple Store
+        run: |
+          cd ios
+          gem install fastlane
+          fastlane deliver --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId } --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots true
