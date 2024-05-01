@@ -7,37 +7,37 @@ on:
         required: true
 
 
-    iphone_screenshot_1:
-      description: 'iphone_screenshot_1'
-      default: ''
+      iphone_screenshot_1:
+        description: 'iphone_screenshot_1'
+        default: ''
 
-    iphone_screenshot_2:
-      description: 'iphone_screenshot_2'
-      default: ''
+      iphone_screenshot_2:
+        description: 'iphone_screenshot_2'
+        default: ''
 
-    iphone_screenshot_3:
-      description: 'iphone_screenshot_3'
-      default: ''
+      iphone_screenshot_3:
+        description: 'iphone_screenshot_3'
+        default: ''
 
-    iphone_screenshot_4:
-      description: 'iphone_screenshot_4'
-      default: ''
+      iphone_screenshot_4:
+        description: 'iphone_screenshot_4'
+        default: ''
 
-    ipad_screenshot_1:
-      description: 'ipad_screenshot_1'
-      default: ''
+      ipad_screenshot_1:
+        description: 'ipad_screenshot_1'
+        default: ''
 
-    ipad_screenshot_2:
-      description: 'ipad_screenshot_2'
-      default: ''
+      ipad_screenshot_2:
+        description: 'ipad_screenshot_2'
+        default: ''
 
-    ipad_screenshot_3:
-      description: 'ipad_screenshot_3'
-      default: ''
+      ipad_screenshot_3:
+        description: 'ipad_screenshot_3'
+        default: ''
 
-    ipad_screenshot_4:
-      description: 'ipad_screenshot_4'
-      default: ''
+      ipad_screenshot_4:
+        description: 'ipad_screenshot_4'
+        default: ''
 
 
 
