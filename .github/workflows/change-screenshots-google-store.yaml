@@ -21,6 +21,12 @@ on:
       feature_graphic:
         description: 'feature Graphic'
         default: ''
+      phone_screenshots:
+        description: 'phone screenshots'
+        default: ''
+      language:
+        description: 'Language'
+        default: 'en-US'
 
 
 #  push:
@@ -58,32 +64,48 @@ jobs:
       - name: Set Application Title
         if: github.event.inputs.title != ''
         run: |
-          echo '${{ github.event.inputs.title }}' > android/fastlane/metadata/android/en-US/title.txt
+          echo '${{ github.event.inputs.title }}' > android/fastlane/metadata/android/${{ github.event.inputs.language }}/title.txt
 
       #  Short Description
       - name: Set Application Short Description
         if: github.event.inputs.short_description != ''
         run: |
-          echo '${{ github.event.inputs.short_description }}' > android/fastlane/metadata/android/en-US/short_description.txt
+          echo '${{ github.event.inputs.short_description }}' > android/fastlane/metadata/android/${{ github.event.inputs.language }}/short_description.txt
 
       #  Full Description
       - name: Set Application Full Description
         if: github.event.inputs.full_description != ''
         run: |
-          echo '${{ github.event.inputs.full_description }}' > android/fastlane/metadata/android/en-US/full_description.txt
+          echo '${{ github.event.inputs.full_description }}' > android/fastlane/metadata/android/${{ github.event.inputs.language }}/full_description.txt
 
+      - name: Set Application Phone Screenshots
+        if: github.event.inputs.phone_screenshots != ''
+        run: |
+          my_string="apple,banana,cherry"
+          IFS=',' read -r -a my_list <<< ${{ github.event.inputs.phone_screenshots }}
+          index=1
+          echo "List items with index:"
+          for item in "${my_list[@]}"; do
+            echo "  - Index: $index, Item: $item"
+            ((index++))
+          done
 #      - name: Set Application Icon
 #        if: github.event.inputs.icon != ''
 #        run: curl -L ${{ github.event.inputs.icon }} -o android/fastlane/metadata/android/en-US/images/icon.png
 
       #  Icon
       - name: Set Application Icon
-        if: github.event.inputs.icon != ''
-        uses: suisei-cn/actions-download-file@v1  # Download file action
+        uses: ./.github/actions/deploy_action
         with:
-          url: ${{ github.event.inputs.icon }}  # URL of the file
-          target: android/fastlane/metadata/android/en-US/images/  # Optional, target directory (defaults to current directory)
-          filename: icon.png  # Optional, desired filename
+          url: ${{ github.event.inputs.icon }}
+          filepath: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/
+          filename: icon.png
+        if: github.event.inputs.icon != ''
+#        uses: suisei-cn/actions-download-file@v1  # Download file action
+#        with:
+#          url: ${{ github.event.inputs.icon }}  # URL of the file
+#          target: android/fastlane/metadata/android/en-US/images/  # Optional, target directory (defaults to current directory)
+#          filename: icon.png  # Optional, desired filename
 
       #  feature Graphic
       - name: Set Application feature Graphic
@@ -91,8 +113,10 @@ jobs:
         uses: suisei-cn/actions-download-file@v1
         with:
           url: ${{ github.event.inputs.feature_graphic }}
-          target: android/fastlane/metadata/android/en-US/images/
+          target: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/
           filename: featureGraphic.png
+
+
 
       - name: Deploy Screenshots to Google Play
         run: |
