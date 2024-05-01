@@ -35,8 +35,8 @@ jobs:
         run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
 
 
-#      - name: Create app name file
-#        run: echo  "${{ github.event.inputs.newAppName }}" > ios/fastlane/meta_data/en-US/name.txt
+      - name: Create app name file
+        run: echo  "${{ github.event.inputs.newAppName }}" > ios/fastlane/meta_data/en-US/name.txt
 
 #      - name: Install Fastlane
 #        run: |
