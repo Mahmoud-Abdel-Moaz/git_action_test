@@ -1,0 +1,41 @@
+name: Deploy Screenshots to Apple Store
+on:
+  workflow_dispatch:
+    inputs:
+      appBundleId:
+        description: 'App Bundle Id'
+        required: true
+
+
+
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+
+
+      - name: Create App store json
+        run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
+
+
+      - name: Deploy Screenshots to Apple Store
+        run: |
+          cd ios
+          gem install fastlane
+          fastlane deliver --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId } --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots false  --skip_metadata true
+#          fastlane deliver --api_key_path api_key.json  --app_identifierchange_screenshots_apple_store.yaml --force true --skip_metadata false --overwrite_screenshots true --run_precheck_before_submit false --app_version 1.0.1 --skip_app_version_update true --automatic_release true --skip_screenshots true
+      
+      
+      
+      
+      
+
+      #fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --app_version 1.0.1
