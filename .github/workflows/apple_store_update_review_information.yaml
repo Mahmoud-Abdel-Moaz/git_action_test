@@ -95,4 +95,4 @@ jobs:
         run: |
           cd ios
           gem install fastlane
-          fastlane deliver --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId }} --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots true --app_rating_config_path ios/fastlane/app_rating_config.json --run_precheck_before_submit false --precheck_include_in_app_purchases false price_tier 0
+          fastlane deliver --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId }} --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots true
