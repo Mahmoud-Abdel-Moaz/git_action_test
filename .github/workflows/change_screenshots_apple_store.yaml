@@ -35,8 +35,8 @@ jobs:
         run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
 
 
-#      - name: Create app name file
-#        run: echo  "${{ github.event.inputs.newAppName }}" > ios/fastlane/meta_data/en-US/name.txt
+      - name: Create app name file
+        run: echo  "${{ github.event.inputs.newAppName }}" > ios/fastlane/metadata/en-US/name.txt
 
 #      - name: Install Fastlane
 #        run: |
@@ -48,11 +48,7 @@ jobs:
           cd ios
           gem install fastlane
           fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots true
-          
-          
-
-     #     fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata false --overwrite_screenshots true --run_precheck_before_submit false --app_version 1.0.1 --skip_app_version_update true --automatic_release true --skip_screenshots true
-
+#          fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata false --overwrite_screenshots true --run_precheck_before_submit false --app_version 1.0.1 --skip_app_version_update true --automatic_release true --skip_screenshots true
       
       
       
