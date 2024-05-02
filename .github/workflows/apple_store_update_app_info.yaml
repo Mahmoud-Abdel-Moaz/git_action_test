@@ -1,0 +1,117 @@
+name: Deploy App info to Apple Store
+on:
+  workflow_dispatch:
+    inputs:
+      appBundleId:
+        description: 'App Bundle Id'
+        required: true
+
+      #     for metadata update
+#     1.
+      newAppName:
+        type: string
+        description: "new app name"
+#     2.
+      subtitle:
+        type: string
+        description: "new app subtitle"
+#     3.
+      description:
+        type: string
+        description: "new app description"
+#     4.
+      promotionalText:
+        type: string
+        description: "new app promotional Text"
+#     5.
+      keywords:
+        type: string
+        description: "new app keywords"
+#     6.
+      supportUrl:
+        type: string
+        description: "new app support url"
+#     7.
+      marketingUrl:
+        type: string
+        description: "new app marketing url"
+##     8.
+#      appleTvPrivacyPolicy:
+#        type: string
+#        description: "new app apple Tv Privacy Policy"
+#     9.
+      privacyUrl:
+        type: string
+        description: "new app privacy url"
+#    10.
+      releaseNotes:
+        type: string
+        description: "new app release notes"
+
+
+
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+
+
+      - name: Create App store json
+        run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
+
+#      app meta data   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
+
+#     1. App Name
+      - name: Create app name file
+        run: echo  "${{ github.event.inputs.newAppName }}" > ios/fastlane/metadata/en-US/name.txt
+
+#     2. subtitle
+      - name: Create subtitle file
+        run: echo  "${{ github.event.inputs.subtitle }}" > ios/fastlane/metadata/en-US/subtitle.txt
+
+#     3. description
+      - name: Create description file
+        run: echo  "${{ github.event.inputs.description }}" > ios/fastlane/metadata/en-US/description.txt
+
+#     4. promotionalText
+      - name: Create app name file
+        run: echo  "${{ github.event.inputs.promotionalText }}" > ios/fastlane/metadata/en-US/promotional_text.txt
+
+#     5. keywords
+      - name: Create keywords file
+        run: echo  "${{ github.event.inputs.keywords }}" > ios/fastlane/metadata/en-US/keywords.txt
+
+#     6. support Url
+      - name: Create support  url file
+        run: echo  "${{ github.event.inputs.supportUrl }}" > ios/fastlane/metadata/en-US/support_url.txt
+
+#     7. marketingUrl
+      - name: Create marketing url file
+        run: echo  "${{ github.event.inputs.marketingUrl }}" > ios/fastlane/metadata/en-US/marketing_url.txt
+
+##     8. apple Tv Privacy Policy
+#      - name: Create apple Tv Privacy Policy file
+#        run: echo  "${{ github.event.inputs.appleTvPrivacyPolicy }}" > ios/fastlane/metadata/en-US/apple_tv_privacy_policy.txt
+
+#     9. privacy url
+      - name: Create app name file
+        run: echo  "${{ github.event.inputs.privacyUrl }}" > ios/fastlane/metadata/en-US/privacy_url.txt
+
+#     10. release notes
+      - name: Create release notes file
+        run: echo  "${{ github.event.inputs.releaseNotes }}" > ios/fastlane/metadata/en-US/release_notes.txt
+
+
+      - name: Deploy Screenshots to Apple Store
+        run: |
+          cd ios
+          gem install fastlane
+          fastlane deliver --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId  }} --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots true  --app_rating_config_path fastlane/app_rating_config.json --run_precheck_before_submit false --precheck_include_in_app_purchases false --price_tier 0

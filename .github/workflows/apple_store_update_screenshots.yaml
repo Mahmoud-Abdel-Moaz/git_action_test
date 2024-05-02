@@ -1,0 +1,131 @@
+name: Deploy Screenshots to Apple Store
+on:
+  workflow_dispatch:
+    inputs:
+      appBundleId:
+        description: 'App Bundle Id'
+        required: true
+
+
+      iphone_screenshot_1:
+        description: 'iphone_screenshot_1'
+        default: ''
+
+      iphone_screenshot_2:
+        description: 'iphone_screenshot_2'
+        default: ''
+
+      iphone_screenshot_3:
+        description: 'iphone_screenshot_3'
+        default: ''
+
+      iphone_screenshot_4:
+        description: 'iphone_screenshot_4'
+        default: ''
+
+      ipad_screenshot_1:
+        description: 'ipad_screenshot_1'
+        default: ''
+
+      ipad_screenshot_2:
+        description: 'ipad_screenshot_2'
+        default: ''
+
+      ipad_screenshot_3:
+        description: 'ipad_screenshot_3'
+        default: ''
+
+      ipad_screenshot_4:
+        description: 'ipad_screenshot_4'
+        default: ''
+
+
+
+
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+
+
+      - name: Create App store json
+        run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
+
+
+      - name: Set iphone_screenshot_1
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.iphone_screenshot_1 != ''
+        with:
+          url: ${{ github.event.inputs.iphone_screenshot_1 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set iphone_screenshot_2
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.iphone_screenshot_2 != ''
+        with:
+          url: ${{ github.event.inputs.iphone_screenshot_2 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set iphone_screenshot_3
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.iphone_screenshot_3 != ''
+        with:
+          url: ${{ github.event.inputs.iphone_screenshot_3}}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set iphone_screenshot_4
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.iphone_screenshot_4 != ''
+        with:
+          url: ${{ github.event.inputs.iphone_screenshot_4 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set ipad_screenshot_1
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.ipad_screenshot_1 != ''
+        with:
+          url: ${{ github.event.inputs.ipad_screenshot_1 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set ipad_screenshot_2
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.ipad_screenshot_2 != ''
+        with:
+          url: ${{ github.event.inputs.ipad_screenshot_2 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set ipad_screenshot_3
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.ipad_screenshot_3 != ''
+        with:
+          url: ${{ github.event.inputs.ipad_screenshot_3 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Set ipad_screenshot_4
+        uses: suisei-cn/actions-download-file@v1  # Download file action
+        if: github.event.inputs.ipad_screenshot_4 != ''
+        with:
+          url: ${{ github.event.inputs.ipad_screenshot_4 }}
+          target: ios/fastlane/screenshots/en-US/
+
+      - name: Deploy Screenshots to Apple Store
+        run: |
+          cd ios
+          gem install fastlane
+          fastlane deliver --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId }} --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots false  --skip_metadata true
+#          fastlane deliver --api_key_path api_key.json  --app_identifierchange_screenshots_apple_store.yaml --force true --skip_metadata false --overwrite_screenshots true --run_precheck_before_submit false --app_version 1.0.1 --skip_app_version_update true --automatic_release true --skip_screenshots true
+      
+      
+      
+      
+      
+
+      #fastlane deliver --api_key_path api_key.json  --app_identifier com.nxt.ci --force true --skip_metadata true --overwrite_screenshots true --app_version 1.0.1
