@@ -32,7 +32,7 @@ runs:
       shell: bash
 
     - name: Download file (${{ env.FILE_URL }})
-      if:  0 -lt ${{ env.DOWNLOAD_URLS@length }}
+    #  if:  0 -lt ${{ env.DOWNLOAD_URLS@length }}
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.DOWNLOAD_URLS[0] }}
@@ -41,7 +41,7 @@ runs:
       shell: bash
 
     - name: Download file 1
-      if: 1 -lt ${{ env.DOWNLOAD_URLS@length }}
+    #  if: 1 -lt ${{ env.DOWNLOAD_URLS@length }}
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.DOWNLOAD_URLS[1] }}
@@ -49,7 +49,7 @@ runs:
         filename: 1_en_US.png   # Optional, keep original filename (optional)
 
     - name: Download file 2
-      if:  2 -lt ${{ env.DOWNLOAD_URLS@length }}
+      #if:  2 -lt ${{ env.DOWNLOAD_URLS@length }}
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.DOWNLOAD_URLS[2] }}
@@ -57,22 +57,22 @@ runs:
         filename: 2_en_US.png   # Optional, keep original filename (optional)
       shell: bash
 
-    - name: Download file 3
-      if:  3 -lt ${{ env.DOWNLOAD_URLS@length }}
-      uses: suisei-cn/actions-download-file@v1
-      with:
-        url: ${{ env.DOWNLOAD_URLS[3] }}
-        target: ${{ inputs.url }} # Optional, download directory
-        filename: 3_en_US.png   # Optional, keep original filename (optional)
-      shell: bash
-
-    - name: Download file 4
-      if:  4 -lt ${{ env.DOWNLOAD_URLS@length }}
-      uses: suisei-cn/actions-download-file@v1
-      with:
-        url: ${{ env.DOWNLOAD_URLS[4] }}
-        target: ${{ inputs.url }} # Optional, download directory
-        filename: 4_en_US.png   # Optional, keep original filename (optional)
+#    - name: Download file 3
+#    #  if:  3 -lt ${{ env.DOWNLOAD_URLS@length }}
+#      uses: suisei-cn/actions-download-file@v1
+#      with:
+#        url: ${{ env.DOWNLOAD_URLS[3] }}
+#        target: ${{ inputs.url }} # Optional, download directory
+#        filename: 3_en_US.png   # Optional, keep original filename (optional)
+#      shell: bash
+#
+#    - name: Download file 4
+#    #  if:  4 -lt ${{ env.DOWNLOAD_URLS@length }}
+#      uses: suisei-cn/actions-download-file@v1
+#      with:
+#        url: ${{ env.DOWNLOAD_URLS[4] }}
+#        target: ${{ inputs.url }} # Optional, download directory
+#        filename: 4_en_US.png   # Optional, keep original filename (optional)
 
 
 
