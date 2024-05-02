@@ -29,9 +29,12 @@ runs:
       id: split-text
       run: |
         URLS="${{ inputs.urls  }}"
-        IFS="#" read -r -a URL_LIST <<< "URLS"
+        IFS="#" read -r -a URL_LIST <<< "$URLS"
         echo " level:  ${{ inputs.urls }}"
         echo "WORK_APPS=${URL_LIST[0]}" >> $GITHUB_ENV
+        echo "1 level:  ${ URL_LIST[0] }"
+        echo "2 level:  ${ URL_LIST[1] }"
+        echo "3 level:  ${ URL_LIST[2] }"
         echo "::set-output name=SPLIT_TEXTS::${URL_LIST[@]}"
       #  echo "::set-output name=DOWNLOAD_URLS::${url_list[@]}"
 
@@ -40,6 +43,7 @@ runs:
     - name: Download file 0
     #  if:  0 -lt ${{ env.DOWNLOAD_URLS@length }}
       run: |
+        echo "Log level:  ${{ steps.split-text.outputs.SPLIT_TEXTS[0] }}"
         echo "Log level:   ${{ env.WORK_APPS }}"
       shell: bash
 
