@@ -38,7 +38,6 @@ runs:
         url: ${{ env.DOWNLOAD_URLS[0] }}
         target: ${{ inputs.url }} # Optional, download directory
         filename: 0_en_US.png   # Optional, keep original filename (optional)
-      shell: bash
 
     - name: Download file 1
     #  if: 1 -lt ${{ env.DOWNLOAD_URLS@length }}
@@ -55,7 +54,6 @@ runs:
         url: ${{ env.DOWNLOAD_URLS[2] }}
         target: ${{ inputs.url }} # Optional, download directory
         filename: 2_en_US.png   # Optional, keep original filename (optional)
-      shell: bash
 
 #    - name: Download file 3
 #    #  if:  3 -lt ${{ env.DOWNLOAD_URLS@length }}
