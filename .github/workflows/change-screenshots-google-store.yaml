@@ -107,6 +107,15 @@ jobs:
           target: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/
           filename: featureGraphic.png
 
+      # screenshots
+      - name: Set Application Icon
+        uses: ./.github/actions/deploy_action
+        with:
+          urls: ${{ github.event.inputs.phone_screenshots }}
+          filepath: android/fastlane/metadata/android/${{ github.event.inputs.language }}/phoneScreenshots/
+          language: ${{ github.event.inputs.language }}
+        if: github.event.inputs.phone_screenshots != ''
+
 
 #      - name: Set Application Phone Screenshots
 #        if: github.event.inputs.phone_screenshots != ''
