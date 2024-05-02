@@ -98,7 +98,7 @@ jobs:
         with:
           url: ${{ github.event.inputs.ipad_screenshot_1 }}
           target: ios/fastlane/screenshots/en-US/
-          بfilename: ipad_screenshot_1.png
+          filename: ipad_screenshot_1.png
 
       - name: Set ipad_screenshot_2
         uses: suisei-cn/actions-download-file@v1  # Download file action
