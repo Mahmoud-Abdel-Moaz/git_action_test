@@ -28,12 +28,12 @@ runs:
     - name: Split URL string and store in env
       id: split-text
       run: |
-        IFS="#" read -ra url_list <<< "${{ inputs.urls }}"
+        IFS="#" read -ra URL_LIST <<< "${{ inputs.urls }}"
         echo "1 level:  ${{ inputs.urls }}"
-        echo "1 level:  ${{ url_list[0] }}"
-        echo "2 level:  ${{ url_list[1] }}"
-        echo "3 level:  ${{ url_list[2] }}"
-        echo "::set-output name=SPLIT_TEXTS::${url_list[@]}"
+        echo "1 level:  ${ URL_LIST[0] }"
+        echo "2 level:  ${ URL_LIST[1] }"
+        echo "3 level:  ${ URL_LIST[2] }"
+        echo "::set-output name=SPLIT_TEXTS::${URL_LIST[@]}"
       #  echo "::set-output name=DOWNLOAD_URLS::${url_list[@]}"
 
       shell: bash
