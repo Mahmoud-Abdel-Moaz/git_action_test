@@ -24,6 +24,12 @@ on:
       phone_screenshots:
         description: 'phone screenshots'
         default: ''
+      seven_inch_screenshots:
+        description: 'Seven Inch screenshots'
+        default: ''
+      ten_inch_screenshots:
+        description: 'Ten Inch screenshots'
+        default: ''
       language:
         description: 'Language'
         default: 'en-US'
@@ -107,43 +113,33 @@ jobs:
           target: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/
           filename: featureGraphic.png
 
-
-#      - name: Set Application Phone Screenshots
-#        if: github.event.inputs.phone_screenshots != ''
-#        run: |
-#          my_string="apple,banana,cherry"
-#          IFS=',' read -r -a my_list <<< ${{ github.event.inputs.phone_screenshots }}
-#          index=1
-#          echo "List items with index:"
-#          for item in "${my_list[@]}"; do
-#            echo "  - Index: $index, Item: $item"
-#
-#            ((index++))
-#          done
-
-      - name: Define list of URLs
+      # phone screenshots
+      - name: Set Application screenshots
+        uses: ./.github/actions/download_screenshots_action
+        with:
+          urls: ${{ github.event.inputs.phone_screenshots }}
+          filepath: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/phoneScreenshots/
+          language: ${{ github.event.inputs.language }}
         if: github.event.inputs.phone_screenshots != ''
-        id: define_urls
-        run: |
-          urls_string="https://example.com/file1.zip,https://example.com/file2.txt,https://example.com/file3.pdf"
-          IFS=',' read -r -a url_list <<< ${{ github.event.inputs.phone_screenshots }}
-          echo "::set-output name=file_urls::${url_list[@]}"
 
-      - uses: bash-utils/for-in-loop@v2  # Assuming bash-utils loop action
-        id: download_loop
+      # seven inch screenshots
+      - name: Set Application screenshots
+        uses: ./.github/actions/download_screenshots_action
         with:
-          name: "url"
-          loop: ${{ steps.define_urls.outputs.file_urls }}
-        env:
-          FILE_URL: ${{ item.url }}  # Pass URL to sub-step
+          urls: ${{ github.event.inputs.seven_inch_screenshots }}
+          filepath: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/sevenInchScreenshots/
+          language: ${{ github.event.inputs.language }}
+        if: github.event.inputs.seven_inch_screenshots != ''
 
-      - name: Download file (${{ env.FILE_URL }})
-        if: steps.download_loop.outputs == ''  # Only run if loop completed
-        uses: suisei-cn/actions-download-file@v1
+      # seven inch screenshots
+      - name: Set Application screenshots
+        uses: ./.github/actions/download_screenshots_action
         with:
-          url: ${{ env.FILE_URL }}
-          target: android/fastlane/metadata/android/${{ github.event.inputs.language }}/phoneScreenshots/  # Download directory (optional)
-          filename: ""  # Keep original filename (optional)
+          urls: ${{ github.event.inputs.ten_inch_screenshots }}
+          filepath: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/tenInchScreenshots/
+          language: ${{ github.event.inputs.language }}
+        if: github.event.inputs.ten_inch_screenshots != ''
+
 
 
       - name: Deploy Screenshots to Google Play
