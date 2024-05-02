@@ -66,6 +66,7 @@ jobs:
         with:
           url: ${{ github.event.inputs.iphone_screenshot_1 }}
           target: ios/fastlane/screenshots/en-US/
+          filename: iphone_screenshot_1.png
 
       - name: Set iphone_screenshot_2
         uses: suisei-cn/actions-download-file@v1  # Download file action
@@ -73,6 +74,7 @@ jobs:
         with:
           url: ${{ github.event.inputs.iphone_screenshot_2 }}
           target: ios/fastlane/screenshots/en-US/
+          filename: iphone_screenshot_2.png
 
       - name: Set iphone_screenshot_3
         uses: suisei-cn/actions-download-file@v1  # Download file action
@@ -80,6 +82,7 @@ jobs:
         with:
           url: ${{ github.event.inputs.iphone_screenshot_3}}
           target: ios/fastlane/screenshots/en-US/
+          filename: iphone_screenshot_3.png
 
       - name: Set iphone_screenshot_4
         uses: suisei-cn/actions-download-file@v1  # Download file action
@@ -87,6 +90,7 @@ jobs:
         with:
           url: ${{ github.event.inputs.iphone_screenshot_4 }}
           target: ios/fastlane/screenshots/en-US/
+          filename: iphone_screenshot_4.png
 
       - name: Set ipad_screenshot_1
         uses: suisei-cn/actions-download-file@v1  # Download file action
@@ -94,6 +98,7 @@ jobs:
         with:
           url: ${{ github.event.inputs.ipad_screenshot_1 }}
           target: ios/fastlane/screenshots/en-US/
+          بfilename: ipad_screenshot_1.png
 
       - name: Set ipad_screenshot_2
         uses: suisei-cn/actions-download-file@v1  # Download file action
@@ -101,6 +106,7 @@ jobs:
         with:
           url: ${{ github.event.inputs.ipad_screenshot_2 }}
           target: ios/fastlane/screenshots/en-US/
+          filename: ipad_screenshot_2.png
 
       - name: Set ipad_screenshot_3
         uses: suisei-cn/actions-download-file@v1  # Download file action
@@ -108,6 +114,7 @@ jobs:
         with:
           url: ${{ github.event.inputs.ipad_screenshot_3 }}
           target: ios/fastlane/screenshots/en-US/
+          filename: ipad_screenshot_3.png
 
       - name: Set ipad_screenshot_4
         uses: suisei-cn/actions-download-file@v1  # Download file action
@@ -115,6 +122,8 @@ jobs:
         with:
           url: ${{ github.event.inputs.ipad_screenshot_4 }}
           target: ios/fastlane/screenshots/en-US/
+          filename: ipad_screenshot_4.png
+
 
       - name: Deploy Screenshots to Apple Store
         run: |
