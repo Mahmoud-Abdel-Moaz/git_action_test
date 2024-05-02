@@ -35,17 +35,92 @@ runs:
         echo "image2=${URL_LIST[1]}" >> $GITHUB_ENV
         echo "image3=${URL_LIST[2]}" >> $GITHUB_ENV
         echo "image4=${URL_LIST[3]}" >> $GITHUB_ENV
+        echo "image5=${URL_LIST[4]}" >> $GITHUB_ENV
+        echo "image6=${URL_LIST[5]}" >> $GITHUB_ENV
+        echo "image7=${URL_LIST[6]}" >> $GITHUB_ENV
+        echo "image8=${URL_LIST[7]}" >> $GITHUB_ENV
+        echo "image9=${URL_LIST[8]}" >> $GITHUB_ENV
+        echo "image10=${URL_LIST[9]}" >> $GITHUB_ENV
         echo "::set-output name=SPLIT_TEXTS::${URL_LIST[@]}"
       #  echo "::set-output name=DOWNLOAD_URLS::${url_list[@]}"
-
       shell: bash
 
-    - name: Download file 0
-    #  if:  0 -lt ${{ env.DOWNLOAD_URLS@length }}
-      run: |
-        echo "Log level:  ${{ steps.split-text.outputs.SPLIT_TEXTS[0] }}"
-        echo "Log level:   ${{ env.WORK_APPS }}"
-      shell: bash
+    - name: Download image 1
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image1 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 1_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 2
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image2 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 2_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 3
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image3 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 3_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 4
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image4 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 4_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 5
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image5 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 1_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 6
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image6 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 6_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 7
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image7 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 7_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 8
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image8 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 8_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 9
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image9 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 9_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 10
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image10 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 10_en_US.png   # Optional, keep original filename (optional)
+
+#    - name: Download file 0
+#    #  if:  0 -lt ${{ env.DOWNLOAD_URLS@length }}
+#      run: |
+#        echo "Log level:  ${{ steps.split-text.outputs.SPLIT_TEXTS[0] }}"
+#        echo "Log level:   ${{ env.WORK_APPS }}"
+#      shell: bash
 
 #      uses: suisei-cn/actions-download-file@v1
 #      with:
