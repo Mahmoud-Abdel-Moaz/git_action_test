@@ -24,6 +24,12 @@ on:
       phone_screenshots:
         description: 'phone screenshots'
         default: ''
+      seven_inch_screenshots:
+        description: 'Seven Inch screenshots'
+        default: ''
+      ten_inch_screenshots:
+        description: 'Ten Inch screenshots'
+        default: ''
       language:
         description: 'Language'
         default: 'en-US'
@@ -115,6 +121,24 @@ jobs:
           filepath: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/phoneScreenshots/
           language: ${{ github.event.inputs.language }}
         if: github.event.inputs.phone_screenshots != ''
+
+      # seven inch screenshots
+      - name: Set Application screenshots
+        uses: ./.github/actions/download_screenshots_action
+        with:
+          urls: ${{ github.event.inputs.seven_inch_screenshots }}
+          filepath: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/sevenInchScreenshots/
+          language: ${{ github.event.inputs.language }}
+        if: github.event.inputs.seven_inch_screenshots != ''
+
+      # seven inch screenshots
+      - name: Set Application screenshots
+        uses: ./.github/actions/download_screenshots_action
+        with:
+          urls: ${{ github.event.inputs.ten_inch_screenshots }}
+          filepath: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/tenInchScreenshots/
+          language: ${{ github.event.inputs.language }}
+        if: github.event.inputs.ten_inch_screenshots != ''
 
 
 

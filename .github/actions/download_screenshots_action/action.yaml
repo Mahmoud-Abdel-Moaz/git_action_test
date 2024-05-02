@@ -29,7 +29,7 @@ runs:
       id: split-text
       run: |
         URLS="${{ inputs.urls  }}"
-        IFS="#" read -r -a URL_LIST <<< "$URLS"
+        IFS="," read -r -a URL_LIST <<< "$URLS"
         echo " level:  ${{ inputs.urls }}"
         echo "image1=${URL_LIST[0]}" >> $GITHUB_ENV
         echo "image2=${URL_LIST[1]}" >> $GITHUB_ENV
