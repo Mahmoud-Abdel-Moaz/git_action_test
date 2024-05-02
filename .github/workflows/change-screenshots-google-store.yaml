@@ -107,7 +107,7 @@ jobs:
           target: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/
           filename: featureGraphic.png
 
-      # screenshots
+      # phone screenshots
       - name: Set Application screenshots
         uses: ./.github/actions/download_screenshots_action
         with:
@@ -116,43 +116,6 @@ jobs:
           language: ${{ github.event.inputs.language }}
         if: github.event.inputs.phone_screenshots != ''
 
-
-#      - name: Set Application Phone Screenshots
-#        if: github.event.inputs.phone_screenshots != ''
-#        run: |
-#          my_string="apple,banana,cherry"
-#          IFS=',' read -r -a my_list <<< ${{ github.event.inputs.phone_screenshots }}
-#          index=1
-#          echo "List items with index:"
-#          for item in "${my_list[@]}"; do
-#            echo "  - Index: $index, Item: $item"
-#
-#            ((index++))
-#          done
-
-#      - name: Define list of URLs
-#        if: github.event.inputs.phone_screenshots != ''
-#        id: define_urls
-#        run: |
-#          urls_string="https://example.com/file1.zip,https://example.com/file2.txt,https://example.com/file3.pdf"
-#          IFS=',' read -r -a url_list <<< ${{ github.event.inputs.phone_screenshots }}
-#          echo "::set-output name=file_urls::${url_list[@]}"
-#
-#      - uses: bash-utils/for-in-loop@v2  # Assuming bash-utils loop action
-#        id: download_loop
-#        with:
-#          name: "url"
-#          loop: ${{ steps.define_urls.outputs.file_urls }}
-#        env:
-#          FILE_URL: ${{ item.url }}  # Pass URL to sub-step
-#
-#      - name: Download file (${{ env.FILE_URL }})
-#        if: steps.download_loop.outputs == ''  # Only run if loop completed
-#        uses: suisei-cn/actions-download-file@v1
-#        with:
-#          url: ${{ env.FILE_URL }}
-#          target: android/fastlane/metadata/android/${{ github.event.inputs.language }}/phoneScreenshots/  # Download directory (optional)
-#          filename: ""  # Keep original filename (optional)
 
 
       - name: Deploy Screenshots to Google Play
