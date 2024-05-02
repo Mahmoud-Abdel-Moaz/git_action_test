@@ -26,15 +26,18 @@ runs:
 #      shell: bash
 
     - name: Split URL string and store in env
+      id: define_urls
       run: |
         IFS=',' read -r -a url_list <<< "${{ inputs.urls }}"
         echo "::set-output name=DOWNLOAD_URLS::${url_list[@]}"
+        echo "::set-output name=file_urls::${url_list[@]}
+
       shell: bash
 
-    - name: Download file (${{ env.FILE_URL }})
+    - name: Download file 0
     #  if:  0 -lt ${{ env.DOWNLOAD_URLS@length }}
       run: |
-        echo "Log level:  ${{ env.DOWNLOAD_URLS[0] }}"
+        echo "Log level:  ${{ steps.define_urls.outputs.file_urls[0] }}"
       shell: bash
 
 #      uses: suisei-cn/actions-download-file@v1
