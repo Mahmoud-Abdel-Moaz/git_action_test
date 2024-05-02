@@ -40,7 +40,7 @@ runs:
     - name: Download file 0
     #  if:  0 -lt ${{ env.DOWNLOAD_URLS@length }}
       run: |
-        echo "Log level:  ${{ steps.split-text.outputs.SPLIT_TEXTS[0] }}"
+        echo "Log level:   ${{ env.WORK_APPS }}"
       shell: bash
 
 #      uses: suisei-cn/actions-download-file@v1
