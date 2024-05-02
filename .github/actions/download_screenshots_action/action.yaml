@@ -33,27 +33,31 @@ runs:
 
     - name: Download file (${{ env.FILE_URL }})
     #  if:  0 -lt ${{ env.DOWNLOAD_URLS@length }}
-      uses: suisei-cn/actions-download-file@v1
-      with:
-        url: ${{ env.DOWNLOAD_URLS[0] }}
-        target: ${{ inputs.url }} # Optional, download directory
-        filename: 0_en_US.png   # Optional, keep original filename (optional)
+      run: |
+        echo "Log level:  ${{ env.DOWNLOAD_URLS[0] }}"
+      shell: bash
 
-    - name: Download file 1
-    #  if: 1 -lt ${{ env.DOWNLOAD_URLS@length }}
-      uses: suisei-cn/actions-download-file@v1
-      with:
-        url: ${{ env.DOWNLOAD_URLS[1] }}
-        target: ${{ inputs.url }} # Optional, download directory
-        filename: 1_en_US.png   # Optional, keep original filename (optional)
+#      uses: suisei-cn/actions-download-file@v1
+#      with:
+#        url: ${{ env.DOWNLOAD_URLS[0] }}
+#        target: ${{ inputs.url }} # Optional, download directory
+#        filename: 0_en_US.png   # Optional, keep original filename (optional)
 
-    - name: Download file 2
-      #if:  2 -lt ${{ env.DOWNLOAD_URLS@length }}
-      uses: suisei-cn/actions-download-file@v1
-      with:
-        url: ${{ env.DOWNLOAD_URLS[2] }}
-        target: ${{ inputs.url }} # Optional, download directory
-        filename: 2_en_US.png   # Optional, keep original filename (optional)
+#    - name: Download file 1
+#    #  if: 1 -lt ${{ env.DOWNLOAD_URLS@length }}
+#      uses: suisei-cn/actions-download-file@v1
+#      with:
+#        url: ${{ env.DOWNLOAD_URLS[1] }}
+#        target: ${{ inputs.url }} # Optional, download directory
+#        filename: 1_en_US.png   # Optional, keep original filename (optional)
+#
+#    - name: Download file 2
+#      #if:  2 -lt ${{ env.DOWNLOAD_URLS@length }}
+#      uses: suisei-cn/actions-download-file@v1
+#      with:
+#        url: ${{ env.DOWNLOAD_URLS[2] }}
+#        target: ${{ inputs.url }} # Optional, download directory
+#        filename: 2_en_US.png   # Optional, keep original filename (optional)
 
 #    - name: Download file 3
 #    #  if:  3 -lt ${{ env.DOWNLOAD_URLS@length }}
