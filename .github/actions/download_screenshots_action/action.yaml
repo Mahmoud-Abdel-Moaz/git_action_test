@@ -28,7 +28,8 @@ runs:
     - name: Split URL string and store in env
       id: split-text
       run: |
-        IFS="#" read -ra URL_LIST <<< "${{ inputs.urls }}"
+        URLS="${{ inputs.urls  }}"
+        IFS="#" read -ra URL_LIST <<< "URLS"
         echo "1 level:  ${{ inputs.urls }}"
         echo "1 level:  ${ URL_LIST[0] }"
         echo "2 level:  ${ URL_LIST[1] }"
