@@ -31,7 +31,10 @@ runs:
         URLS="${{ inputs.urls  }}"
         IFS="#" read -r -a URL_LIST <<< "$URLS"
         echo " level:  ${{ inputs.urls }}"
-        echo "WORK_APPS=${URL_LIST[0]}" >> $GITHUB_ENV
+        echo "image1=${URL_LIST[0]}" >> $GITHUB_ENV
+        echo "image2=${URL_LIST[1]}" >> $GITHUB_ENV
+        echo "image3=${URL_LIST[2]}" >> $GITHUB_ENV
+        echo "image4=${URL_LIST[3]}" >> $GITHUB_ENV
         echo "::set-output name=SPLIT_TEXTS::${URL_LIST[@]}"
       #  echo "::set-output name=DOWNLOAD_URLS::${url_list[@]}"
 
