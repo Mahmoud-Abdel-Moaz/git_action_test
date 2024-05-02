@@ -29,6 +29,7 @@ runs:
       id: split-text
       run: |
         IFS="#" read -ra url_list <<< "${{ inputs.urls }}"
+        echo "1 level:  ${{ inputs.urls }}"
         echo "1 level:  ${{ url_list[0] }}"
         echo "2 level:  ${{ url_list[1] }}"
         echo "3 level:  ${{ url_list[2] }}"
