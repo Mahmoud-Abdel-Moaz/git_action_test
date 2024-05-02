@@ -39,13 +39,12 @@ runs:
         echo "image6=${URL_LIST[5]}" >> $GITHUB_ENV
         echo "image7=${URL_LIST[6]}" >> $GITHUB_ENV
         echo "image8=${URL_LIST[7]}" >> $GITHUB_ENV
-        echo "image9=${URL_LIST[8]}" >> $GITHUB_ENV
-        echo "image10=${URL_LIST[9]}" >> $GITHUB_ENV
         echo "::set-output name=SPLIT_TEXTS::${URL_LIST[@]}"
       #  echo "::set-output name=DOWNLOAD_URLS::${url_list[@]}"
       shell: bash
 
     - name: Download image 1
+      if: ${{ env.image1 }} != ''
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image1 }}
@@ -53,6 +52,7 @@ runs:
         filename: 1_en_US.png   # Optional, keep original filename (optional)
 
     - name: Download image 2
+      if: ${{ env.image2 }} != ''
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image2 }}
@@ -60,6 +60,7 @@ runs:
         filename: 2_en_US.png   # Optional, keep original filename (optional)
 
     - name: Download image 3
+      if: ${{ env.image3 }} != ''
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image3 }}
@@ -67,6 +68,7 @@ runs:
         filename: 3_en_US.png   # Optional, keep original filename (optional)
 
     - name: Download image 4
+      if: ${{ env.image4 }} != ''
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image4 }}
@@ -74,6 +76,7 @@ runs:
         filename: 4_en_US.png   # Optional, keep original filename (optional)
 
     - name: Download image 5
+      if: ${{ env.image5 }} != ''
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image5 }}
@@ -81,6 +84,7 @@ runs:
         filename: 1_en_US.png   # Optional, keep original filename (optional)
 
     - name: Download image 6
+      if: ${{ env.image6 }} != ''
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image6 }}
@@ -88,6 +92,7 @@ runs:
         filename: 6_en_US.png   # Optional, keep original filename (optional)
 
     - name: Download image 7
+      if: ${{ env.image7 }} != ''
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image7 }}
@@ -95,25 +100,13 @@ runs:
         filename: 7_en_US.png   # Optional, keep original filename (optional)
 
     - name: Download image 8
+      if: ${{ env.image8 }} != ''
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image8 }}
         target: ${{ inputs.filepath }} # Optional, download directory
         filename: 8_en_US.png   # Optional, keep original filename (optional)
 
-    - name: Download image 9
-      uses: suisei-cn/actions-download-file@v1
-      with:
-        url: ${{ env.image9 }}
-        target: ${{ inputs.filepath }} # Optional, download directory
-        filename: 9_en_US.png   # Optional, keep original filename (optional)
-
-    - name: Download image 10
-      uses: suisei-cn/actions-download-file@v1
-      with:
-        url: ${{ env.image10 }}
-        target: ${{ inputs.filepath }} # Optional, download directory
-        filename: 10_en_US.png   # Optional, keep original filename (optional)
 
 #    - name: Download file 0
 #    #  if:  0 -lt ${{ env.DOWNLOAD_URLS@length }}
