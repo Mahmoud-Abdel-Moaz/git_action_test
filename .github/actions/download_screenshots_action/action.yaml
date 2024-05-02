@@ -45,6 +45,7 @@ runs:
 
     - name: Download image 1
       if: ${{ env.image1 }} != ''
+      continue-on-error: true
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image1 }}
@@ -53,6 +54,7 @@ runs:
 
     - name: Download image 2
       if: ${{ env.image2 }} != ''
+      continue-on-error: true
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image2 }}
@@ -61,51 +63,57 @@ runs:
 
     - name: Download image 3
       if: ${{ env.image3 }} != ''
+      continue-on-error: true
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image3 }}
         target: ${{ inputs.filepath }} # Optional, download directory
         filename: 3_en_US.png   # Optional, keep original filename (optional)
 
-#    - name: Download image 4
-#      if: ${{ env.image4 }} != ''
-#      uses: suisei-cn/actions-download-file@v1
-#      with:
-#        url: ${{ env.image4 }}
-#        target: ${{ inputs.filepath }} # Optional, download directory
-#        filename: 4_en_US.png   # Optional, keep original filename (optional)
-#
-#    - name: Download image 5
-#      if: ${{ env.image5 }} != ''
-#      uses: suisei-cn/actions-download-file@v1
-#      with:
-#        url: ${{ env.image5 }}
-#        target: ${{ inputs.filepath }} # Optional, download directory
-#        filename: 1_en_US.png   # Optional, keep original filename (optional)
-#
-#    - name: Download image 6
-#      if: ${{ env.image6 }} != ''
-#      uses: suisei-cn/actions-download-file@v1
-#      with:
-#        url: ${{ env.image6 }}
-#        target: ${{ inputs.filepath }} # Optional, download directory
-#        filename: 6_en_US.png   # Optional, keep original filename (optional)
-#
-#    - name: Download image 7
-#      if: ${{ env.image7 }} != ''
-#      uses: suisei-cn/actions-download-file@v1
-#      with:
-#        url: ${{ env.image7 }}
-#        target: ${{ inputs.filepath }} # Optional, download directory
-#        filename: 7_en_US.png   # Optional, keep original filename (optional)
-#
-#    - name: Download image 8
-#      if: ${{ env.image8 }} != ''
-#      uses: suisei-cn/actions-download-file@v1
-#      with:
-#        url: ${{ env.image8 }}
-#        target: ${{ inputs.filepath }} # Optional, download directory
-#        filename: 8_en_US.png   # Optional, keep original filename (optional)
+    - name: Download image 4
+      if: ${{ env.image4 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image4 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 4_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 5
+      if: ${{ env.image5 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image5 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 1_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 6
+      if: ${{ env.image6 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image6 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 6_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 7
+      if: ${{ env.image7 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image7 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 7_en_US.png   # Optional, keep original filename (optional)
+
+    - name: Download image 8
+      if: ${{ env.image8 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image8 }}
+        target: ${{ inputs.filepath }} # Optional, download directory
+        filename: 8_en_US.png   # Optional, keep original filename (optional)
 
 
 #    - name: Download file 0
