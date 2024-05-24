@@ -67,6 +67,9 @@ jobs:
           echo 'package_name("${{ github.event.inputs.package_id}}")' >> android/fastlane/Appfile
      #     echo 'json_key_file("play-store-credentials.json")' >> android/fastlane/Appfile
 
+      - name: Create a folder
+        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}
+
       #  Title
       - name: Set Application Title
         if: github.event.inputs.title != ''
@@ -165,6 +168,5 @@ jobs:
         #fastlane supply init
         #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
         #fastlane supply --metadata_path fastlane/metadata/android --json_key json/key.json --skip_upload_changelogs true
-
        # fastlane supply --skip_upload_changelogs true --package_name com.getaction.hello --json_key play-store-credentials.json
         #workflow id  =>  change-screenshots-google-store
