@@ -71,7 +71,6 @@ jobs:
       - name: Set Application Title
         if: github.event.inputs.title != ''
         run: |
-          touch android/fastlane/metadata/android/${{ github.event.inputs.language }}/title.txt
           echo '${{ github.event.inputs.title }}' > android/fastlane/metadata/android/${{ github.event.inputs.language }}/title.txt
 
       #  Short Description
