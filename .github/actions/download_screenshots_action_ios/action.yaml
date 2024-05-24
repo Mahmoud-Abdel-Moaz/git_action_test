@@ -1,0 +1,210 @@
+name: 'Deploy Action'
+description: 'This is my reusable action'
+inputs:
+
+  iphoneUrls:
+    description: 'iphoneUrls'
+    required: true
+    default: ''
+
+  iPadUrls:
+    description: 'iphoneUrls'
+    required: true
+    default: ''
+
+
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Split URL string and store in env
+      id: split-text
+      run: |
+        URLS="${{ inputs.iphoneUrls  }}"
+        IFS="," read -r -a URL_LIST <<< "$URLS"
+        echo " level:  ${{ inputs.urls }}"
+        echo "image1=${URL_LIST[0]}" >> $GITHUB_ENV
+        echo "image2=${URL_LIST[1]}" >> $GITHUB_ENV
+        echo "image3=${URL_LIST[2]}" >> $GITHUB_ENV
+        echo "image4=${URL_LIST[3]}" >> $GITHUB_ENV
+        echo "image5=${URL_LIST[4]}" >> $GITHUB_ENV
+        echo "image6=${URL_LIST[5]}" >> $GITHUB_ENV
+        echo "image7=${URL_LIST[6]}" >> $GITHUB_ENV
+        echo "image8=${URL_LIST[7]}" >> $GITHUB_ENV
+        echo "::set-output name=SPLIT_TEXTS::${URL_LIST[@]}"
+      shell: bash
+
+    - name: Split ipad URL string and store in env
+      id: split-text-ipad
+      run: |
+        URLS="${{ inputs.iPadUrls  }}"
+        IFS="," read -r -a URL_LIST <<< "$URLS"
+        echo " level:  ${{ inputs.urls }}"
+        echo "ipad_image1=${URL_LIST[0]}" >> $GITHUB_ENV
+        echo "ipad_image2=${URL_LIST[1]}" >> $GITHUB_ENV
+        echo "ipad_image3=${URL_LIST[2]}" >> $GITHUB_ENV
+        echo "ipad_image4=${URL_LIST[3]}" >> $GITHUB_ENV
+        echo "ipad_image5=${URL_LIST[4]}" >> $GITHUB_ENV
+        echo "ipad_image6=${URL_LIST[5]}" >> $GITHUB_ENV
+        echo "ipad_image7=${URL_LIST[6]}" >> $GITHUB_ENV
+        echo "ipad_image8=${URL_LIST[7]}" >> $GITHUB_ENV
+        echo "::set-output name=SPLIT_TEXTS::${URL_LIST[@]}"
+      shell: bash
+
+
+    - name: Download image 1
+      if: ${{ env.image1 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image1 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: iphone_screenshot_1.png
+
+
+    - name: Download image 2
+      if: ${{ env.image2 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image2 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: iphone_screenshot_2.png
+
+
+
+    - name: Download image 3
+      if: ${{ env.image3 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image3 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: iphone_screenshot_3.png
+
+    - name: Download image 4
+      if: ${{ env.image4 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image4 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: iphone_screenshot_4.png
+
+    - name: Download image 5
+      if: ${{ env.image5 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image5 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: iphone_screenshot_5.png
+
+    - name: Download image 6
+      if: ${{ env.image6 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image6 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: iphone_screenshot_6.png
+
+    - name: Download image 7
+      if: ${{ env.image7 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image7 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: iphone_screenshot_7.png
+
+    - name: Download image 8
+      if: ${{ env.image8 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.image8 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: iphone_screenshot_8.png
+
+
+
+    - name: Download ipad image 1
+      if: ${{ env.ipad_image1 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.ipad_image1 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: ipad_screenshot_1.png
+
+
+    - name: Download ipad image 2
+      if: ${{ env.ipad_image2 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.ipad_image2 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: ipad_screenshot_2.png
+
+
+
+    - name: Download ipad image 3
+      if: ${{ env.ipad_image3 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.ipad_image3 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: ipad_screenshot_3.png
+
+    - name: Download ipad image 4
+      if: ${{ env.ipad_image4 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.ipad_image4 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: ipad_screenshot_4.png
+
+    - name: Download ipad image 5
+      if: ${{ env.ipad_image5 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.ipad_image5 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: ipad_screenshot_5.png
+
+    - name: Download ipad image 6
+      if: ${{ env.ipad_image6 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.ipad_image6 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: ipad_screenshot_6.png
+
+    - name: Download ipad image 7
+      if: ${{ env.ipad_image7 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.ipad_image7 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: ipad_screenshot_7.png
+
+    - name: Download ipad image 8
+      if: ${{ env.image8 }} != ''
+      continue-on-error: true
+      uses: suisei-cn/actions-download-file@v1
+      with:
+        url: ${{ env.ipad_image8 }}
+        target: ios/fastlane/screenshots/en-US/
+        filename: ipad_screenshot_8.png
+
+
+
+
