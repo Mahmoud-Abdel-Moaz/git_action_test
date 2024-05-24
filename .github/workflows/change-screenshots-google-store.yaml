@@ -44,6 +44,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     environment: hallo
+    if: github.event.inputs.package_id != '' && (github.event.inputs.title != '' || github.event.inputs.short_description != '' || github.event.inputs.full_description != '' ||  github.event.inputs.icon != '' || github.event.inputs.feature_graphic != '' || github.event.inputs.phone_screenshots != '' || github.event.inputs.seven_inch_screenshots != '' || github.event.inputs.ten_inch_screenshots != '')
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -70,19 +71,20 @@ jobs:
       - name: Set Application Title
         if: github.event.inputs.title != ''
         run: |
-          echo '${{ github.event.inputs.title }}' >> android/fastlane/metadata/android/${{ github.event.inputs.language }}/title.txt
+          touch android/fastlane/metadata/android/${{ github.event.inputs.language }}/title.txt
+          echo '${{ github.event.inputs.title }}' > android/fastlane/metadata/android/${{ github.event.inputs.language }}/title.txt
 
       #  Short Description
       - name: Set Application Short Description
         if: github.event.inputs.short_description != ''
         run: |
-          echo '${{ github.event.inputs.short_description }}' >> android/fastlane/metadata/android/${{ github.event.inputs.language }}/short_description.txt
+          echo '${{ github.event.inputs.short_description }}' > android/fastlane/metadata/android/${{ github.event.inputs.language }}/short_description.txt
 
       #  Full Description
       - name: Set Application Full Description
         if: github.event.inputs.full_description != ''
         run: |
-          echo '${{ github.event.inputs.full_description }}' >> android/fastlane/metadata/android/${{ github.event.inputs.language }}/full_description.txt
+          echo '${{ github.event.inputs.full_description }}' > android/fastlane/metadata/android/${{ github.event.inputs.language }}/full_description.txt
 
 #      - name: Set Application Icon
 #        if: github.event.inputs.icon != ''
