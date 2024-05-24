@@ -68,7 +68,7 @@ jobs:
      #     echo 'json_key_file("play-store-credentials.json")' >> android/fastlane/Appfile
 
       - name: Create a folder
-        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}
+        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}/images
 
       #  Title
       - name: Set Application Title
@@ -117,6 +117,10 @@ jobs:
           target: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/
           filename: featureGraphic.png
 
+
+      - name: Create screenshots a folder
+        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/phoneScreenshots
+
       # phone screenshots
       - name: Set Application screenshots
         uses: ./.github/actions/download_screenshots_action
@@ -126,6 +130,10 @@ jobs:
           language: ${{ github.event.inputs.language }}
         if: github.event.inputs.phone_screenshots != ''
 
+
+      - name: Create Seven inch screenshots a folder
+        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/sevenInchScreenshots
+
       # Seven inch screenshots
       - name: Set Application Seven inch screenshots
         uses: ./.github/actions/download_screenshots_action
@@ -134,6 +142,9 @@ jobs:
           filepath: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/sevenInchScreenshots/
           language: ${{ github.event.inputs.language }}
         if: github.event.inputs.seven_inch_screenshots != ''
+
+      - name: Create Ten inch screenshots a folder
+        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/tenInchScreenshots
 
       # Ten inch screenshots
       - name: Set Application Ten inch screenshots
