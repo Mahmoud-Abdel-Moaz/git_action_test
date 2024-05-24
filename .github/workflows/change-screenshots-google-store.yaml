@@ -164,7 +164,8 @@ jobs:
         run: |
           echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > android/play-store-credentials.json
           cd android
-          fastlane supply --skip_upload_changelogs true
+          bundle exec fastlane supply --skip_upload_changelogs true
+       #   fastlane supply --skip_upload_changelogs true
 
       - name: ${{github.event.inputs.id}}
         run: echo run identifier ${{ inputs.title }}
