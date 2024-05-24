@@ -122,8 +122,8 @@ jobs:
           language: ${{ github.event.inputs.language }}
         if: github.event.inputs.phone_screenshots != ''
 
-      # seven inch screenshots
-      - name: Set Application screenshots
+      # Seven inch screenshots
+      - name: Set Application Seven inch screenshots
         uses: ./.github/actions/download_screenshots_action
         with:
           urls: ${{ github.event.inputs.seven_inch_screenshots }}
@@ -131,8 +131,8 @@ jobs:
           language: ${{ github.event.inputs.language }}
         if: github.event.inputs.seven_inch_screenshots != ''
 
-      # seven inch screenshots
-      - name: Set Application screenshots
+      # Ten inch screenshots
+      - name: Set Application Ten inch screenshots
         uses: ./.github/actions/download_screenshots_action
         with:
           urls: ${{ github.event.inputs.ten_inch_screenshots }}

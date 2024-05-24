@@ -44,7 +44,6 @@ runs:
 
     - name: Download image 1
       if: ${{ env.image1 }} != ''
-      continue-on-error: true
       uses: suisei-cn/actions-download-file@v1
       with:
         url: ${{ env.image1 }}
