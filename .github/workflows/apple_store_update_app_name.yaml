@@ -33,8 +33,21 @@ jobs:
       - name: Create app name file
         run: echo  "${{ github.event.inputs.newAppName }}" > ios/fastlane/metadata/en-US/name.txt
 
+
+
       - name: Deploy Screenshots to Apple Store
         run: |
           cd ios
           gem install fastlane
           fastlane deliver --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId  }} --force true --app_version 1.0.1 --skip_app_version_update true --automatic_release false --skip_screenshots true  --run_precheck_before_submit false --precheck_include_in_app_purchases false
+
+
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "{workflow} has {status_message}"
+          footer: "Linked Repo <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
