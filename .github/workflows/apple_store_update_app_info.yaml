@@ -67,7 +67,7 @@ jobs:
           |
           cd ios
           gem install fastlane
-          fastlane deliver init --api_key_path api_key.json  --app_identifier --app_identifier ${{ github.event.inputs.appBundleId  }}
+          fastlane deliver init --api_key_path api_key.json  --app_identifier ${{ github.event.inputs.appBundleId  }}
 
 
       - name: Create subtitle file
