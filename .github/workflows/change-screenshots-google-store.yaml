@@ -44,6 +44,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     environment: hallo
+    if: github.event.inputs.package_id != '' && (github.event.inputs.title != '' || github.event.inputs.short_description != '' || github.event.inputs.full_description != '' ||  github.event.inputs.icon != '' || github.event.inputs.feature_graphic != '' || github.event.inputs.phone_screenshots != '' || github.event.inputs.seven_inch_screenshots != '' || github.event.inputs.ten_inch_screenshots != '')
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -65,6 +66,9 @@ jobs:
         run: |
           echo 'package_name("${{ github.event.inputs.package_id}}")' >> android/fastlane/Appfile
      #     echo 'json_key_file("play-store-credentials.json")' >> android/fastlane/Appfile
+
+      - name: Create a folder
+        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}/images
 
       #  Title
       - name: Set Application Title
@@ -113,6 +117,11 @@ jobs:
           target: android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/
           filename: featureGraphic.png
 
+
+      - name: Create screenshots a folder
+        if: github.event.inputs.phone_screenshots != ''
+        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/phoneScreenshots
+
       # phone screenshots
       - name: Set Application screenshots
         uses: ./.github/actions/download_screenshots_action
@@ -122,8 +131,13 @@ jobs:
           language: ${{ github.event.inputs.language }}
         if: github.event.inputs.phone_screenshots != ''
 
-      # seven inch screenshots
-      - name: Set Application screenshots
+
+      - name: Create Seven inch screenshots a folder
+        if: github.event.inputs.seven_inch_screenshots != ''
+        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/sevenInchScreenshots
+
+      # Seven inch screenshots
+      - name: Set Application Seven inch screenshots
         uses: ./.github/actions/download_screenshots_action
         with:
           urls: ${{ github.event.inputs.seven_inch_screenshots }}
@@ -131,8 +145,12 @@ jobs:
           language: ${{ github.event.inputs.language }}
         if: github.event.inputs.seven_inch_screenshots != ''
 
-      # seven inch screenshots
-      - name: Set Application screenshots
+      - name: Create Ten inch screenshots a folder
+        if: github.event.inputs.ten_inch_screenshots != ''
+        run: mkdir -p android/fastlane/metadata/android/${{ github.event.inputs.language }}/images/tenInchScreenshots
+
+      # Ten inch screenshots
+      - name: Set Application Ten inch screenshots
         uses: ./.github/actions/download_screenshots_action
         with:
           urls: ${{ github.event.inputs.ten_inch_screenshots }}
@@ -146,7 +164,8 @@ jobs:
         run: |
           echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > android/play-store-credentials.json
           cd android
-          fastlane supply --skip_upload_changelogs true
+          bundle exec fastlane supply --skip_upload_changelogs true
+       #   fastlane supply --skip_upload_changelogs true
 
       - name: ${{github.event.inputs.id}}
         run: echo run identifier ${{ inputs.title }}
@@ -164,6 +183,5 @@ jobs:
         #fastlane supply init
         #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
         #fastlane supply --metadata_path fastlane/metadata/android --json_key json/key.json --skip_upload_changelogs true
-
        # fastlane supply --skip_upload_changelogs true --package_name com.getaction.hello --json_key play-store-credentials.json
         #workflow id  =>  change-screenshots-google-store
