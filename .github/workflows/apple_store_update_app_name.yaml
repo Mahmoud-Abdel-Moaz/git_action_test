@@ -1,4 +1,4 @@
-name: Deploy App info to Apple Store
+name: Update App name
 on:
   workflow_dispatch:
     inputs:
