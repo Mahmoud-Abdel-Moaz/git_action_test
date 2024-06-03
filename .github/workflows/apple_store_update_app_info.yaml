@@ -1,4 +1,4 @@
-name: Deploy App info to Apple Store
+name: update App info to Apple Store
 on:
   workflow_dispatch:
     inputs:
@@ -6,44 +6,38 @@ on:
         description: 'App Bundle Id'
         required: true
 
-      #     for metadata update
-#     1.
-      newAppName:
-        type: string
-        description: "new app name"
-#     2.
       subtitle:
         type: string
+        required: true
         description: "new app subtitle"
-#     3.
+
       description:
         type: string
         description: "new app description"
-#     4.
+        required: true
+
       promotionalText:
         type: string
         description: "new app promotional Text"
-#     5.
+
       keywords:
         type: string
         description: "new app keywords"
-#     6.
+        required: true
+
       supportUrl:
         type: string
         description: "new app support url"
-#     7.
+        required: true
+
       marketingUrl:
         type: string
         description: "new app marketing url"
-##     8.
-#      appleTvPrivacyPolicy:
-#        type: string
-#        description: "new app apple Tv Privacy Policy"
-#     9.
+
       privacyUrl:
         type: string
         description: "new app privacy url"
-#    10.
+
       releaseNotes:
         type: string
         description: "new app release notes"
@@ -67,47 +61,56 @@ jobs:
       - name: Create App store json
         run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
 
-#      app meta data   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
 
-#     1. App Name
-      - name: Create app name file
-        run: echo  "${{ github.event.inputs.newAppName }}" > ios/fastlane/metadata/en-US/name.txt
-
-#     2. subtitle
       - name: Create subtitle file
         run: echo  "${{ github.event.inputs.subtitle }}" > ios/fastlane/metadata/en-US/subtitle.txt
 
-#     3. description
       - name: Create description file
         run: echo  "${{ github.event.inputs.description }}" > ios/fastlane/metadata/en-US/description.txt
 
-#     4. promotionalText
       - name: Create app name file
         run: echo  "${{ github.event.inputs.promotionalText }}" > ios/fastlane/metadata/en-US/promotional_text.txt
 
-#     5. keywords
       - name: Create keywords file
         run: echo  "${{ github.event.inputs.keywords }}" > ios/fastlane/metadata/en-US/keywords.txt
 
-#     6. support Url
       - name: Create support  url file
         run: echo  "${{ github.event.inputs.supportUrl }}" > ios/fastlane/metadata/en-US/support_url.txt
 
-#     7. marketingUrl
       - name: Create marketing url file
         run: echo  "${{ github.event.inputs.marketingUrl }}" > ios/fastlane/metadata/en-US/marketing_url.txt
 
-##     8. apple Tv Privacy Policy
-#      - name: Create apple Tv Privacy Policy file
-#        run: echo  "${{ github.event.inputs.appleTvPrivacyPolicy }}" > ios/fastlane/metadata/en-US/apple_tv_privacy_policy.txt
-
-#     9. privacy url
       - name: Create app name file
         run: echo  "${{ github.event.inputs.privacyUrl }}" > ios/fastlane/metadata/en-US/privacy_url.txt
 
-#     10. release notes
       - name: Create release notes file
         run: echo  "${{ github.event.inputs.releaseNotes }}" > ios/fastlane/metadata/en-US/release_notes.txt
+
+
+#    Fixed Data
+      - name: Create copyright file
+        run: echo  "Blink Copy Rights 2024 All Right Reserved" > ios/fastlane/metadata/copyright.txt
+
+      - name: Create primary category file
+        run: echo  "TRAVEL" > ios/fastlane/metadata/primary_category.txt
+
+      - name: Create secondary category file
+        run: echo  "ENTERTAINMENT" > ios/fastlane/metadata/secondary_category.txt
+
+
+      - name: Create email address file
+        run: echo  "info@blink.com" > ios/fastlane/metadata/review_information/email_address.txt
+
+      - name: Create fist name file
+        run: echo  "Blink" > ios/fastlane/metadata/review_information/first_name.txt
+
+
+      - name: Create last name file
+        run: echo  "LLC" > ios/fastlane/metadata/review_information/last_name.txt
+
+      - name: Create phone number file
+        run: echo  "+201211900099" > ios/fastlane/metadata/review_information/phone_number.txt
+
 
 
       - name: Deploy Screenshots to Apple Store
