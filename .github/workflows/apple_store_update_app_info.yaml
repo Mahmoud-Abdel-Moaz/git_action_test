@@ -62,6 +62,10 @@ jobs:
         run: echo  "${{ secrets.APPLE_STORE_API_KEY_JSON }}" > ios/api_key.json
 
 
+      - name: get current data
+        run: fastlane deliver init --api_key_path api_key.json  --app_identifier --app_identifier ${{ github.event.inputs.appBundleId  }}
+
+
       - name: Create subtitle file
         run: echo  "${{ github.event.inputs.subtitle }}" > ios/fastlane/metadata/en-US/subtitle.txt
 
