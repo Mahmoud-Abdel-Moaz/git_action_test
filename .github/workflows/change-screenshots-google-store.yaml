@@ -179,6 +179,25 @@ jobs:
           footer: "Linked Repo <{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+            
+            
+#      - name: Determine Dev Flavor
+#        if: contains(env.isDev, 'dev')
+#        run: |
+#          echo "Flavor=blink_stag" >> $GITHUB_ENV
+#          echo "Flavor_Target_Path=lib/main_blink_dev.dart" >> $GITHUB_ENV
+#          echo "FIREBASE_GOOGLE_SERVICES_FILE = ${{secrets.FIREBASE_GOOGLE_SERVICES_FILE_STAG}}" >> $GITHUB_ENV
+#          echo "FIREBASE_APP_ID = ${{secrets.FIREBASE_APP_ID_STAG}}" >> $GITHUB_ENV
+#          echo "CREDENTIAL_FILE_CONTENT = ${{secrets.CREDENTIAL_FILE_CONTENT_STAG}}" >> $GITHUB_ENV
+#
+#      - name: Determine Pro Flavor
+#        if: (!contains(env.isDev, 'dev'))
+#        run: |
+#          echo "Flavor=blink" >> $GITHUB_ENV
+#          echo "Flavor_Target_Path=lib/main_blink_prod.dart" >> $GITHUB_ENV
+#          echo "FIREBASE_GOOGLE_SERVICES_FILE = ${{secrets.FIREBASE_GOOGLE_SERVICES_FILE_PROD}}" >> $GITHUB_ENV
+#          echo "FIREBASE_APP_ID = ${{secrets.FIREBASE_APP_ID_PROD}}" >> $GITHUB_ENV
+#          echo "CREDENTIAL_FILE_CONTENT = ${{secrets.CREDENTIAL_FILE_CONTENT_PROD}}" >> $GITHUB_ENV
 
         #fastlane supply init
         #echo '${{ secrets.PLAYSTORE_ACCOUNT_KEY }}' > json/key.json
